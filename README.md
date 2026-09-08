@@ -2,6 +2,19 @@
 
 CAD do atendente CIOSP/CICC-MT. Monólito hexagonal (ADR 0001–0004).
 
+## Outra máquina
+
+```bash
+git clone https://github.com/fmmcbaficdev/cicc.git
+cd cicc
+```
+
+Repositório privado: entre no GitHub na máquina nova (`gh auth login` ou Git Credential Manager). Sem Oracle, sem `.env`. Persistência é memória.
+
+Instalar antes: **JDK 25**, **Maven 3.9+**, **Node 20+** (npm 10). Conferir: `java -version`, `mvn -v`, `node -v`.
+
+Cursor: este clone traz código e `docs/`. As skills/rules hexagonais moram no kit do curso (`arquitetura-de-sistemas/.cursor`), que **não** está neste Git. Para o agente continuar o mesmo fluxo, copie essa pasta `.cursor` para a raiz do clone, ou abra o workspace do curso com `cicc-cad/` já dentro.
+
 ```text
 backend/        Maven: domain → application → infrastructure (JAR Boot)
 frontend/       Angular 21 (não é módulo Maven)
