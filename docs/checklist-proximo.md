@@ -2,7 +2,7 @@
 
 **Goal da Sprint 2:** o despachador empilha a Livre mais próxima e a sala vê o T2.
 
-Fonte: [product-backlog](../../docs/product/product-backlog.md) · [folha 2](../../docs/product/folha-02-sala-despacho.md) · [módulo](../../docs/architecture/modulo-sugerir-empenhar.md)
+Fonte: [product-backlog](product/product-backlog.md) · [folha 2](product/folha-02-sala-despacho.md) · [módulo](architecture/modulo-sugerir-empenhar.md)
 
 ## Já feito (Sprint 1 + item 5)
 

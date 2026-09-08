@@ -35,4 +35,4 @@ Abra `http://localhost:4200/`. Atendente abre o T1; **Mesa** confirma a Livre e 
 
 Domínio `cad` + `sala` + portas `pabx`/`avl` (mock). JPA/Oracle Spatial e AVL real depois.
 
-Como se constrói: [docs/](docs/) — [componentes](docs/fluxo-componentes.md) · [código](docs/fluxo-desenvolvimento-codigo.md).
+Como se constrói: [docs/](docs/README.md) — produto, ADR, *ilities*, esteira hexagonal.

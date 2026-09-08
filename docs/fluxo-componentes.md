@@ -2,7 +2,7 @@
 
 Como os módulos do mapa entram no código. Não é uma lista “um componente por vez até acabar o mapa”: é **fatia vertical**. Primeiro o `cad` (ocorrência + T1), de dentro para fora do hexágono. Os outros só entram quando o backlog pedir.
 
-Fonte do mapa: `docs/architecture/component-map.md` no kit do curso. Estilo: monólito modular, um JAR (ADR 0001–0004).
+Fonte do mapa: [architecture/component-map.md](architecture/component-map.md). Estilo: monólito modular, um JAR ([ADR 0001–0004](architecture/adr/README.md)).
 
 ## Onde estamos (2026-09-07)
 
