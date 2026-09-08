@@ -18,6 +18,6 @@ cd frontend && npm install && npx ng serve
 
 `npm install` no frontend falhou neste ambiente (erro `edgesOut` do npm). A árvore Angular 21 está criada; rode o install na sua máquina.
 
-Domínio `cad`: `Gravidade`, `Protocolo`, `Ponto`, agregado `Ocorrencia` com T1 no `newOcorrencia`. Próximo: porta + `AbrirOcorrenciaUseCase`.
+Domínio `cad`: `Ocorrencia` + T1. Application: `AbrirOcorrenciaUseCase` (à mão, `InMemory*`). Próximo: REST ou `PabxPort` mock.
 
 Como se constrói: [docs/](docs/) — [componentes](docs/fluxo-componentes.md) · [código](docs/fluxo-desenvolvimento-codigo.md).

@@ -27,8 +27,8 @@ flowchart TB
 | 0 Ossatura | `backend/{domain,application,infrastructure}` + `frontend/` | `mvn test` dummy | Feito |
 | 1 VO | `backend/domain/.../cad/` | `*Test` no domain, sem Spring | Feito |
 | 2 Agregado | mesmo pacote | `OcorrenciaTest` | Feito |
-| **3 Porta** | interface no domain; fake em `application/src/test` | fake no unitário | **Próximo** |
-| **4 Use case** | `backend/application/.../cad/` | `new UseCase(new InMemory*)` | **Em seguida** |
+| 3 Porta | interface no domain; fake em `application/src/test` | fake no unitário | Feito |
+| 4 Use case | `backend/application/.../cad/` | `new UseCase(new InMemory*)` | Feito |
 | 5 JPA | `infrastructure/persistence` | IT, não o unitário | Depois |
 | 6 REST | `infrastructure/rest` | MockMvc | Depois |
 | 7 Tela | `frontend/src/app/cad/` | `*.spec.ts` | Se a fatia tiver tela |
@@ -73,8 +73,4 @@ O primeiro usuário do núcleo é o **teste**, não o controller. Por isso a por
 
 ## Próximo commit de código
 
-1. `OcorrenciaRepository` — `ocorrenciaDeId` / `criar` / `atualizar` em `domain.cad`
-2. `InMemoryOcorrenciaRepository` em `backend/application/src/test/java`
-3. `AbrirOcorrenciaUseCase` + teste sem Spring (itens 1 e 2 do backlog)
-
-JPA, REST e Angular ficam para depois que esse `execute` estiver verde.
+`AbrirOcorrenciaUseCase.execute` está verde sem Spring. Seguinte: `hex-adapter-rest` (T1 visível à sala) ou `PabxPort` + mock (item 3 do backlog). JPA e Angular depois.

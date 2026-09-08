@@ -13,7 +13,7 @@ flowchart LR
     B[VOs<br/>Gravidade Protocolo Ponto]
     C[Agregado<br/>Ocorrencia + T1]
   end
-  subgraph agora [Próximo — ainda cad]
+  subgraph agora [Feito nesta fatia]
     D[Porta<br/>OcorrenciaRepository]
     E[Use case<br/>AbrirOcorrencia]
   end
@@ -25,7 +25,7 @@ flowchart LR
   A --> B --> C --> D --> E --> F --> G --> H
 ```
 
-O item 1 do product backlog (abrir ocorrência + T1) **ainda não fechou**: o domínio já carimba o T1; falta a porta e o caso de uso para o atendente executar o clique.
+Itens 1 e 2 do backlog fecharam no **use case** (abrir à mão + T1 no clique). A sala ainda não vê o T1: falta REST (e tela). PABX mock é o item 3.
 
 ## Como nasce um componente
 
@@ -87,7 +87,7 @@ flowchart TB
 
 | Componente | Recorte | Estado |
 |---|---|---|
-| **cad** | o quê, onde, gravidade, T1 | VOs + agregado feitos; porta e use case a seguir |
+| **cad** | o quê, onde, gravidade, T1 | VOs + agregado + porta + `AbrirOcorrenciaUseCase`; REST ainda não |
 | **pabx** | mock; real só com homologação | não começou |
 | **sala** | mesa, Livre mais próxima, T2 | Sprint 2 |
 | **posicao-avl** / **acionamento** | GPS e tablet; rádio é fallback | depois da Sprint 2 |
