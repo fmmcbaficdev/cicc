@@ -42,4 +42,4 @@ Atendente não escolhe viatura. Matching ordena por distância haversine; o huma
 
 ## Encerramento
 
-Evidência: `mvn test` nos três módulos + `ng test` da mesa. Sem fila (item 6) nem “No local” (item 7).
+Evidência: `mvn test` nos três módulos + `ng test` da mesa. Fila: [modulo-fila-sem-livre.md](modulo-fila-sem-livre.md). Sem “No local” (item 7).

@@ -4,6 +4,7 @@ import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.EncaminharOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.EmpenharViaturaUseCase;
+import br.gov.mt.sesp.cicc.application.sala.RegistrarNoLocalUseCase;
 import br.gov.mt.sesp.cicc.application.sala.SugerirViaturasUseCase;
 import br.gov.mt.sesp.cicc.domain.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.net.URI;
@@ -27,19 +29,22 @@ public class OcorrenciaController {
     private final EncaminharOcorrenciaUseCase encaminharOcorrenciaUseCase;
     private final SugerirViaturasUseCase sugerirViaturasUseCase;
     private final EmpenharViaturaUseCase empenharViaturaUseCase;
+    private final RegistrarNoLocalUseCase registrarNoLocalUseCase;
 
     public OcorrenciaController(
             final AbrirOcorrenciaUseCase abrirOcorrenciaUseCase,
             final BuscarOcorrenciaUseCase buscarOcorrenciaUseCase,
             final EncaminharOcorrenciaUseCase encaminharOcorrenciaUseCase,
             final SugerirViaturasUseCase sugerirViaturasUseCase,
-            final EmpenharViaturaUseCase empenharViaturaUseCase
+            final EmpenharViaturaUseCase empenharViaturaUseCase,
+            final RegistrarNoLocalUseCase registrarNoLocalUseCase
     ) {
         this.abrirOcorrenciaUseCase = abrirOcorrenciaUseCase;
         this.buscarOcorrenciaUseCase = buscarOcorrenciaUseCase;
         this.encaminharOcorrenciaUseCase = encaminharOcorrenciaUseCase;
         this.sugerirViaturasUseCase = sugerirViaturasUseCase;
         this.empenharViaturaUseCase = empenharViaturaUseCase;
+        this.registrarNoLocalUseCase = registrarNoLocalUseCase;
     }
 
     @PostMapping
@@ -67,8 +72,11 @@ public class OcorrenciaController {
     }
 
     @GetMapping("/{id}/viaturas-sugeridas")
-    public List<ViaturaSugeridaResponse> sugerir(@PathVariable("id") final String id) {
-        return sugerirViaturasUseCase.execute(new SugerirViaturasUseCase.Input(id)).stream()
+    public List<ViaturaSugeridaResponse> sugerir(
+            @PathVariable("id") final String id,
+            @RequestParam(name = "ampliar", defaultValue = "false") final boolean ampliar
+    ) {
+        return sugerirViaturasUseCase.execute(new SugerirViaturasUseCase.Input(id, ampliar)).stream()
                 .map(ViaturaSugeridaResponse::from)
                 .toList();
     }
@@ -79,5 +87,10 @@ public class OcorrenciaController {
             @RequestBody final EmpenharViaturaRequest request
     ) {
         return OcorrenciaResponse.from(empenharViaturaUseCase.execute(request.toInput(id)));
+    }
+
+    @PostMapping("/{id}/no-local")
+    public OcorrenciaResponse noLocal(@PathVariable("id") final String id) {
+        return OcorrenciaResponse.from(registrarNoLocalUseCase.execute(new RegistrarNoLocalUseCase.Input(id)));
     }
 }

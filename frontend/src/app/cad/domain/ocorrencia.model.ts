@@ -1,6 +1,7 @@
 export interface Ocorrencia {
   id: string;
   protocolo: string;
+  gravidade: string;
   inicioAtendimento: string;
   telefone: string | null;
   pabxUid: string | null;
@@ -12,4 +13,6 @@ export interface Ocorrencia {
   encaminhadaEm: string | null;
   prefixoEmpenhado: string | null;
   inicioDeslocamento: string | null;
+  noLocalEm: string | null;
+  noLocalManual: boolean;
 }

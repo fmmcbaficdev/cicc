@@ -19,6 +19,7 @@ export class MesaPage implements OnInit {
   readonly mesa = signal('CBA');
   readonly cartoes = signal<Ocorrencia[]>([]);
   readonly sugestoes = signal<Record<string, ViaturaSugerida[]>>({});
+  readonly ampliado = signal<Record<string, boolean>>({});
   readonly empenhando = signal<string | null>(null);
   readonly erro = signal<string | null>(null);
 
@@ -28,6 +29,7 @@ export class MesaPage implements OnInit {
 
   carregar(): void {
     this.erro.set(null);
+    this.ampliado.set({});
     this.facade.listar(this.mesa()).subscribe({
       next: (cartoes) => {
         this.cartoes.set(cartoes);
@@ -52,6 +54,29 @@ export class MesaPage implements OnInit {
           delete proximo[ocorrenciaId];
           return proximo;
         });
+        this.ampliado.update((atual) => {
+          const proximo = { ...atual };
+          delete proximo[ocorrenciaId];
+          return proximo;
+        });
+      },
+      error: (falha: Error) => {
+        this.empenhando.set(null);
+        this.erro.set(falha.message);
+      },
+    });
+  }
+
+  registrarNoLocal(ocorrenciaId: string): void {
+    if (this.empenhando()) {
+      return;
+    }
+    this.empenhando.set(ocorrenciaId);
+    this.erro.set(null);
+    this.facade.registrarNoLocal(ocorrenciaId).subscribe({
+      next: (atualizada) => {
+        this.empenhando.set(null);
+        this.cartoes.update((lista) => lista.map((cartao) => (cartao.id === atualizada.id ? atualizada : cartao)));
       },
       error: (falha: Error) => {
         this.empenhando.set(null);
@@ -62,6 +87,17 @@ export class MesaPage implements OnInit {
 
   formatarDistancia(metros: number): string {
     return metros >= 1000 ? `${(metros / 1000).toFixed(1)} km` : `${metros} m`;
+  }
+
+  puxarOutroBairro(ocorrenciaId: string): void {
+    this.erro.set(null);
+    this.facade.sugerir(ocorrenciaId, true).subscribe({
+      next: (lista) => {
+        this.sugestoes.update((atual) => ({ ...atual, [ocorrenciaId]: lista }));
+        this.ampliado.update((atual) => ({ ...atual, [ocorrenciaId]: true }));
+      },
+      error: (falha: Error) => this.erro.set(falha.message),
+    });
   }
 
   private carregarSugestoes(pendentes: Ocorrencia[]): void {

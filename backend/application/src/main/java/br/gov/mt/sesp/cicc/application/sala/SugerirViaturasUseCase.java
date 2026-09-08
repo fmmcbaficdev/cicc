@@ -32,12 +32,20 @@ public class SugerirViaturasUseCase extends UseCase<SugerirViaturasUseCase.Input
         if (ocorrencia.inicioDeslocamento() != null) {
             return List.of();
         }
-        return MatchingProximidade.maisProximas(ocorrencia.ponto(), avlPort.viaturasLivres()).stream()
+        final var livres = avlPort.viaturasLivres();
+        final var sugestoes = input.ampliar()
+                ? MatchingProximidade.ampliadas(ocorrencia.ponto(), livres)
+                : MatchingProximidade.maisProximas(ocorrencia.ponto(), livres);
+        return sugestoes.stream()
                 .map(Sugestao::de)
                 .toList();
     }
 
-    public record Input(String ocorrenciaId) {
+    public record Input(String ocorrenciaId, boolean ampliar) {
+
+        public Input(final String ocorrenciaId) {
+            this(ocorrenciaId, false);
+        }
     }
 
     public record Sugestao(String prefixo, double latitude, double longitude, int distanciaMetros) {

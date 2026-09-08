@@ -92,7 +92,7 @@ flowchart TB
 |---|---|---|
 | **cad** | o quê, onde, gravidade, T1 | Use case + `POST /ocorrencias` + tela Angular `cad` |
 | **pabx** | mock; real só com homologação | `PabxPort` + `MockPabxAdapter`; `GET /pabx/chamada` |
-| **sala** | mesa, Livre mais próxima, T2 | Feito no mock — sugerir + empenhar |
+| **sala** | mesa, Livre mais próxima, T2 | Feito no mock — sugerir + empenhar + fila + No local |
 | **posicao-avl** / **acionamento** | GPS e tablet; rádio é fallback | AVL mock nesta fatia; AVL real e móvel depois |
 | **acesso** | isolamento de unidade | hipótese |
 | **alerta-lpr** | não abre ocorrência | fora desta fila |

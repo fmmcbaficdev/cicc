@@ -28,4 +28,13 @@ class GravidadeTest {
         assertEquals("Gravidade inválida",
                 assertThrows(ValidationException.class, () -> new Gravidade("P1")).getMessage());
     }
+
+    @Test
+    @DisplayName("fila: Crítica antes de Alta, Média e Baixa")
+    void ordemNaFila() {
+        assertEquals(0, new Gravidade("CRITICA").ordemNaFila());
+        assertEquals(1, new Gravidade("ALTA").ordemNaFila());
+        assertEquals(2, new Gravidade("MEDIA").ordemNaFila());
+        assertEquals(3, new Gravidade("BAIXA").ordemNaFila());
+    }
 }

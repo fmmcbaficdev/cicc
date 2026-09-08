@@ -3,6 +3,7 @@ import { Ocorrencia } from '../domain/ocorrencia.model';
 export interface OcorrenciaResponse {
   id: string;
   protocolo: string;
+  gravidade: string;
   inicioAtendimento: string;
   telefone: string | null;
   pabxUid: string | null;
@@ -14,12 +15,15 @@ export interface OcorrenciaResponse {
   encaminhadaEm: string | null;
   prefixoEmpenhado: string | null;
   inicioDeslocamento: string | null;
+  noLocalEm: string | null;
+  noLocalManual: boolean;
 }
 
 export function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
   return {
     id: response.id,
     protocolo: response.protocolo,
+    gravidade: response.gravidade,
     inicioAtendimento: response.inicioAtendimento,
     telefone: response.telefone,
     pabxUid: response.pabxUid,
@@ -31,5 +35,7 @@ export function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
     encaminhadaEm: response.encaminhadaEm,
     prefixoEmpenhado: response.prefixoEmpenhado ?? null,
     inicioDeslocamento: response.inicioDeslocamento ?? null,
+    noLocalEm: response.noLocalEm ?? null,
+    noLocalManual: response.noLocalManual ?? false,
   };
 }

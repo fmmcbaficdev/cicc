@@ -6,7 +6,7 @@ Tudo o que descreve **esta** implementação mora aqui. O código está em `back
 
 | Doc | O que responde |
 |---|---|
-| [checklist-proximo.md](checklist-proximo.md) | Feito vs próximo recorte (Sprint 2: fila / “No local”) |
+| [checklist-proximo.md](checklist-proximo.md) | Feito vs próximo recorte (Sprint 2 fechada no mock) |
 | [fluxo-componentes.md](fluxo-componentes.md) | Ordem dos módulos (`cad`, `pabx`, `sala`, AVL) |
 | [fluxo-desenvolvimento-codigo.md](fluxo-desenvolvimento-codigo.md) | Esteira hexagonal (VO → use case → REST → Angular) |
 | [exemplo-abrir-ocorrencia.json](exemplo-abrir-ocorrencia.json) | Corpo do `POST /ocorrencias` |
@@ -36,6 +36,8 @@ Tudo o que descreve **esta** implementação mora aqui. O código está em `back
 | [architecture/nomenclatura.md](architecture/nomenclatura.md) | Nomes de classe, porta, tela |
 | [architecture/contexto-tecnico.md](architecture/contexto-tecnico.md) | Java, Boot, Angular |
 | [architecture/modulo-sugerir-empenhar.md](architecture/modulo-sugerir-empenhar.md) | Fatia Livre + T2 |
+| [architecture/modulo-fila-sem-livre.md](architecture/modulo-fila-sem-livre.md) | Fila + puxar outro bairro |
+| [architecture/modulo-no-local.md](architecture/modulo-no-local.md) | No local fecha o T2 |
 | [architecture/risk-register.md](architecture/risk-register.md) | Riscos |
 | [architecture/adr/](architecture/adr/README.md) | ADR 0001–0004 |
 

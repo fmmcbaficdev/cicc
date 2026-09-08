@@ -46,4 +46,25 @@ class ListarOcorrenciasNaMesaUseCaseTest {
         assertEquals("CICC-2026-SALA-001", naMesa.getFirst().protocolo());
         assertEquals("NA_MESA", naMesa.getFirst().situacao());
     }
+
+    @Test
+    @DisplayName("ordena a fila: Crítica na frente da Baixa")
+    void ordenaPorGravidade() {
+        final var baixa = ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
+                "Furto", "BAIXA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-SALA-BAIXA", Instant.parse("2026-09-07T22:30:00Z")
+        ));
+        baixa.encaminharAMesa("CBA", Instant.parse("2026-09-07T22:32:00Z"));
+        ocorrenciaRepository.atualizar(baixa);
+
+        final var critica = ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
+                "Roubo", "CRITICA", "CPA, Cuiabá", -15.5, -56.0, "CICC-2026-SALA-CRITICA", Instant.parse("2026-09-07T22:34:00Z")
+        ));
+        critica.encaminharAMesa("CBA", Instant.parse("2026-09-07T22:35:00Z"));
+        ocorrenciaRepository.atualizar(critica);
+
+        final var naMesa = useCase.execute(new ListarOcorrenciasNaMesaUseCase.Input("CBA"));
+
+        assertEquals("CICC-2026-SALA-CRITICA", naMesa.getFirst().protocolo());
+        assertEquals("CICC-2026-SALA-BAIXA", naMesa.get(1).protocolo());
+    }
 }

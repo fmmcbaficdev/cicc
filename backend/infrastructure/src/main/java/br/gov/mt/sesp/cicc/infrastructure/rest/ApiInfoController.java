@@ -17,6 +17,7 @@ public class ApiInfoController {
                 "chamada", "GET /pabx/chamada",
                 "mesa", "GET /mesa/{mesa}/ocorrencias",
                 "empenhar", "POST /ocorrencias/{id}/empenhar",
+                "noLocal", "POST /ocorrencias/{id}/no-local",
                 "exemplo", "docs/exemplo-abrir-ocorrencia.json"
         );
     }

@@ -30,6 +30,7 @@ class SugerirViaturasUseCaseTest {
         avl = new InMemoryAvlPort();
         avl.registrar(new Recurso("PM-CBA-01", new Ponto(-15.6018, -56.0982), "LIVRE"));
         avl.registrar(new Recurso("PM-CBA-02", new Ponto(-15.6080, -56.1050), "LIVRE"));
+        avl.registrar(new Recurso("PM-VG-01", new Ponto(-15.6465, -56.1326), "LIVRE"));
         avl.registrar(new Recurso("PM-CBA-99", new Ponto(-15.6015, -56.0975), "EMPENHADA"));
         useCase = new SugerirViaturasUseCase(ocorrencias, avl);
     }
@@ -44,6 +45,18 @@ class SugerirViaturasUseCaseTest {
         assertEquals("PM-CBA-01", sugestoes.getFirst().prefixo());
         assertEquals("PM-CBA-02", sugestoes.get(1).prefixo());
         assertEquals(2, sugestoes.size());
+    }
+
+    @Test
+    @DisplayName("ampliar puxa Livre de outro bairro ainda por proximidade")
+    void ampliarPuxaOutroBairro() {
+        avl = new InMemoryAvlPort();
+        avl.registrar(new Recurso("PM-VG-01", new Ponto(-15.6465, -56.1326), "LIVRE"));
+        useCase = new SugerirViaturasUseCase(ocorrencias, avl);
+        final var id = naMesa().ocorrenciaId().value();
+
+        assertTrue(useCase.execute(new SugerirViaturasUseCase.Input(id, false)).isEmpty());
+        assertEquals("PM-VG-01", useCase.execute(new SugerirViaturasUseCase.Input(id, true)).getFirst().prefixo());
     }
 
     @Test

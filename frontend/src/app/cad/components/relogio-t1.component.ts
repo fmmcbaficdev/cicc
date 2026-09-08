@@ -9,12 +9,17 @@ import { formatarDecorrido } from '../domain/formatar-decorrido';
 })
 export class RelogioT1Component {
   readonly inicio = input.required<string>();
+  readonly fim = input<string | null>(null);
   readonly compacto = input(false);
   readonly rotulo = input('T1');
 
   private readonly agora = signal(Date.now());
 
-  readonly decorrido = computed(() => formatarDecorrido(this.inicio(), this.agora()));
+  readonly decorrido = computed(() => {
+    const encerramento = this.fim();
+    const referencia = encerramento ? new Date(encerramento).getTime() : this.agora();
+    return formatarDecorrido(this.inicio(), referencia);
+  });
   readonly inicioFormatado = computed(() =>
     new Date(this.inicio()).toLocaleString('pt-BR', { timeZone: 'America/Cuiaba' }),
   );

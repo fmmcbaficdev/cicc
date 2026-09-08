@@ -20,6 +20,8 @@ public class Ocorrencia {
     private Instant encaminhadaEm;
     private String prefixoEmpenhado;
     private Instant inicioDeslocamento;
+    private Instant noLocalEm;
+    private boolean noLocalManual;
 
     private Ocorrencia(
             final OcorrenciaId ocorrenciaId,
@@ -34,7 +36,9 @@ public class Ocorrencia {
             final MesaRegiao mesa,
             final Instant encaminhadaEm,
             final String prefixoEmpenhado,
-            final Instant inicioDeslocamento
+            final Instant inicioDeslocamento,
+            final Instant noLocalEm,
+            final boolean noLocalManual
     ) {
         if (ocorrenciaId == null) {
             throw new ValidationException("Identificador da ocorrência inválido");
@@ -70,6 +74,8 @@ public class Ocorrencia {
         this.encaminhadaEm = encaminhadaEm;
         this.prefixoEmpenhado = prefixoEmpenhado == null || prefixoEmpenhado.isBlank() ? null : prefixoEmpenhado.trim();
         this.inicioDeslocamento = inicioDeslocamento;
+        this.noLocalEm = noLocalEm;
+        this.noLocalManual = noLocalManual;
     }
 
     public static Ocorrencia newOcorrencia(
@@ -108,7 +114,9 @@ public class Ocorrencia {
                 null,
                 null,
                 null,
-                null
+                null,
+                null,
+                false
         );
     }
 
@@ -151,7 +159,7 @@ public class Ocorrencia {
             final MesaRegiao mesa,
             final Instant encaminhadaEm
     ) {
-        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, mesa, encaminhadaEm, null, null);
+        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, mesa, encaminhadaEm, null, null, null, false);
     }
 
     public static Ocorrencia restore(
@@ -169,6 +177,42 @@ public class Ocorrencia {
             final String prefixoEmpenhado,
             final Instant inicioDeslocamento
     ) {
+        return restore(
+                ocorrenciaId,
+                protocolo,
+                descricao,
+                gravidade,
+                endereco,
+                ponto,
+                inicioAtendimento,
+                telefone,
+                pabxUid,
+                mesa,
+                encaminhadaEm,
+                prefixoEmpenhado,
+                inicioDeslocamento,
+                null,
+                false
+        );
+    }
+
+    public static Ocorrencia restore(
+            final OcorrenciaId ocorrenciaId,
+            final Protocolo protocolo,
+            final String descricao,
+            final Gravidade gravidade,
+            final String endereco,
+            final Ponto ponto,
+            final Instant inicioAtendimento,
+            final Telefone telefone,
+            final String pabxUid,
+            final MesaRegiao mesa,
+            final Instant encaminhadaEm,
+            final String prefixoEmpenhado,
+            final Instant inicioDeslocamento,
+            final Instant noLocalEm,
+            final boolean noLocalManual
+    ) {
         return new Ocorrencia(
                 ocorrenciaId,
                 protocolo,
@@ -182,7 +226,9 @@ public class Ocorrencia {
                 mesa,
                 encaminhadaEm,
                 prefixoEmpenhado,
-                inicioDeslocamento
+                inicioDeslocamento,
+                noLocalEm,
+                noLocalManual
         );
     }
 
@@ -218,7 +264,27 @@ public class Ocorrencia {
         this.inicioDeslocamento = quando;
     }
 
+    public void registrarNoLocal(final Instant quando, final boolean manual) {
+        if (inicioDeslocamento == null) {
+            throw new ValidationException("Ocorrência ainda não tem viatura empenhada");
+        }
+        if (noLocalEm != null) {
+            throw new ValidationException("Ocorrência já está no local");
+        }
+        if (quando == null) {
+            throw new ValidationException("Instante do No local é obrigatório");
+        }
+        if (quando.isBefore(inicioDeslocamento)) {
+            throw new ValidationException("No local não pode ser anterior ao início do T2");
+        }
+        this.noLocalEm = quando;
+        this.noLocalManual = manual;
+    }
+
     public String situacao() {
+        if (noLocalEm != null) {
+            return "NO_LOCAL";
+        }
         if (inicioDeslocamento != null) {
             return "EMPENHADA";
         }
@@ -239,6 +305,14 @@ public class Ocorrencia {
 
     public Instant inicioDeslocamento() {
         return inicioDeslocamento;
+    }
+
+    public Instant noLocalEm() {
+        return noLocalEm;
+    }
+
+    public boolean noLocalManual() {
+        return noLocalManual;
     }
 
     public OcorrenciaId ocorrenciaId() {

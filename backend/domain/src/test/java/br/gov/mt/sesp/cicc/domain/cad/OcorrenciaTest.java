@@ -138,6 +138,40 @@ class OcorrenciaTest {
     }
 
     @Test
+    @DisplayName("No local fecha o T2 sem alterar o T1 e marca carimbo manual")
+    void registraNoLocalManual() {
+        final var ocorrencia = abrir();
+        ocorrencia.encaminharAMesa("CBA", T1.plusSeconds(90));
+        ocorrencia.empenhar("PM-CBA-01", T1.plusSeconds(120));
+        final var noLocal = T1.plusSeconds(300);
+
+        ocorrencia.registrarNoLocal(noLocal, true);
+
+        assertEquals("NO_LOCAL", ocorrencia.situacao());
+        assertEquals(noLocal, ocorrencia.noLocalEm());
+        assertEquals(true, ocorrencia.noLocalManual());
+        assertEquals(T1.plusSeconds(120), ocorrencia.inicioDeslocamento());
+        assertEquals(T1, ocorrencia.inicioAtendimento());
+        assertEquals(
+                "Ocorrência já está no local",
+                assertThrows(ValidationException.class, () -> ocorrencia.registrarNoLocal(noLocal.plusSeconds(1), true))
+                        .getMessage()
+        );
+    }
+
+    @Test
+    @DisplayName("recusa No local antes do empenho")
+    void recusaNoLocalSemEmpenho() {
+        final var ocorrencia = abrir();
+        ocorrencia.encaminharAMesa("CBA", T1.plusSeconds(90));
+        assertEquals(
+                "Ocorrência ainda não tem viatura empenhada",
+                assertThrows(ValidationException.class, () -> ocorrencia.registrarNoLocal(T1.plusSeconds(120), true))
+                        .getMessage()
+        );
+    }
+
+    @Test
     @DisplayName("telefone e uid do PABX são opcionais e não alteram o T1")
     void guardaTelefoneSemMudarT1() {
         final var ocorrencia = Ocorrencia.newOcorrencia(

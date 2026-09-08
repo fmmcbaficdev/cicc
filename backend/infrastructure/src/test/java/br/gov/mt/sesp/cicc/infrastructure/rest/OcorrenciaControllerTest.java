@@ -161,6 +161,10 @@ class OcorrenciaControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].prefixo").value("PM-CBA-01"));
 
+        mvc.perform(get(location + "/viaturas-sugeridas?ampliar=true"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[2].prefixo").value("PM-CBA-03"));
+
         mvc.perform(post(location + "/empenhar")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"prefixo\":\"PM-CBA-01\"}"))
@@ -168,5 +172,11 @@ class OcorrenciaControllerTest {
                 .andExpect(jsonPath("$.situacao").value("EMPENHADA"))
                 .andExpect(jsonPath("$.prefixoEmpenhado").value("PM-CBA-01"))
                 .andExpect(jsonPath("$.inicioDeslocamento").isNotEmpty());
+
+        mvc.perform(post(location + "/no-local"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.situacao").value("NO_LOCAL"))
+                .andExpect(jsonPath("$.noLocalEm").isNotEmpty())
+                .andExpect(jsonPath("$.noLocalManual").value(true));
     }
 }

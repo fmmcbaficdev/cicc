@@ -19,12 +19,16 @@ export class SalaApi {
     );
   }
 
-  viaturasSugeridas(ocorrenciaId: string): Observable<ViaturaSugerida[]> {
-    return this.http.get<ViaturaSugerida[]>(`/ocorrencias/${ocorrenciaId}/viaturas-sugeridas`).pipe(
-      catchError((erro: HttpErrorResponse) =>
-        throwError(() => new Error(erro.status ? `AVL indisponível (${erro.status})` : 'AVL indisponível')),
-      ),
-    );
+  viaturasSugeridas(ocorrenciaId: string, ampliar = false): Observable<ViaturaSugerida[]> {
+    return this.http
+      .get<ViaturaSugerida[]>(`/ocorrencias/${ocorrenciaId}/viaturas-sugeridas`, {
+        params: ampliar ? { ampliar: 'true' } : {},
+      })
+      .pipe(
+        catchError((erro: HttpErrorResponse) =>
+          throwError(() => new Error(erro.status ? `AVL indisponível (${erro.status})` : 'AVL indisponível')),
+        ),
+      );
   }
 
   empenhar(ocorrenciaId: string, prefixo: string): Observable<Ocorrencia> {
@@ -33,15 +37,24 @@ export class SalaApi {
       .pipe(
         map(paraOcorrencia),
         catchError((erro: HttpErrorResponse) =>
-          throwError(() => new Error(mensagemDeErro(erro))),
+          throwError(() => new Error(mensagemDeErro(erro, 'Não foi possível empenhar a viatura'))),
         ),
       );
   }
+
+  registrarNoLocal(ocorrenciaId: string): Observable<Ocorrencia> {
+    return this.http.post<OcorrenciaResponse>(`/ocorrencias/${ocorrenciaId}/no-local`, {}).pipe(
+      map(paraOcorrencia),
+      catchError((erro: HttpErrorResponse) =>
+        throwError(() => new Error(mensagemDeErro(erro, 'Não foi possível registrar o No local'))),
+      ),
+    );
+  }
 }
 
-function mensagemDeErro(erro: HttpErrorResponse): string {
+function mensagemDeErro(erro: HttpErrorResponse, fallback: string): string {
   if (typeof erro.error === 'string' && erro.error.trim().length > 0) {
     return erro.error;
   }
-  return 'Não foi possível empenhar a viatura';
+  return fallback;
 }

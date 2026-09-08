@@ -34,11 +34,11 @@ O despachador empilha a viatura Livre mais próxima e a sala vê quando o desloc
 
 ## 4. Sprint Backlog
 
-- [ ] Mesa da região (cartões do `cad`)
-- [ ] Sugerir Livre mais próximas (AVL **mock**)
-- [ ] Confirmar empenho e carimbar T2
-- [ ] Fila por gravidade + puxar outro bairro
-- [ ] “No local” manual do despachador (fecha T2)
+- [x] Mesa da região (cartões do `cad`)
+- [x] Sugerir Livre mais próximas (AVL **mock**)
+- [x] Confirmar empenho e carimbar T2
+- [x] Fila por gravidade + puxar outro bairro
+- [x] “No local” manual do despachador (fecha T2)
 
 **Justificativa:** o Goal é o **despachador** e o **T2**. Móvel e LPR esperam. AVL real fica mock — o evento abaixo testa se o Goal vive sem GPS.
 

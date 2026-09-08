@@ -66,10 +66,46 @@ li {
   cursor: wait;
 }
 
+.ampliar {
+  width: 100%;
+  text-align: left;
+  border: 1px solid #7a2e0e;
+  border-radius: 0.4rem;
+  padding: 0.55rem 0.7rem;
+  background: #fff6e5;
+  color: #7a2e0e;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.gravidade {
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #7a2e0e;
+}
+
 .empenhada {
   margin: 0.35rem 0 0;
   color: #14532d;
   font-weight: 600;
+}
+
+.no-local {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 0.4rem;
+  padding: 0.55rem 0.7rem;
+  background: #14532d;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.no-local:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 
 .consulta,

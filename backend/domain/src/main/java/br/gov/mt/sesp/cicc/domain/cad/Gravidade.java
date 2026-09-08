@@ -18,4 +18,13 @@ public record Gravidade(String value) {
             throw new ValidationException("Gravidade inválida");
         }
     }
+
+    public int ordemNaFila() {
+        return switch (value) {
+            case "CRITICA" -> 0;
+            case "ALTA" -> 1;
+            case "MEDIA" -> 2;
+            default -> 3;
+        };
+    }
 }

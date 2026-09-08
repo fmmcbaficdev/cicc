@@ -11,8 +11,8 @@ Status: `Hipótese` | `Pronto para refinar` | `Pronto para Sprint` | `Feito` | `
 | 3 | C2 · Folha 1 item 4 | Porta `pabx` + **adapter mock**; telefone/uid quando houver contrato | Evita redigitar; não bloqueia o T1 | Item 1 · contrato PABX | Sprint 1 (mock) / depois (real) | Feito no mock — `GET /pabx/chamada` |
 | 4 | C8 · Folha 1 item 5 | Encaminhar o cartão à mesa do despachador da região | Fecha a triagem; alimenta a `sala` | Item 1 | Fim da Sprint 1 ou início da 2 | Feito — `NA_MESA` + `GET /mesa/{mesa}/ocorrencias` |
 | 5 | C8, C7 · Folha 2 | Mesa da região + sugerir Livre mais próximas (AVL **mock**) + despachador confirma empenho + T2 começa | Viatura sai empenhada; a sala vê o deslocamento | Itens 1 e 4 | Sprint 2 · `sala` | Feito — mock AVL + `POST /ocorrencias/{id}/empenhar` |
-| 6 | R10, R11 · Folha 2 | Sem Livre perto: fila por gravidade **e** puxar outro bairro (ainda por proximidade) | A mesa não trava | Item 5 | Sprint 2 · `sala` | Pronto para refinar |
-| 7 | C6 · Folha 2 | Registrar “No local” (manual do despachador se o tablet falhar) e fechar T2 | Segundo relógio oficial fecha | Item 5 | Sprint 2 · `sala` | Pronto para refinar |
+| 6 | R10, R11 · Folha 2 | Sem Livre perto: fila por gravidade **e** puxar outro bairro (ainda por proximidade) | A mesa não trava | Item 5 | Sprint 2 · `sala` | Feito — raio 3 km + `?ampliar=true` |
+| 7 | C6 · Folha 2 | Registrar “No local” (manual do despachador se o tablet falhar) e fechar T2 | Segundo relógio oficial fecha | Item 5 | Sprint 2 · `sala` | Feito — `POST /ocorrencias/{id}/no-local` |
 | 8 | C10 · Folha 1 item 6 | Isolar quem opera em CBA / VG / RDO (mínimo) | Cartão não vaza de unidade | Item 1 | Quando a 2ª unidade entrar | Hipótese |
 | 9 | C2 | Adapter PABX **real** (uid, telefone, tronco, unidade) | Liga a mesa sem redigitar o número | Homologação + item 3 | Depois do contrato | Hipótese |
 | 10 | C7, C9 | AVL real + ficha CIOSP Móvel (rádio já é fallback) | Campo com GPS e tablet | Inventário 3 cidades | Depois da Sprint 2 | Hipótese |
@@ -30,4 +30,4 @@ Status: `Hipótese` | `Pronto para refinar` | `Pronto para Sprint` | `Feito` | `
 
 **Goal Sprint 1 (fechado):** o atendente registra o 190/193 e a operação vê o T1. Itens 1–4.
 
-**Goal Sprint 2:** o despachador empilha a Livre mais próxima e a sala vê o T2. Item 5 feito no mock. Itens 6–7 (fila e “No local”) ainda não. AVL **real** não entra.
+**Goal Sprint 2:** o despachador empilha a Livre mais próxima e a sala vê o T2. Itens 5–7 feitos no mock. AVL **real** não entra.

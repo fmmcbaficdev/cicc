@@ -7,6 +7,7 @@ import java.time.Instant;
 public record OcorrenciaVista(
         String id,
         String protocolo,
+        String gravidade,
         Instant inicioAtendimento,
         String telefone,
         String pabxUid,
@@ -17,13 +18,16 @@ public record OcorrenciaVista(
         String mesa,
         Instant encaminhadaEm,
         String prefixoEmpenhado,
-        Instant inicioDeslocamento
+        Instant inicioDeslocamento,
+        Instant noLocalEm,
+        boolean noLocalManual
 ) {
 
     public static OcorrenciaVista de(final Ocorrencia ocorrencia) {
         return new OcorrenciaVista(
                 ocorrencia.ocorrenciaId().value(),
                 ocorrencia.protocolo().value(),
+                ocorrencia.gravidade().value(),
                 ocorrencia.inicioAtendimento(),
                 ocorrencia.telefone() == null ? null : ocorrencia.telefone().value(),
                 ocorrencia.pabxUid(),
@@ -34,7 +38,9 @@ public record OcorrenciaVista(
                 ocorrencia.mesa() == null ? null : ocorrencia.mesa().value(),
                 ocorrencia.encaminhadaEm(),
                 ocorrencia.prefixoEmpenhado(),
-                ocorrencia.inicioDeslocamento()
+                ocorrencia.inicioDeslocamento(),
+                ocorrencia.noLocalEm(),
+                ocorrencia.noLocalManual()
         );
     }
 }

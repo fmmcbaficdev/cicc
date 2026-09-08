@@ -2,7 +2,7 @@
   <header>
     <p class="orgao">CIOSP / CICC-MT · piloto {{ mesa() }}</p>
     <h1>Mesa do despachador</h1>
-    <p>Confirme a Livre mais próxima. O T2 começa no empenho.</p>
+    <p>Sem Livre a 3 km, o cartão fica na fila por gravidade. Puxe outro bairro ainda por proximidade.</p>
   </header>
 
   @if (erro()) {
@@ -14,15 +14,41 @@
       @for (cartao of cartoes(); track cartao.id) {
         <li>
           <strong>{{ cartao.protocolo }}</strong>
+          <span class="gravidade">{{ cartao.gravidade }}</span>
           <app-relogio-t1 [inicio]="cartao.inicioAtendimento" [compacto]="true" />
           <span>{{ cartao.endereco }}</span>
-          @if (cartao.situacao === 'EMPENHADA' && cartao.inicioDeslocamento) {
+          @if (cartao.situacao === 'NO_LOCAL' && cartao.inicioDeslocamento && cartao.noLocalEm) {
+            <p class="empenhada">
+              Empenhada {{ cartao.prefixoEmpenhado }} · No local{{ cartao.noLocalManual ? ' (manual)' : '' }}
+            </p>
+            <app-relogio-t1
+              [inicio]="cartao.inicioDeslocamento"
+              [fim]="cartao.noLocalEm"
+              rotulo="T2"
+              [compacto]="true"
+            />
+          } @else if (cartao.situacao === 'EMPENHADA' && cartao.inicioDeslocamento) {
             <p class="empenhada">Empenhada {{ cartao.prefixoEmpenhado }}</p>
             <app-relogio-t1 [inicio]="cartao.inicioDeslocamento" rotulo="T2" [compacto]="true" />
+            <button
+              type="button"
+              class="no-local"
+              (click)="registrarNoLocal(cartao.id)"
+              [disabled]="empenhando() === cartao.id"
+            >
+              No local
+            </button>
           } @else if (cartao.situacao === 'NA_MESA') {
             @if (sugestoes()[cartao.id]; as lista) {
               @if (lista.length === 0) {
-                <p class="vazio vazio--interno">Nenhuma Livre conhecida — despache pelo rádio.</p>
+                @if (ampliado()[cartao.id]) {
+                  <p class="vazio vazio--interno">Nenhuma Livre conhecida — despache pelo rádio.</p>
+                } @else {
+                  <p class="vazio vazio--interno">Sem Livre perto — cartão na fila. Puxe outro bairro ou rádio.</p>
+                  <button type="button" class="ampliar" (click)="puxarOutroBairro(cartao.id)">
+                    Puxar outro bairro
+                  </button>
+                }
               } @else {
                 <ul class="sugestoes">
                   @for (viatura of lista; track viatura.prefixo; let primeira = $first) {

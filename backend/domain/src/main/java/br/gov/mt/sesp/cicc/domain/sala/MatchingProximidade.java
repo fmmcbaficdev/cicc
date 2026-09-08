@@ -15,6 +15,18 @@ public final class MatchingProximidade {
     }
 
     public static List<SugestaoViatura> maisProximas(final Ponto alvo, final List<Recurso> livres) {
+        return maisProximas(alvo, livres, RaioProximidade.PERTO);
+    }
+
+    public static List<SugestaoViatura> ampliadas(final Ponto alvo, final List<Recurso> livres) {
+        return maisProximas(alvo, livres, null);
+    }
+
+    static List<SugestaoViatura> maisProximas(
+            final Ponto alvo,
+            final List<Recurso> livres,
+            final RaioProximidade raio
+    ) {
         if (alvo == null) {
             throw new ValidationException("Ponto da ocorrência é obrigatório");
         }
@@ -28,6 +40,7 @@ public final class MatchingProximidade {
                         recurso.ponto(),
                         (int) Math.round(alvo.distanciaEmMetros(recurso.ponto()))
                 ))
+                .filter(sugestao -> raio == null || raio.cobre(sugestao.distanciaMetros()))
                 .sorted(Comparator.comparingInt(SugestaoViatura::distanciaMetros)
                         .thenComparing(SugestaoViatura::prefixo))
                 .limit(LIMITE)

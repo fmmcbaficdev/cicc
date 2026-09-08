@@ -13,11 +13,15 @@ export class SalaFacade {
     return this.api.ocorrenciasNaMesa(mesa);
   }
 
-  sugerir(ocorrenciaId: string): Observable<ViaturaSugerida[]> {
-    return this.api.viaturasSugeridas(ocorrenciaId);
+  sugerir(ocorrenciaId: string, ampliar = false): Observable<ViaturaSugerida[]> {
+    return this.api.viaturasSugeridas(ocorrenciaId, ampliar);
   }
 
   empenhar(ocorrenciaId: string, prefixo: string): Observable<Ocorrencia> {
     return this.api.empenhar(ocorrenciaId, prefixo);
+  }
+
+  registrarNoLocal(ocorrenciaId: string): Observable<Ocorrencia> {
+    return this.api.registrarNoLocal(ocorrenciaId);
   }
 }

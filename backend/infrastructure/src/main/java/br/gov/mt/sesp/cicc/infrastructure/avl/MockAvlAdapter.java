@@ -20,6 +20,7 @@ public class MockAvlAdapter implements AvlPort {
         registrar(PREFIXO_MAIS_PROXIMA, -15.6018, -56.0982, "LIVRE");
         registrar("PM-CBA-02", -15.6080, -56.1050, "LIVRE");
         registrar("PM-CBA-03", -15.5700, -56.0700, "LIVRE");
+        registrar("PM-VG-01", -15.6465, -56.1326, "LIVRE");
         registrar("PM-CBA-99", -15.6015, -56.0975, "EMPENHADA");
     }
 
