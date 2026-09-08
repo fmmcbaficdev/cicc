@@ -89,6 +89,26 @@ class OcorrenciaTest {
     }
 
     @Test
+    @DisplayName("telefone e uid do PABX são opcionais e não alteram o T1")
+    void guardaTelefoneSemMudarT1() {
+        final var ocorrencia = Ocorrencia.newOcorrencia(
+                "Roubo a mão armada agora",
+                "CRITICA",
+                "Av. Historiador Rubens de Mendonça, Cuiabá",
+                -15.601411,
+                -56.097892,
+                "CICC-2026-000001",
+                T1,
+                new Telefone("65981234567"),
+                "pabx-mock-190-cba-001"
+        );
+
+        assertEquals("65981234567", ocorrencia.telefone().value());
+        assertEquals("pabx-mock-190-cba-001", ocorrencia.pabxUid());
+        assertEquals(T1, ocorrencia.inicioAtendimento());
+    }
+
+    @Test
     @DisplayName("recusa abertura sem T1, descrição ou endereço")
     void recusaInvariantesDaAbertura() {
         assertEquals(

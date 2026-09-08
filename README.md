@@ -12,12 +12,27 @@ frontend/       Angular 21 (não é módulo Maven)
 - Pacote: `br.gov.mt.sesp.cicc`
 
 ```bash
-mvn -pl :cicc-cad-domain,:cicc-cad-application test
-cd frontend && npm install && npx ng serve
+mvn -pl :cicc-cad-domain,:cicc-cad-application,:cicc-cad-infrastructure test
+mvn -pl :cicc-cad-infrastructure -am install -DskipTests
+mvn -f backend/infrastructure/pom.xml spring-boot:run
 ```
 
-`npm install` no frontend falhou neste ambiente (erro `edgesOut` do npm). A árvore Angular 21 está criada; rode o install na sua máquina.
+```bash
+curl.exe -s -D - http://localhost:8080/ocorrencias -H "Content-Type: application/json" --data-binary "@docs/exemplo-abrir-ocorrencia.json"
+```
 
-Domínio `cad`: `Ocorrencia` + T1. Application: `AbrirOcorrenciaUseCase` (à mão, `InMemory*`). Próximo: REST ou `PabxPort` mock.
+Esperado: HTTP 201, JSON com `id`, `protocolo` e `inicioAtendimento` (T1). Se o JSON tiver `pabxUid` do mock (`pabx-mock-190-cba-001`), a resposta também traz o telefone. `GET /pabx/chamada` devolve a ligação da mesa. PABX mudo: `cicc.pabx.mock-mudo=true`. Depois abra no browser `http://localhost:8080/ocorrencias/{id}` (o `Location` da resposta). `http://localhost:8080/` só descreve a API — abrir ocorrência é **POST**, não GET. Persistência desta fatia é **memória** (some ao desligar). Sem Oracle ainda.
+
+Frontend (Goal visível na sala):
+
+```bash
+cd frontend
+npm install --legacy-peer-deps
+npm start
+```
+
+Abra `http://localhost:4200/`. O proxy manda `/ocorrencias` e `/pabx` para o Boot em `:8080`. Clique **Abrir atendimento (T1)** — o relógio aparece na tela.
+
+Domínio `cad` + porta `pabx` (mock) + tela do atendente. Próximo se sobrar capacidade: item 4 (encaminhar à mesa). JPA/Oracle Spatial depois.
 
 Como se constrói: [docs/](docs/) — [componentes](docs/fluxo-componentes.md) · [código](docs/fluxo-desenvolvimento-codigo.md).

@@ -20,12 +20,15 @@ flowchart LR
   subgraph depois [Borda — se a fatia precisar]
     F[REST / JPA]
     G[Tela Angular cad]
-    H[PabxPort + mock]
   end
-  A --> B --> C --> D --> E --> F --> G --> H
+  subgraph pabx [Item 3 — feito no mock]
+    H[PabxPort + MockPabxAdapter]
+  end
+  A --> B --> C --> D --> E --> F --> H
+  F --> G
 ```
 
-Itens 1 e 2 do backlog fecharam no **use case** (abrir à mão + T1 no clique). A sala ainda não vê o T1: falta REST (e tela). PABX mock é o item 3.
+Itens 1–3 + tela: `POST /ocorrencias` (T1) + `GET /pabx/chamada` + Angular `cad`. Persistência em memória até o JPA. PABX **real** não entra.
 
 ## Como nasce um componente
 
@@ -87,8 +90,8 @@ flowchart TB
 
 | Componente | Recorte | Estado |
 |---|---|---|
-| **cad** | o quê, onde, gravidade, T1 | VOs + agregado + porta + `AbrirOcorrenciaUseCase`; REST ainda não |
-| **pabx** | mock; real só com homologação | não começou |
+| **cad** | o quê, onde, gravidade, T1 | Use case + `POST /ocorrencias` + tela Angular `cad` |
+| **pabx** | mock; real só com homologação | `PabxPort` + `MockPabxAdapter`; `GET /pabx/chamada` |
 | **sala** | mesa, Livre mais próxima, T2 | Sprint 2 |
 | **posicao-avl** / **acionamento** | GPS e tablet; rádio é fallback | depois da Sprint 2 |
 | **acesso** | isolamento de unidade | hipótese |

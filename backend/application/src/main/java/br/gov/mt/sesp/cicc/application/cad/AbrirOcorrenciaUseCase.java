@@ -4,7 +4,9 @@ import br.gov.mt.sesp.cicc.application.UseCase;
 import br.gov.mt.sesp.cicc.domain.cad.Ocorrencia;
 import br.gov.mt.sesp.cicc.domain.cad.OcorrenciaRepository;
 import br.gov.mt.sesp.cicc.domain.cad.Protocolo;
+import br.gov.mt.sesp.cicc.domain.cad.Telefone;
 import br.gov.mt.sesp.cicc.domain.exception.ValidationException;
+import br.gov.mt.sesp.cicc.domain.pabx.PabxPort;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -13,14 +15,20 @@ import java.util.Objects;
 public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input, AbrirOcorrenciaUseCase.Output> {
 
     private final OcorrenciaRepository ocorrenciaRepository;
+    private final PabxPort pabxPort;
     private final Clock clock;
 
-    public AbrirOcorrenciaUseCase(final OcorrenciaRepository ocorrenciaRepository) {
-        this(ocorrenciaRepository, Clock.systemUTC());
+    public AbrirOcorrenciaUseCase(final OcorrenciaRepository ocorrenciaRepository, final PabxPort pabxPort) {
+        this(ocorrenciaRepository, pabxPort, Clock.systemUTC());
     }
 
-    public AbrirOcorrenciaUseCase(final OcorrenciaRepository ocorrenciaRepository, final Clock clock) {
+    public AbrirOcorrenciaUseCase(
+            final OcorrenciaRepository ocorrenciaRepository,
+            final PabxPort pabxPort,
+            final Clock clock
+    ) {
         this.ocorrenciaRepository = Objects.requireNonNull(ocorrenciaRepository);
+        this.pabxPort = Objects.requireNonNull(pabxPort);
         this.clock = Objects.requireNonNull(clock);
     }
 
@@ -31,6 +39,7 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
             throw new ValidationException("Já existe ocorrência com este protocolo");
         });
 
+        final var correlacao = correlacionar(input);
         final var ocorrencia = ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
                 input.descricao(),
                 input.gravidade(),
@@ -38,14 +47,38 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
                 input.latitude(),
                 input.longitude(),
                 input.protocolo(),
-                Instant.now(clock)
+                Instant.now(clock),
+                correlacao.telefone(),
+                correlacao.pabxUid()
         ));
 
         return new Output(
                 ocorrencia.ocorrenciaId().value(),
                 ocorrencia.protocolo().value(),
-                ocorrencia.inicioAtendimento()
+                ocorrencia.inicioAtendimento(),
+                telefoneValue(ocorrencia.telefone()),
+                ocorrencia.pabxUid()
         );
+    }
+
+    private Correlacao correlacionar(final Input input) {
+        if (input.pabxUid() != null && !input.pabxUid().isBlank()) {
+            final var chamada = pabxPort.chamadaDeUid(input.pabxUid());
+            if (chamada.isPresent()) {
+                return new Correlacao(chamada.get().telefone(), chamada.get().uid());
+            }
+        }
+        if (input.telefone() != null && !input.telefone().isBlank()) {
+            return new Correlacao(new Telefone(input.telefone()), null);
+        }
+        return new Correlacao(null, null);
+    }
+
+    private static String telefoneValue(final Telefone telefone) {
+        return telefone == null ? null : telefone.value();
+    }
+
+    private record Correlacao(Telefone telefone, String pabxUid) {
     }
 
     public record Input(
@@ -54,10 +87,22 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
             String endereco,
             double latitude,
             double longitude,
-            String protocolo
+            String protocolo,
+            String telefone,
+            String pabxUid
     ) {
+        public Input(
+                final String descricao,
+                final String gravidade,
+                final String endereco,
+                final double latitude,
+                final double longitude,
+                final String protocolo
+        ) {
+            this(descricao, gravidade, endereco, latitude, longitude, protocolo, null, null);
+        }
     }
 
-    public record Output(String id, String protocolo, Instant inicioAtendimento) {
+    public record Output(String id, String protocolo, Instant inicioAtendimento, String telefone, String pabxUid) {
     }
 }

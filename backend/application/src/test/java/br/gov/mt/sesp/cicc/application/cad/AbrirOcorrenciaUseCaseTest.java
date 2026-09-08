@@ -1,8 +1,11 @@
 package br.gov.mt.sesp.cicc.application.cad;
 
+import br.gov.mt.sesp.cicc.application.pabx.InMemoryPabxPort;
 import br.gov.mt.sesp.cicc.domain.cad.Ocorrencia;
 import br.gov.mt.sesp.cicc.domain.cad.OcorrenciaId;
+import br.gov.mt.sesp.cicc.domain.cad.Telefone;
 import br.gov.mt.sesp.cicc.domain.exception.ValidationException;
+import br.gov.mt.sesp.cicc.domain.pabx.Chamada;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +16,7 @@ import java.time.ZoneOffset;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class AbrirOcorrenciaUseCaseTest {
@@ -20,12 +24,14 @@ class AbrirOcorrenciaUseCaseTest {
     private static final Instant CLIQUE = Instant.parse("2026-09-07T22:30:00Z");
 
     private InMemoryOcorrenciaRepository ocorrenciaRepository;
+    private InMemoryPabxPort pabxPort;
     private AbrirOcorrenciaUseCase useCase;
 
     @BeforeEach
     void setUp() {
         ocorrenciaRepository = new InMemoryOcorrenciaRepository();
-        useCase = new AbrirOcorrenciaUseCase(ocorrenciaRepository, Clock.fixed(CLIQUE, ZoneOffset.UTC));
+        pabxPort = new InMemoryPabxPort();
+        useCase = new AbrirOcorrenciaUseCase(ocorrenciaRepository, pabxPort, Clock.fixed(CLIQUE, ZoneOffset.UTC));
     }
 
     @Test
@@ -43,6 +49,56 @@ class AbrirOcorrenciaUseCaseTest {
         assertEquals("CRITICA", persistida.gravidade().value());
         assertEquals("Av. Historiador Rubens de Mendonça, Cuiabá", persistida.endereco());
         assertEquals(-15.601411, persistida.ponto().latitude());
+        assertNull(output.telefone());
+        assertNull(output.pabxUid());
+    }
+
+    @Test
+    @DisplayName("uid do PABX preenche o telefone sem mudar o T1 do clique")
+    void preencheTelefonePeloUid() {
+        pabxPort.definirChamadaAtual(new Chamada(
+                "pabx-mock-190-cba-001",
+                new Telefone("65981234567"),
+                "190",
+                "CBA",
+                CLIQUE.minusSeconds(12)
+        ));
+
+        final var output = useCase.execute(new AbrirOcorrenciaUseCase.Input(
+                "Roubo a mão armada agora",
+                "CRITICA",
+                "Av. Historiador Rubens de Mendonça, Cuiabá",
+                -15.601411,
+                -56.097892,
+                "CICC-2026-000010",
+                null,
+                "pabx-mock-190-cba-001"
+        ));
+
+        assertEquals(CLIQUE, output.inicioAtendimento());
+        assertEquals("65981234567", output.telefone());
+        assertEquals("pabx-mock-190-cba-001", output.pabxUid());
+    }
+
+    @Test
+    @DisplayName("PABX mudo não impede abrir à mão")
+    void pabxMudoNaoBloqueiaT1() {
+        pabxPort.silenciar();
+
+        final var output = useCase.execute(new AbrirOcorrenciaUseCase.Input(
+                "Roubo a mão armada agora",
+                "CRITICA",
+                "Av. Historiador Rubens de Mendonça, Cuiabá",
+                -15.601411,
+                -56.097892,
+                "CICC-2026-000011",
+                null,
+                "pabx-inexistente"
+        ));
+
+        assertEquals(CLIQUE, output.inicioAtendimento());
+        assertNull(output.telefone());
+        assertNull(output.pabxUid());
     }
 
     @Test

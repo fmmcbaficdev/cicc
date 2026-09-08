@@ -1,0 +1,81 @@
+<section class="mesa">
+  <header class="mesa__cabecalho">
+    <p class="mesa__orgao">CIOSP / CICC-MT · piloto CBA</p>
+    <h1>CAD do atendente</h1>
+    <p class="mesa__objetivo">Registre o 190/193. O T1 começa no clique de abrir.</p>
+  </header>
+
+  @if (ocorrencia(); as aberta) {
+    <article class="relogio" aria-live="polite">
+      <p class="relogio__selo">Atendimento iniciado</p>
+      <p class="relogio__t1">{{ formatarT1(aberta.inicioAtendimento) }}</p>
+      <dl>
+        <div>
+          <dt>Protocolo</dt>
+          <dd>{{ aberta.protocolo }}</dd>
+        </div>
+        <div>
+          <dt>Telefone</dt>
+          <dd>{{ aberta.telefone || 'não informado' }}</dd>
+        </div>
+        <div>
+          <dt>Uid PABX</dt>
+          <dd>{{ aberta.pabxUid || 'abertura à mão' }}</dd>
+        </div>
+      </dl>
+      <button type="button" class="botao botao--secundario" (click)="novaOcorrencia()">Nova ocorrência</button>
+    </article>
+  } @else {
+    @if (carregandoChamada()) {
+      <p class="aviso">Consultando o PABX…</p>
+    } @else if (pabxMudo()) {
+      <p class="aviso aviso--mudo">PABX sem ligação na mesa. Abra o chamado à mão — o T1 continua no clique.</p>
+    } @else if (chamada(); as ligacao) {
+      <p class="aviso aviso--mesa">
+        Ligação na mesa · {{ ligacao.tronco }} · {{ ligacao.unidade }} · {{ ligacao.telefone }}
+      </p>
+    }
+
+    @if (erro()) {
+      <p class="aviso aviso--erro" role="alert">{{ erro() }}</p>
+    }
+
+    <form class="formulario" [formGroup]="formulario" (ngSubmit)="abrir()">
+      <label>
+        Protocolo
+        <input formControlName="protocolo" autocomplete="off" />
+      </label>
+      <label>
+        Telefone de origem
+        <input formControlName="telefone" inputmode="tel" [readonly]="!!chamada()" />
+      </label>
+      <label>
+        Gravidade
+        <select formControlName="gravidade">
+          @for (item of gravidades; track item.valor) {
+            <option [value]="item.valor">{{ item.rotulo }}</option>
+          }
+        </select>
+      </label>
+      <label class="formulario__largo">
+        O quê aconteceu
+        <textarea formControlName="descricao" rows="3"></textarea>
+      </label>
+      <label class="formulario__largo">
+        Onde
+        <input formControlName="endereco" />
+      </label>
+      <label>
+        Latitude
+        <input formControlName="latitude" type="number" step="0.000001" />
+      </label>
+      <label>
+        Longitude
+        <input formControlName="longitude" type="number" step="0.000001" />
+      </label>
+      <button class="botao" type="submit" [disabled]="enviando()">
+        {{ enviando() ? 'Abrindo…' : 'Abrir atendimento (T1)' }}
+      </button>
+    </form>
+  }
+</section>

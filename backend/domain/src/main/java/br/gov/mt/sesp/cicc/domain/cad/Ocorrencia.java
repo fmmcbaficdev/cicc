@@ -14,6 +14,8 @@ public class Ocorrencia {
     private final String endereco;
     private final Ponto ponto;
     private final Instant inicioAtendimento;
+    private final Telefone telefone;
+    private final String pabxUid;
 
     private Ocorrencia(
             final OcorrenciaId ocorrenciaId,
@@ -22,7 +24,9 @@ public class Ocorrencia {
             final Gravidade gravidade,
             final String endereco,
             final Ponto ponto,
-            final Instant inicioAtendimento
+            final Instant inicioAtendimento,
+            final Telefone telefone,
+            final String pabxUid
     ) {
         if (ocorrenciaId == null) {
             throw new ValidationException("Identificador da ocorrência inválido");
@@ -52,6 +56,8 @@ public class Ocorrencia {
         this.endereco = endereco.trim();
         this.ponto = ponto;
         this.inicioAtendimento = inicioAtendimento;
+        this.telefone = telefone;
+        this.pabxUid = pabxUid == null || pabxUid.isBlank() ? null : pabxUid.trim();
     }
 
     public static Ocorrencia newOcorrencia(
@@ -63,6 +69,20 @@ public class Ocorrencia {
             final String protocolo,
             final Instant inicioAtendimento
     ) {
+        return newOcorrencia(descricao, gravidade, endereco, latitude, longitude, protocolo, inicioAtendimento, null, null);
+    }
+
+    public static Ocorrencia newOcorrencia(
+            final String descricao,
+            final String gravidade,
+            final String endereco,
+            final double latitude,
+            final double longitude,
+            final String protocolo,
+            final Instant inicioAtendimento,
+            final Telefone telefone,
+            final String pabxUid
+    ) {
         return new Ocorrencia(
                 OcorrenciaId.unique(),
                 new Protocolo(protocolo),
@@ -70,7 +90,9 @@ public class Ocorrencia {
                 new Gravidade(gravidade),
                 endereco,
                 new Ponto(latitude, longitude),
-                inicioAtendimento
+                inicioAtendimento,
+                telefone,
+                pabxUid
         );
     }
 
@@ -83,6 +105,20 @@ public class Ocorrencia {
             final Ponto ponto,
             final Instant inicioAtendimento
     ) {
+        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, null, null);
+    }
+
+    public static Ocorrencia restore(
+            final OcorrenciaId ocorrenciaId,
+            final Protocolo protocolo,
+            final String descricao,
+            final Gravidade gravidade,
+            final String endereco,
+            final Ponto ponto,
+            final Instant inicioAtendimento,
+            final Telefone telefone,
+            final String pabxUid
+    ) {
         return new Ocorrencia(
                 ocorrenciaId,
                 protocolo,
@@ -90,7 +126,9 @@ public class Ocorrencia {
                 gravidade,
                 endereco,
                 ponto,
-                inicioAtendimento
+                inicioAtendimento,
+                telefone,
+                pabxUid
         );
     }
 
@@ -124,6 +162,14 @@ public class Ocorrencia {
 
     public Instant inicioAtendimento() {
         return inicioAtendimento;
+    }
+
+    public Telefone telefone() {
+        return telefone;
+    }
+
+    public String pabxUid() {
+        return pabxUid;
     }
 
     @Override

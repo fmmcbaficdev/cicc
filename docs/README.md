@@ -4,6 +4,7 @@ Registro das conversas de desenho **deste** repositório (como se constrói). Sp
 
 | Doc | O que responde |
 |---|---|
+| [checklist-proximo.md](checklist-proximo.md) | O que já está feito e a ordem para continuar a Sprint 1 |
 | [fluxo-componentes.md](fluxo-componentes.md) | Ordem dos módulos do mapa (`cad`, `pabx`, `sala`…) e por que não se implementa tudo de uma vez |
 | [fluxo-desenvolvimento-codigo.md](fluxo-desenvolvimento-codigo.md) | Esteira hexagonal do código (VO → agregado → porta → use case → JPA → REST → Angular) |
 

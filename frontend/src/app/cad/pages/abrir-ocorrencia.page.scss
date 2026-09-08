@@ -1,0 +1,156 @@
+:host {
+  display: block;
+}
+
+.mesa {
+  max-width: 52rem;
+  margin: 0 auto;
+  padding: 1.5rem 1.25rem 2.5rem;
+}
+
+.mesa__cabecalho h1 {
+  margin: 0.15rem 0 0.4rem;
+  font-size: 1.75rem;
+  font-weight: 650;
+}
+
+.mesa__orgao,
+.mesa__objetivo {
+  margin: 0;
+  color: #5c6570;
+}
+
+.mesa__orgao {
+  font-size: 0.8rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.aviso,
+.relogio {
+  margin: 1.25rem 0;
+  padding: 0.9rem 1rem;
+  border-radius: 0.5rem;
+}
+
+.aviso {
+  background: #eef3f8;
+  border: 1px solid #d3deea;
+}
+
+.aviso--mesa {
+  background: #e7f6ec;
+  border-color: #b7e0c3;
+}
+
+.aviso--mudo {
+  background: #fff6e5;
+  border-color: #f0d59a;
+}
+
+.aviso--erro {
+  background: #fdecea;
+  border-color: #f3c0b8;
+}
+
+.relogio {
+  background: #102033;
+  color: #f4f7fb;
+  border: 0;
+}
+
+.relogio__selo {
+  margin: 0;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #9db4c9;
+}
+
+.relogio__t1 {
+  margin: 0.35rem 0 1rem;
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.relogio dl {
+  display: grid;
+  gap: 0.75rem;
+  margin: 0 0 1.25rem;
+}
+
+.relogio dt {
+  margin: 0;
+  font-size: 0.75rem;
+  color: #9db4c9;
+  text-transform: uppercase;
+}
+
+.relogio dd {
+  margin: 0.15rem 0 0;
+  font-size: 1.05rem;
+}
+
+.formulario {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem 1rem;
+}
+
+.formulario__largo {
+  grid-column: 1 / -1;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #2b333c;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  font-weight: 400;
+  padding: 0.55rem 0.65rem;
+  border: 1px solid #c5ced8;
+  border-radius: 0.4rem;
+  background: #fff;
+}
+
+input[readonly] {
+  background: #f3f6f9;
+}
+
+.botao {
+  grid-column: 1 / -1;
+  margin-top: 0.4rem;
+  border: 0;
+  border-radius: 0.45rem;
+  padding: 0.75rem 1rem;
+  background: #b42318;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.botao:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.botao--secundario {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #6d8499;
+}
+
+@media (max-width: 640px) {
+  .formulario {
+    grid-template-columns: 1fr;
+  }
+}

@@ -29,11 +29,11 @@ flowchart TB
 | 2 Agregado | mesmo pacote | `OcorrenciaTest` | Feito |
 | 3 Porta | interface no domain; fake em `application/src/test` | fake no unitário | Feito |
 | 4 Use case | `backend/application/.../cad/` | `new UseCase(new InMemory*)` | Feito |
-| 5 JPA | `infrastructure/persistence` | IT, não o unitário | Depois |
-| 6 REST | `infrastructure/rest` | MockMvc | Depois |
-| 7 Tela | `frontend/src/app/cad/` | `*.spec.ts` | Se a fatia tiver tela |
+| 5 JPA | `infrastructure/persistence` | IT, não o unitário | Depois (agora InMemory no JAR) |
+| 6 REST | `infrastructure/rest` | MockMvc | Feito |
+| 7 Tela | `frontend/src/app/cad/` | `*.spec.ts` | Feito (abrir + T1 na tela) |
 
-PABX não é um “passo 8 genérico”: é o **mesmo ciclo** no módulo `pabx` (porta + mock), depois do use case de abrir à mão.
+`pabx` já passou pelo ciclo da porta: `PabxPort` + `InMemoryPabxPort` no teste + `MockPabxAdapter` no JAR. Adapter Intelbras fica para homologação.
 
 ## Quem chama quem (quando o código existir)
 
@@ -73,4 +73,4 @@ O primeiro usuário do núcleo é o **teste**, não o controller. Por isso a por
 
 ## Próximo commit de código
 
-`AbrirOcorrenciaUseCase.execute` está verde sem Spring. Seguinte: `hex-adapter-rest` (T1 visível à sala) ou `PabxPort` + mock (item 3 do backlog). JPA e Angular depois.
+`POST /ocorrencias` devolve T1 (201). Persistência ainda é InMemory no JAR. Seguinte: `PabxPort` + mock ou `hex-adapter-jpa`. Angular depois.
