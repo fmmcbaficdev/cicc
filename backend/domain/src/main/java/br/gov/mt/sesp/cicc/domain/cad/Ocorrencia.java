@@ -18,6 +18,8 @@ public class Ocorrencia {
     private final String pabxUid;
     private MesaRegiao mesa;
     private Instant encaminhadaEm;
+    private String prefixoEmpenhado;
+    private Instant inicioDeslocamento;
 
     private Ocorrencia(
             final OcorrenciaId ocorrenciaId,
@@ -30,7 +32,9 @@ public class Ocorrencia {
             final Telefone telefone,
             final String pabxUid,
             final MesaRegiao mesa,
-            final Instant encaminhadaEm
+            final Instant encaminhadaEm,
+            final String prefixoEmpenhado,
+            final Instant inicioDeslocamento
     ) {
         if (ocorrenciaId == null) {
             throw new ValidationException("Identificador da ocorrência inválido");
@@ -64,6 +68,8 @@ public class Ocorrencia {
         this.pabxUid = pabxUid == null || pabxUid.isBlank() ? null : pabxUid.trim();
         this.mesa = mesa;
         this.encaminhadaEm = encaminhadaEm;
+        this.prefixoEmpenhado = prefixoEmpenhado == null || prefixoEmpenhado.isBlank() ? null : prefixoEmpenhado.trim();
+        this.inicioDeslocamento = inicioDeslocamento;
     }
 
     public static Ocorrencia newOcorrencia(
@@ -100,6 +106,8 @@ public class Ocorrencia {
                 telefone,
                 pabxUid,
                 null,
+                null,
+                null,
                 null
         );
     }
@@ -127,7 +135,7 @@ public class Ocorrencia {
             final Telefone telefone,
             final String pabxUid
     ) {
-        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, null, null);
+        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, null, null, null, null);
     }
 
     public static Ocorrencia restore(
@@ -143,6 +151,24 @@ public class Ocorrencia {
             final MesaRegiao mesa,
             final Instant encaminhadaEm
     ) {
+        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, mesa, encaminhadaEm, null, null);
+    }
+
+    public static Ocorrencia restore(
+            final OcorrenciaId ocorrenciaId,
+            final Protocolo protocolo,
+            final String descricao,
+            final Gravidade gravidade,
+            final String endereco,
+            final Ponto ponto,
+            final Instant inicioAtendimento,
+            final Telefone telefone,
+            final String pabxUid,
+            final MesaRegiao mesa,
+            final Instant encaminhadaEm,
+            final String prefixoEmpenhado,
+            final Instant inicioDeslocamento
+    ) {
         return new Ocorrencia(
                 ocorrenciaId,
                 protocolo,
@@ -154,7 +180,9 @@ public class Ocorrencia {
                 telefone,
                 pabxUid,
                 mesa,
-                encaminhadaEm
+                encaminhadaEm,
+                prefixoEmpenhado,
+                inicioDeslocamento
         );
     }
 
@@ -173,7 +201,27 @@ public class Ocorrencia {
         this.encaminhadaEm = quando;
     }
 
+    public void empenhar(final String prefixo, final Instant quando) {
+        if (encaminhadaEm == null) {
+            throw new ValidationException("Ocorrência ainda não está na mesa do despachador");
+        }
+        if (inicioDeslocamento != null) {
+            throw new ValidationException("Ocorrência já tem viatura empenhada");
+        }
+        if (prefixo == null || prefixo.isBlank()) {
+            throw new ValidationException("Prefixo da viatura é obrigatório");
+        }
+        if (quando == null) {
+            throw new ValidationException("Início do deslocamento (T2) é obrigatório");
+        }
+        this.prefixoEmpenhado = prefixo.trim();
+        this.inicioDeslocamento = quando;
+    }
+
     public String situacao() {
+        if (inicioDeslocamento != null) {
+            return "EMPENHADA";
+        }
         return encaminhadaEm == null ? "EM_TRIAGEM" : "NA_MESA";
     }
 
@@ -183,6 +231,14 @@ public class Ocorrencia {
 
     public Instant encaminhadaEm() {
         return encaminhadaEm;
+    }
+
+    public String prefixoEmpenhado() {
+        return prefixoEmpenhado;
+    }
+
+    public Instant inicioDeslocamento() {
+        return inicioDeslocamento;
     }
 
     public OcorrenciaId ocorrenciaId() {

@@ -31,9 +31,49 @@ ul {
 
 li {
   display: grid;
-  gap: 0.2rem;
+  gap: 0.35rem;
   padding: 0.9rem 1rem;
   background: #fff;
   border: 1px solid #d3deea;
   border-radius: 0.45rem;
+}
+
+.sugestoes {
+  margin: 0.4rem 0 0;
+  gap: 0.4rem;
+}
+
+.sugestoes li {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.empenhar {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 0.4rem;
+  padding: 0.55rem 0.7rem;
+  background: #b42318;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.empenhar:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.empenhada {
+  margin: 0.35rem 0 0;
+  color: #14532d;
+  font-weight: 600;
+}
+
+.consulta,
+.vazio--interno {
+  margin: 0.35rem 0 0;
+  padding: 0.55rem 0.7rem;
 }

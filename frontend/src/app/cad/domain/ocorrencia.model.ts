@@ -10,4 +10,6 @@ export interface Ocorrencia {
   situacao: string;
   mesa: string | null;
   encaminhadaEm: string | null;
+  prefixoEmpenhado: string | null;
+  inicioDeslocamento: string | null;
 }

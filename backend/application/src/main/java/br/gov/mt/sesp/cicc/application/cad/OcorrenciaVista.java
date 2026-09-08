@@ -15,7 +15,9 @@ public record OcorrenciaVista(
         double longitude,
         String situacao,
         String mesa,
-        Instant encaminhadaEm
+        Instant encaminhadaEm,
+        String prefixoEmpenhado,
+        Instant inicioDeslocamento
 ) {
 
     public static OcorrenciaVista de(final Ocorrencia ocorrencia) {
@@ -30,7 +32,9 @@ public record OcorrenciaVista(
                 ocorrencia.ponto().longitude(),
                 ocorrencia.situacao(),
                 ocorrencia.mesa() == null ? null : ocorrencia.mesa().value(),
-                ocorrencia.encaminhadaEm()
+                ocorrencia.encaminhadaEm(),
+                ocorrencia.prefixoEmpenhado(),
+                ocorrencia.inicioDeslocamento()
         );
     }
 }

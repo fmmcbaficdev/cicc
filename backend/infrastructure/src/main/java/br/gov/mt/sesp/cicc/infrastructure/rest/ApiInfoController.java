@@ -15,6 +15,8 @@ public class ApiInfoController {
                 "abrir", "POST /ocorrencias",
                 "consultar", "GET /ocorrencias/{id}",
                 "chamada", "GET /pabx/chamada",
+                "mesa", "GET /mesa/{mesa}/ocorrencias",
+                "empenhar", "POST /ocorrencias/{id}/empenhar",
                 "exemplo", "docs/exemplo-abrir-ocorrencia.json"
         );
     }

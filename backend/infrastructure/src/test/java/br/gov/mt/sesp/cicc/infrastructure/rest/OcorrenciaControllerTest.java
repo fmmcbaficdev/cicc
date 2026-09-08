@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -129,5 +130,43 @@ class OcorrenciaControllerTest {
         mvc.perform(get("/mesa/CBA/ocorrencias"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].protocolo").value("CICC-2026-HTTP-MESA"));
+    }
+
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    @DisplayName("GET sugere Livre e POST empenha com T2")
+    void sugereEEmpenha() throws Exception {
+        final var criado = mvc.perform(post("/ocorrencias")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "descricao": "Roubo a mão armada agora",
+                                  "gravidade": "CRITICA",
+                                  "endereco": "Av. Historiador Rubens de Mendonça, Cuiabá",
+                                  "latitude": -15.601411,
+                                  "longitude": -56.097892,
+                                  "protocolo": "CICC-2026-HTTP-T2"
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andReturn();
+        final var location = criado.getResponse().getHeader("Location");
+
+        mvc.perform(post(location + "/encaminhar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"mesa\":\"CBA\"}"))
+                .andExpect(status().isOk());
+
+        mvc.perform(get(location + "/viaturas-sugeridas"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].prefixo").value("PM-CBA-01"));
+
+        mvc.perform(post(location + "/empenhar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"prefixo\":\"PM-CBA-01\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.situacao").value("EMPENHADA"))
+                .andExpect(jsonPath("$.prefixoEmpenhado").value("PM-CBA-01"))
+                .andExpect(jsonPath("$.inicioDeslocamento").isNotEmpty());
     }
 }

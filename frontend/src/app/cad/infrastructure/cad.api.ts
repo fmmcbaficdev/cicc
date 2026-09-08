@@ -6,7 +6,7 @@ import { Chamada } from '../domain/chamada.model';
 import { Ocorrencia } from '../domain/ocorrencia.model';
 import { AbrirOcorrenciaRequest } from './abrir-ocorrencia.request';
 import { ChamadaResponse } from './chamada.response';
-import { OcorrenciaResponse } from './ocorrencia.response';
+import { OcorrenciaResponse, paraOcorrencia } from './ocorrencia.response';
 
 @Injectable({ providedIn: 'root' })
 export class CadApi {
@@ -47,22 +47,6 @@ export class CadApi {
       ),
     );
   }
-}
-
-function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
-  return {
-    id: response.id,
-    protocolo: response.protocolo,
-    inicioAtendimento: response.inicioAtendimento,
-    telefone: response.telefone,
-    pabxUid: response.pabxUid,
-    endereco: response.endereco,
-    latitude: response.latitude,
-    longitude: response.longitude,
-    situacao: response.situacao,
-    mesa: response.mesa,
-    encaminhadaEm: response.encaminhadaEm,
-  };
 }
 
 function mensagemDeErro(erro: HttpErrorResponse): string {

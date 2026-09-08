@@ -10,6 +10,7 @@ import { formatarDecorrido } from '../domain/formatar-decorrido';
 export class RelogioT1Component {
   readonly inicio = input.required<string>();
   readonly compacto = input(false);
+  readonly rotulo = input('T1');
 
   private readonly agora = signal(Date.now());
 

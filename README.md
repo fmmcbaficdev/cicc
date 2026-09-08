@@ -31,8 +31,8 @@ npm install --legacy-peer-deps
 npm start
 ```
 
-Abra `http://localhost:4200/`. O proxy manda `/ocorrencias` e `/pabx` para o Boot em `:8080`. Clique **Abrir atendimento (T1)** — o relógio aparece na tela.
+Abra `http://localhost:4200/`. Atendente abre o T1; **Mesa** confirma a Livre e começa o T2. Proxy: `/ocorrencias`, `/pabx`, `/mesa`.
 
-Domínio `cad` + porta `pabx` (mock) + tela do atendente. Próximo se sobrar capacidade: item 4 (encaminhar à mesa). JPA/Oracle Spatial depois.
+Domínio `cad` + `sala` + portas `pabx`/`avl` (mock). JPA/Oracle Spatial e AVL real depois.
 
 Como se constrói: [docs/](docs/) — [componentes](docs/fluxo-componentes.md) · [código](docs/fluxo-desenvolvimento-codigo.md).

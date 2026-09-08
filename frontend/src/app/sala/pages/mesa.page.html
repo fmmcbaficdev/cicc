@@ -2,7 +2,7 @@
   <header>
     <p class="orgao">CIOSP / CICC-MT · piloto {{ mesa() }}</p>
     <h1>Mesa do despachador</h1>
-    <p>Cartões encaminhados pela triagem. Matching de viatura ainda não entra.</p>
+    <p>Confirme a Livre mais próxima. O T2 começa no empenho.</p>
   </header>
 
   @if (erro()) {
@@ -16,6 +16,34 @@
           <strong>{{ cartao.protocolo }}</strong>
           <app-relogio-t1 [inicio]="cartao.inicioAtendimento" [compacto]="true" />
           <span>{{ cartao.endereco }}</span>
+          @if (cartao.situacao === 'EMPENHADA' && cartao.inicioDeslocamento) {
+            <p class="empenhada">Empenhada {{ cartao.prefixoEmpenhado }}</p>
+            <app-relogio-t1 [inicio]="cartao.inicioDeslocamento" rotulo="T2" [compacto]="true" />
+          } @else if (cartao.situacao === 'NA_MESA') {
+            @if (sugestoes()[cartao.id]; as lista) {
+              @if (lista.length === 0) {
+                <p class="vazio vazio--interno">Nenhuma Livre conhecida — despache pelo rádio.</p>
+              } @else {
+                <ul class="sugestoes">
+                  @for (viatura of lista; track viatura.prefixo; let primeira = $first) {
+                    <li>
+                      <button
+                        type="button"
+                        class="empenhar"
+                        (click)="empenhar(cartao.id, viatura.prefixo)"
+                        [disabled]="empenhando() === cartao.id"
+                      >
+                        {{ primeira ? 'Empenhar mais próxima' : 'Empenhar' }}
+                        {{ viatura.prefixo }} · {{ formatarDistancia(viatura.distanciaMetros) }}
+                      </button>
+                    </li>
+                  }
+                </ul>
+              }
+            } @else {
+              <p class="consulta">Consultando AVL…</p>
+            }
+          }
         </li>
       }
     </ul>

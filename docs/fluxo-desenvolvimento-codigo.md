@@ -73,4 +73,4 @@ O primeiro usuário do núcleo é o **teste**, não o controller. Por isso a por
 
 ## Próximo commit de código
 
-`POST /ocorrencias` devolve T1 (201). Persistência ainda é InMemory no JAR. Seguinte: `PabxPort` + mock ou `hex-adapter-jpa`. Angular depois.
+Item 5: sugerir Livre (AVL mock) + empenhar + T2. Persistência ainda é InMemory. Seguinte: fila sem Livre (item 6) ou “No local” (item 7). Sem JPA ainda.

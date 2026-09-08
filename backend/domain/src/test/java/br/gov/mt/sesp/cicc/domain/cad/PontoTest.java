@@ -19,6 +19,14 @@ class PontoTest {
     }
 
     @Test
+    @DisplayName("distância haversine do mesmo ponto é zero")
+    void distanciaDoMesmoPontoEZero() {
+        final var ponto = new Ponto(-15.601411, -56.097892);
+
+        assertEquals(0, ponto.distanciaEmMetros(ponto), 0.01);
+    }
+
+    @Test
     @DisplayName("recusa latitude ou longitude fora do intervalo")
     void recusaCoordenadasInvalidas() {
         assertEquals("Latitude inválida",

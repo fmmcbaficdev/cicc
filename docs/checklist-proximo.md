@@ -1,43 +1,32 @@
 # Checklist para continuar
 
-**Goal da Sprint 1:** o atendente registra o 190/193 no CAD e a operação vê quando o atendimento começou.
+**Goal da Sprint 2:** o despachador empilha a Livre mais próxima e a sala vê o T2.
 
-Fonte: [product-backlog](../../docs/product/product-backlog.md) · [folha 1](../../docs/product/folha-01-cad-atendente.md) · [fluxo-componentes](fluxo-componentes.md)
+Fonte: [product-backlog](../../docs/product/product-backlog.md) · [folha 2](../../docs/product/folha-02-sala-despacho.md) · [módulo](../../docs/architecture/modulo-sugerir-empenhar.md)
 
-## Já feito
+## Já feito (Sprint 1 + item 5)
 
-- [x] Ossatura `cicc-cad/` (Maven `backend/` + Angular vazio)
-- [x] Abrir ocorrência (o quê, onde, gravidade) + T1 no clique — `POST /ocorrencias`
-- [x] Abrir à mão se o PABX estiver mudo
-- [x] Porta `pabx` + mock — `GET /pabx/chamada` (uid, telefone, tronco, unidade)
-- [x] Consultar ocorrência — `GET /ocorrencias/{id}`
+- [x] Abrir 190/193 + T1 + mapa + encaminhar à mesa CBA/VG/RDO
+- [x] Tela `/sala` lista cartões
+- [x] AVL **mock** + sugerir Livre mais próximas (haversine, até 3)
+- [x] Despachador confirma empenho — T2 no clique; viatura sai de Livre
 
-## Agora (fecha o Goal na sala)
+## Agora (se sobrar / Sprint 2 restante)
 
-A API já carimba o T1. A operação ainda **não vê** isso numa tela.
-
-- [x] Tela Angular `cad`: formulário de abertura + T1 visível depois do clique
-- [x] Mesma tela mostra protocolo + `inicioAtendimento` (T1) sem o atendente ir no JSON
-- [x] PABX mudo na UI: `GET /pabx/chamada` 404 e o formulário continua abrindo
-- [x] Ponto no mapa a partir do endereço/lat-long do atendente (PABX não envia coordenada)
-
-## Se sobrar capacidade nesta Sprint (item 4)
-
-- [x] Encaminhar fecha a triagem (`EM_TRIAGEM` → `NA_MESA`) sem matching
-- [x] Mesa do piloto: CBA / VG / RDO — `POST /ocorrencias/{id}/encaminhar`
-- [x] Cartão visível na mesa: `GET /mesa/{mesa}/ocorrencias` + tela `/sala`
+- [ ] Sem Livre perto: fila por gravidade **e** puxar outro bairro (item 6)
+- [ ] “No local” manual fecha o T2 (item 7)
 
 ## Não fazer agora
 
 | Item | Por quê |
 |---|---|
-| JPA / Oracle Spatial | Precisa de schema + licença Spatial; memória basta para o Goal |
-| Adapter PABX **real** | Evento da oficina: sem homologação |
-| Mesa + Livre mais próxima + T2 | Sprint 2 · `sala` |
+| JPA / Oracle Spatial | Schema + licença; memória basta |
+| Adapter PABX **real** | Sem homologação |
+| AVL ao vivo / Hungarian / OSRM | Evento da folha 2: posição informada |
 | Isolamento CBA / VG / RDO | Hipótese — 2ª unidade |
-| LPR, painel gerencial, Cabine Lilás, facial/CPF | Fora desta fila |
+| LPR, painel, Cabine Lilás, facial/CPF | Fora desta fila |
 
-## Como validar cada passo
+## Como validar
 
 ```powershell
 mvn -pl :cicc-cad-domain,:cicc-cad-application,:cicc-cad-infrastructure test
@@ -45,9 +34,8 @@ mvn -pl :cicc-cad-infrastructure -am install -DskipTests
 mvn -f backend/infrastructure/pom.xml spring-boot:run
 ```
 
-1. `GET http://localhost:8080/pabx/chamada` → uid + telefone
-2. `POST /ocorrencias` com `docs/exemplo-abrir-ocorrencia.json` → 201 + T1
-3. `GET` do `Location` → mesmo T1
-4. Depois da tela: o atendente vê o T1 no browser, sem PowerShell
+1. Abrir atendimento e encaminhar à mesa CBA
+2. Em `http://localhost:4200/sala` — sugeridas `PM-CBA-01` primeiro
+3. Empenhar — T2 aparece; T1 não muda
 
-Porta 8080 ocupada: encerre o Java antigo antes de subir de novo. Depois de mudar `domain`/`application`, rode o `install` antes do `spring-boot:run`.
+Porta 8080 ocupada: encerre o Java antigo. Depois de mudar `domain`/`application`, rode o `install` antes do `spring-boot:run`. O `ng serve` precisa ter sido iniciado **depois** de `proxy.conf.json` com `/mesa`.

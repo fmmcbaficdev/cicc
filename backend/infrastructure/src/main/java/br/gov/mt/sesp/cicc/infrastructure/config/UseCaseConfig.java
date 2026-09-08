@@ -4,9 +4,13 @@ import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.EncaminharOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.pabx.ConsultarChamadaPabxUseCase;
+import br.gov.mt.sesp.cicc.application.sala.EmpenharViaturaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.ListarOcorrenciasNaMesaUseCase;
+import br.gov.mt.sesp.cicc.application.sala.SugerirViaturasUseCase;
+import br.gov.mt.sesp.cicc.domain.avl.AvlPort;
 import br.gov.mt.sesp.cicc.domain.cad.OcorrenciaRepository;
 import br.gov.mt.sesp.cicc.domain.pabx.PabxPort;
+import br.gov.mt.sesp.cicc.infrastructure.avl.MockAvlAdapter;
 import br.gov.mt.sesp.cicc.infrastructure.pabx.MockPabxAdapter;
 import br.gov.mt.sesp.cicc.infrastructure.persistence.InMemoryOcorrenciaRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,6 +30,11 @@ public class UseCaseConfig {
     @Bean
     PabxPort pabxPort(@Value("${cicc.pabx.mock-mudo:false}") final boolean mudo) {
         return new MockPabxAdapter(mudo, Clock.systemUTC());
+    }
+
+    @Bean
+    AvlPort avlPort() {
+        return new MockAvlAdapter();
     }
 
     @Bean
@@ -54,5 +63,21 @@ public class UseCaseConfig {
     @Bean
     ListarOcorrenciasNaMesaUseCase listarOcorrenciasNaMesaUseCase(final OcorrenciaRepository ocorrenciaRepository) {
         return new ListarOcorrenciasNaMesaUseCase(ocorrenciaRepository);
+    }
+
+    @Bean
+    SugerirViaturasUseCase sugerirViaturasUseCase(
+            final OcorrenciaRepository ocorrenciaRepository,
+            final AvlPort avlPort
+    ) {
+        return new SugerirViaturasUseCase(ocorrenciaRepository, avlPort);
+    }
+
+    @Bean
+    EmpenharViaturaUseCase empenharViaturaUseCase(
+            final OcorrenciaRepository ocorrenciaRepository,
+            final AvlPort avlPort
+    ) {
+        return new EmpenharViaturaUseCase(ocorrenciaRepository, avlPort);
     }
 }

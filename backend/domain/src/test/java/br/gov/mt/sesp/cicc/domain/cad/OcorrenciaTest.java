@@ -108,6 +108,36 @@ class OcorrenciaTest {
     }
 
     @Test
+    @DisplayName("empenhar carimba o T2 sem alterar o T1")
+    void empenhaComT2() {
+        final var ocorrencia = abrir();
+        ocorrencia.encaminharAMesa("CBA", T1.plusSeconds(90));
+        final var t2 = T1.plusSeconds(120);
+
+        ocorrencia.empenhar("PM-CBA-01", t2);
+
+        assertEquals("EMPENHADA", ocorrencia.situacao());
+        assertEquals("PM-CBA-01", ocorrencia.prefixoEmpenhado());
+        assertEquals(t2, ocorrencia.inicioDeslocamento());
+        assertEquals(T1, ocorrencia.inicioAtendimento());
+        assertEquals(
+                "Ocorrência já tem viatura empenhada",
+                assertThrows(ValidationException.class, () -> ocorrencia.empenhar("PM-CBA-02", t2.plusSeconds(1)))
+                        .getMessage()
+        );
+    }
+
+    @Test
+    @DisplayName("recusa empenho antes de o cartão estar na mesa")
+    void recusaEmpenhoForaDaMesa() {
+        assertEquals(
+                "Ocorrência ainda não está na mesa do despachador",
+                assertThrows(ValidationException.class, () -> abrir().empenhar("PM-CBA-01", T1.plusSeconds(10)))
+                        .getMessage()
+        );
+    }
+
+    @Test
     @DisplayName("telefone e uid do PABX são opcionais e não alteram o T1")
     void guardaTelefoneSemMudarT1() {
         final var ocorrencia = Ocorrencia.newOcorrencia(

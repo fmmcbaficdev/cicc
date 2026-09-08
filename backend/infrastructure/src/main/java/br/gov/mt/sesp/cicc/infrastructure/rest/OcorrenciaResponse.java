@@ -15,7 +15,9 @@ public record OcorrenciaResponse(
         double longitude,
         String situacao,
         String mesa,
-        Instant encaminhadaEm
+        Instant encaminhadaEm,
+        String prefixoEmpenhado,
+        Instant inicioDeslocamento
 ) {
 
     public static OcorrenciaResponse from(final OcorrenciaVista output) {
@@ -30,7 +32,9 @@ public record OcorrenciaResponse(
                 output.longitude(),
                 output.situacao(),
                 output.mesa(),
-                output.encaminhadaEm()
+                output.encaminhadaEm(),
+                output.prefixoEmpenhado(),
+                output.inicioDeslocamento()
         );
     }
 }

@@ -92,8 +92,8 @@ flowchart TB
 |---|---|---|
 | **cad** | o quê, onde, gravidade, T1 | Use case + `POST /ocorrencias` + tela Angular `cad` |
 | **pabx** | mock; real só com homologação | `PabxPort` + `MockPabxAdapter`; `GET /pabx/chamada` |
-| **sala** | mesa, Livre mais próxima, T2 | Sprint 2 |
-| **posicao-avl** / **acionamento** | GPS e tablet; rádio é fallback | depois da Sprint 2 |
+| **sala** | mesa, Livre mais próxima, T2 | Feito no mock — sugerir + empenhar |
+| **posicao-avl** / **acionamento** | GPS e tablet; rádio é fallback | AVL mock nesta fatia; AVL real e móvel depois |
 | **acesso** | isolamento de unidade | hipótese |
 | **alerta-lpr** | não abre ocorrência | fora desta fila |
 
@@ -101,4 +101,4 @@ flowchart TB
 
 O hexágono força **invariante antes de framework**. Abrir ocorrência sem Spring prova o T1 no clique; PABX mudo (evento da oficina) não derruba o Goal. Matching e T2 não entram no `cad` — o atendente não escolhe viatura.
 
-Sprint 1 (compromisso): itens 1–3 do backlog. Item 4 (encaminhar à mesa) só se sobrar capacidade. PABX real não entra.
+Sprint 1 (fechada): itens 1–4. Sprint 2: item 5 (T2 + AVL mock). PABX/AVL reais não entram.
