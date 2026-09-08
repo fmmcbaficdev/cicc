@@ -1,13 +1,15 @@
 import { Component, inject, OnInit, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 
+import { PontoMapaComponent } from '../components/ponto-mapa.component';
+import { RelogioT1Component } from '../components/relogio-t1.component';
 import { CadFacade } from '../application/cad.facade';
 import { Chamada } from '../domain/chamada.model';
 import { Ocorrencia } from '../domain/ocorrencia.model';
 
 @Component({
   selector: 'app-abrir-ocorrencia-page',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule, PontoMapaComponent, RelogioT1Component],
   providers: [CadFacade],
   templateUrl: './abrir-ocorrencia.page.html',
   styleUrl: './abrir-ocorrencia.page.scss',
@@ -37,8 +39,14 @@ export class AbrirOcorrenciaPage implements OnInit {
   readonly pabxMudo = signal(false);
   readonly carregandoChamada = signal(true);
   readonly enviando = signal(false);
+  readonly encaminhando = signal(false);
   readonly erro = signal<string | null>(null);
   readonly ocorrencia = signal<Ocorrencia | null>(null);
+
+  mesaPadrao(): string {
+    const unidade = this.chamada()?.unidade;
+    return unidade === 'VG' || unidade === 'RDO' || unidade === 'CBA' ? unidade : 'CBA';
+  }
 
   ngOnInit(): void {
     this.prepararNova();
@@ -77,13 +85,28 @@ export class AbrirOcorrenciaPage implements OnInit {
       });
   }
 
+  encaminhar(): void {
+    const aberta = this.ocorrencia();
+    if (!aberta || this.encaminhando() || aberta.situacao === 'NA_MESA') {
+      return;
+    }
+    this.encaminhando.set(true);
+    this.erro.set(null);
+    this.facade.encaminhar(aberta.id, this.mesaPadrao()).subscribe({
+      next: (ocorrencia) => {
+        this.encaminhando.set(false);
+        this.ocorrencia.set(ocorrencia);
+      },
+      error: (falha: Error) => {
+        this.encaminhando.set(false);
+        this.erro.set(falha.message);
+      },
+    });
+  }
+
   novaOcorrencia(): void {
     this.ocorrencia.set(null);
     this.prepararNova();
-  }
-
-  formatarT1(instante: string): string {
-    return new Date(instante).toLocaleString('pt-BR', { timeZone: 'America/Cuiaba' });
   }
 
   private prepararNova(): void {

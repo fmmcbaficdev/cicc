@@ -72,6 +72,12 @@ describe('CadFacade', () => {
       inicioAtendimento: '2026-09-07T22:30:00Z',
       telefone: '65981234567',
       pabxUid: 'pabx-mock-190-cba-001',
+      endereco: 'Centro, Cuiabá',
+      latitude: -15.6,
+      longitude: -56.1,
+      situacao: 'EM_TRIAGEM',
+      mesa: null,
+      encaminhadaEm: null,
     });
 
     expect(aberta?.protocolo).toBe('CICC-2026-UI-001');

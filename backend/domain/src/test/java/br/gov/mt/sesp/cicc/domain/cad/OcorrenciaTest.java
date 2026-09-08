@@ -89,6 +89,25 @@ class OcorrenciaTest {
     }
 
     @Test
+    @DisplayName("encaminhar fecha a triagem e deixa o cartão na mesa sem mudar o T1")
+    void encaminhaAMesa() {
+        final var ocorrencia = abrir();
+        final var instante = T1.plusSeconds(90);
+
+        ocorrencia.encaminharAMesa("CBA", instante);
+
+        assertEquals("NA_MESA", ocorrencia.situacao());
+        assertEquals("CBA", ocorrencia.mesa().value());
+        assertEquals(instante, ocorrencia.encaminhadaEm());
+        assertEquals(T1, ocorrencia.inicioAtendimento());
+        assertEquals(
+                "Ocorrência já está na mesa do despachador",
+                assertThrows(ValidationException.class, () -> ocorrencia.encaminharAMesa("VG", instante.plusSeconds(1)))
+                        .getMessage()
+        );
+    }
+
+    @Test
     @DisplayName("telefone e uid do PABX são opcionais e não alteram o T1")
     void guardaTelefoneSemMudarT1() {
         final var ocorrencia = Ocorrencia.newOcorrencia(

@@ -12,7 +12,7 @@ import java.time.Clock;
 import java.time.Instant;
 import java.util.Objects;
 
-public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input, AbrirOcorrenciaUseCase.Output> {
+public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input, OcorrenciaVista> {
 
     private final OcorrenciaRepository ocorrenciaRepository;
     private final PabxPort pabxPort;
@@ -33,7 +33,7 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
     }
 
     @Override
-    public Output execute(final Input input) {
+    public OcorrenciaVista execute(final Input input) {
         final var protocolo = new Protocolo(input.protocolo());
         ocorrenciaRepository.ocorrenciaDeProtocolo(protocolo).ifPresent(existente -> {
             throw new ValidationException("Já existe ocorrência com este protocolo");
@@ -52,13 +52,7 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
                 correlacao.pabxUid()
         ));
 
-        return new Output(
-                ocorrencia.ocorrenciaId().value(),
-                ocorrencia.protocolo().value(),
-                ocorrencia.inicioAtendimento(),
-                telefoneValue(ocorrencia.telefone()),
-                ocorrencia.pabxUid()
-        );
+        return OcorrenciaVista.de(ocorrencia);
     }
 
     private Correlacao correlacionar(final Input input) {
@@ -72,10 +66,6 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
             return new Correlacao(new Telefone(input.telefone()), null);
         }
         return new Correlacao(null, null);
-    }
-
-    private static String telefoneValue(final Telefone telefone) {
-        return telefone == null ? null : telefone.value();
     }
 
     private record Correlacao(Telefone telefone, String pabxUid) {
@@ -103,6 +93,4 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
         }
     }
 
-    public record Output(String id, String protocolo, Instant inicioAtendimento, String telefone, String pabxUid) {
-    }
 }

@@ -36,11 +36,13 @@
 .aviso {
   background: #eef3f8;
   border: 1px solid #d3deea;
+  color: #1f2a33;
 }
 
 .aviso--mesa {
-  background: #e7f6ec;
-  border-color: #b7e0c3;
+  background: #d8f3e2;
+  border-color: #8dcf9f;
+  color: #14532d;
 }
 
 .aviso--mudo {
@@ -51,6 +53,7 @@
 .aviso--erro {
   background: #fdecea;
   border-color: #f3c0b8;
+  color: #7a1d14;
 }
 
 .relogio {
@@ -60,18 +63,16 @@
 }
 
 .relogio__selo {
-  margin: 0;
+  margin: 0 0 0.75rem;
   font-size: 0.8rem;
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: #9db4c9;
 }
 
-.relogio__t1 {
-  margin: 0.35rem 0 1rem;
-  font-size: 2rem;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+.relogio app-relogio-t1 {
+  display: block;
+  margin-bottom: 1.1rem;
 }
 
 .relogio dl {
@@ -100,6 +101,18 @@
 
 .formulario__largo {
   grid-column: 1 / -1;
+}
+
+.mapa-ajuda {
+  margin: 0 0 0.45rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #5c6570;
+}
+
+.relogio app-ponto-mapa {
+  display: block;
+  margin-top: 1rem;
 }
 
 label {

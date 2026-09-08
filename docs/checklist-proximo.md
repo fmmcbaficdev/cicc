@@ -19,12 +19,13 @@ A API já carimba o T1. A operação ainda **não vê** isso numa tela.
 - [x] Tela Angular `cad`: formulário de abertura + T1 visível depois do clique
 - [x] Mesma tela mostra protocolo + `inicioAtendimento` (T1) sem o atendente ir no JSON
 - [x] PABX mudo na UI: `GET /pabx/chamada` 404 e o formulário continua abrindo
+- [x] Ponto no mapa a partir do endereço/lat-long do atendente (PABX não envia coordenada)
 
 ## Se sobrar capacidade nesta Sprint (item 4)
 
-- [ ] Refinar “encaminhar o cartão à mesa da região” (ainda está *Pronto para refinar*)
-- [ ] Use case no `cad` (não matching de viatura) + estado “disponível para o despachador”
-- [ ] REST fino + card visível para a mesa (pode ser JSON; tela `sala` é Sprint 2)
+- [x] Encaminhar fecha a triagem (`EM_TRIAGEM` → `NA_MESA`) sem matching
+- [x] Mesa do piloto: CBA / VG / RDO — `POST /ocorrencias/{id}/encaminhar`
+- [x] Cartão visível na mesa: `GET /mesa/{mesa}/ocorrencias` + tela `/sala`
 
 ## Não fazer agora
 

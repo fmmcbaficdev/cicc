@@ -40,6 +40,12 @@ describe('AbrirOcorrenciaPage', () => {
       inicioAtendimento: '2026-09-07T22:30:00Z',
       telefone: '65981234567',
       pabxUid: 'pabx-mock-190-cba-001',
+      endereco: 'Av. Historiador Rubens de Mendonça, Cuiabá',
+      latitude: -15.601411,
+      longitude: -56.097892,
+      situacao: 'EM_TRIAGEM',
+      mesa: null,
+      encaminhadaEm: null,
     });
     fixture.detectChanges();
     await fixture.whenStable();
@@ -47,6 +53,11 @@ describe('AbrirOcorrenciaPage', () => {
     const texto = fixture.nativeElement.textContent as string;
     expect(texto).toContain('Atendimento iniciado');
     expect(texto).toContain('CICC-2026-UI-T1');
+    expect(texto).toContain('Av. Historiador Rubens de Mendonça, Cuiabá');
+    expect(fixture.nativeElement.querySelector('.relogio-t1__tempo')).toBeTruthy();
+    expect(fixture.nativeElement.querySelector('.relogio-t1__tempo').textContent).toMatch(/\d+:\d{2}/);
+    expect(texto).toContain('Encaminhar à mesa CBA');
+    expect(fixture.nativeElement.querySelector('iframe[title="Ponto da ocorrência no mapa"]')).toBeTruthy();
   });
 
   it('permite abrir à mão quando o PABX está mudo', () => {

@@ -17,4 +17,8 @@ export class CadFacade {
   abrir(request: AbrirOcorrenciaRequest): Observable<Ocorrencia> {
     return this.api.abrir(request);
   }
+
+  encaminhar(id: string, mesa: string): Observable<Ocorrencia> {
+    return this.api.encaminhar(id, mesa);
+  }
 }

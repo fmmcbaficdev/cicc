@@ -1,0 +1,23 @@
+<section class="mesa">
+  <header>
+    <p class="orgao">CIOSP / CICC-MT · piloto {{ mesa() }}</p>
+    <h1>Mesa do despachador</h1>
+    <p>Cartões encaminhados pela triagem. Matching de viatura ainda não entra.</p>
+  </header>
+
+  @if (erro()) {
+    <p class="vazio" role="alert">{{ erro() }}</p>
+  } @else if (cartoes().length === 0) {
+    <p class="vazio">Nenhum cartão na mesa {{ mesa() }}.</p>
+  } @else {
+    <ul>
+      @for (cartao of cartoes(); track cartao.id) {
+        <li>
+          <strong>{{ cartao.protocolo }}</strong>
+          <app-relogio-t1 [inicio]="cartao.inicioAtendimento" [compacto]="true" />
+          <span>{{ cartao.endereco }}</span>
+        </li>
+      }
+    </ul>
+  }
+</section>

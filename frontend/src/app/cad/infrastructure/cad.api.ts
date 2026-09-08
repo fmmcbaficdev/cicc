@@ -32,18 +32,37 @@ export class CadApi {
 
   abrir(request: AbrirOcorrenciaRequest): Observable<Ocorrencia> {
     return this.http.post<OcorrenciaResponse>('/ocorrencias', request).pipe(
-      map((response) => ({
-        id: response.id,
-        protocolo: response.protocolo,
-        inicioAtendimento: response.inicioAtendimento,
-        telefone: response.telefone,
-        pabxUid: response.pabxUid,
-      })),
+      map(paraOcorrencia),
       catchError((erro: HttpErrorResponse) =>
         throwError(() => new Error(mensagemDeErro(erro))),
       ),
     );
   }
+
+  encaminhar(id: string, mesa: string): Observable<Ocorrencia> {
+    return this.http.post<OcorrenciaResponse>(`/ocorrencias/${id}/encaminhar`, { mesa }).pipe(
+      map(paraOcorrencia),
+      catchError((erro: HttpErrorResponse) =>
+        throwError(() => new Error(mensagemDeErro(erro))),
+      ),
+    );
+  }
+}
+
+function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
+  return {
+    id: response.id,
+    protocolo: response.protocolo,
+    inicioAtendimento: response.inicioAtendimento,
+    telefone: response.telefone,
+    pabxUid: response.pabxUid,
+    endereco: response.endereco,
+    latitude: response.latitude,
+    longitude: response.longitude,
+    situacao: response.situacao,
+    mesa: response.mesa,
+    encaminhadaEm: response.encaminhadaEm,
+  };
 }
 
 function mensagemDeErro(erro: HttpErrorResponse): string {

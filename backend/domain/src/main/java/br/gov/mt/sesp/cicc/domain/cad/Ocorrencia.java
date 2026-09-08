@@ -16,6 +16,8 @@ public class Ocorrencia {
     private final Instant inicioAtendimento;
     private final Telefone telefone;
     private final String pabxUid;
+    private MesaRegiao mesa;
+    private Instant encaminhadaEm;
 
     private Ocorrencia(
             final OcorrenciaId ocorrenciaId,
@@ -26,7 +28,9 @@ public class Ocorrencia {
             final Ponto ponto,
             final Instant inicioAtendimento,
             final Telefone telefone,
-            final String pabxUid
+            final String pabxUid,
+            final MesaRegiao mesa,
+            final Instant encaminhadaEm
     ) {
         if (ocorrenciaId == null) {
             throw new ValidationException("Identificador da ocorrência inválido");
@@ -58,6 +62,8 @@ public class Ocorrencia {
         this.inicioAtendimento = inicioAtendimento;
         this.telefone = telefone;
         this.pabxUid = pabxUid == null || pabxUid.isBlank() ? null : pabxUid.trim();
+        this.mesa = mesa;
+        this.encaminhadaEm = encaminhadaEm;
     }
 
     public static Ocorrencia newOcorrencia(
@@ -92,7 +98,9 @@ public class Ocorrencia {
                 new Ponto(latitude, longitude),
                 inicioAtendimento,
                 telefone,
-                pabxUid
+                pabxUid,
+                null,
+                null
         );
     }
 
@@ -119,6 +127,22 @@ public class Ocorrencia {
             final Telefone telefone,
             final String pabxUid
     ) {
+        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, null, null);
+    }
+
+    public static Ocorrencia restore(
+            final OcorrenciaId ocorrenciaId,
+            final Protocolo protocolo,
+            final String descricao,
+            final Gravidade gravidade,
+            final String endereco,
+            final Ponto ponto,
+            final Instant inicioAtendimento,
+            final Telefone telefone,
+            final String pabxUid,
+            final MesaRegiao mesa,
+            final Instant encaminhadaEm
+    ) {
         return new Ocorrencia(
                 ocorrenciaId,
                 protocolo,
@@ -128,12 +152,37 @@ public class Ocorrencia {
                 ponto,
                 inicioAtendimento,
                 telefone,
-                pabxUid
+                pabxUid,
+                mesa,
+                encaminhadaEm
         );
     }
 
     public void classificar(final String gravidade) {
         this.gravidade = new Gravidade(gravidade);
+    }
+
+    public void encaminharAMesa(final String mesa, final Instant quando) {
+        if (encaminhadaEm != null) {
+            throw new ValidationException("Ocorrência já está na mesa do despachador");
+        }
+        if (quando == null) {
+            throw new ValidationException("Instante do encaminhamento é obrigatório");
+        }
+        this.mesa = new MesaRegiao(mesa);
+        this.encaminhadaEm = quando;
+    }
+
+    public String situacao() {
+        return encaminhadaEm == null ? "EM_TRIAGEM" : "NA_MESA";
+    }
+
+    public MesaRegiao mesa() {
+        return mesa;
+    }
+
+    public Instant encaminhadaEm() {
+        return encaminhadaEm;
     }
 
     public OcorrenciaId ocorrenciaId() {

@@ -1,0 +1,6 @@
+<figure class="mapa">
+  <iframe [src]="src()" title="Ponto da ocorrência no mapa" loading="lazy"></iframe>
+  @if (endereco()) {
+    <figcaption>{{ endereco() }} · {{ latitude() }}, {{ longitude() }}</figcaption>
+  }
+</figure>

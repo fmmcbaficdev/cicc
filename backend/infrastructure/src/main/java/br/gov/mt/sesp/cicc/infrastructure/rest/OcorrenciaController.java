@@ -2,6 +2,7 @@ package br.gov.mt.sesp.cicc.infrastructure.rest;
 
 import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
+import br.gov.mt.sesp.cicc.application.cad.EncaminharOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.domain.exception.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,13 +21,16 @@ public class OcorrenciaController {
 
     private final AbrirOcorrenciaUseCase abrirOcorrenciaUseCase;
     private final BuscarOcorrenciaUseCase buscarOcorrenciaUseCase;
+    private final EncaminharOcorrenciaUseCase encaminharOcorrenciaUseCase;
 
     public OcorrenciaController(
             final AbrirOcorrenciaUseCase abrirOcorrenciaUseCase,
-            final BuscarOcorrenciaUseCase buscarOcorrenciaUseCase
+            final BuscarOcorrenciaUseCase buscarOcorrenciaUseCase,
+            final EncaminharOcorrenciaUseCase encaminharOcorrenciaUseCase
     ) {
         this.abrirOcorrenciaUseCase = abrirOcorrenciaUseCase;
         this.buscarOcorrenciaUseCase = buscarOcorrenciaUseCase;
+        this.encaminharOcorrenciaUseCase = encaminharOcorrenciaUseCase;
     }
 
     @PostMapping
@@ -43,5 +47,13 @@ public class OcorrenciaController {
         return buscarOcorrenciaUseCase.execute(new BuscarOcorrenciaUseCase.Input(id))
                 .map(OcorrenciaResponse::from)
                 .orElseThrow(() -> new NotFoundException("Ocorrência não encontrada"));
+    }
+
+    @PostMapping("/{id}/encaminhar")
+    public OcorrenciaResponse encaminhar(
+            @PathVariable("id") final String id,
+            @RequestBody final EncaminharOcorrenciaRequest request
+    ) {
+        return OcorrenciaResponse.from(encaminharOcorrenciaUseCase.execute(request.toInput(id)));
     }
 }

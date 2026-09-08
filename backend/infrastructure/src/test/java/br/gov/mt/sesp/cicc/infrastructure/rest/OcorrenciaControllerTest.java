@@ -99,4 +99,35 @@ class OcorrenciaControllerTest {
                 .andExpect(jsonPath("$.protocolo").value("CICC-2026-HTTP-GET"))
                 .andExpect(jsonPath("$.inicioAtendimento").isNotEmpty());
     }
+
+    @Test
+    @DisplayName("POST encaminha o cartão à mesa sem matching")
+    void encaminhaAMesa() throws Exception {
+        final var criado = mvc.perform(post("/ocorrencias")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                  "descricao": "Roubo a mão armada agora",
+                                  "gravidade": "CRITICA",
+                                  "endereco": "Centro, Cuiabá",
+                                  "latitude": -15.6,
+                                  "longitude": -56.1,
+                                  "protocolo": "CICC-2026-HTTP-MESA"
+                                }
+                                """))
+                .andExpect(status().isCreated())
+                .andReturn();
+        final var location = criado.getResponse().getHeader("Location");
+
+        mvc.perform(post(location + "/encaminhar")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("{\"mesa\":\"CBA\"}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.situacao").value("NA_MESA"))
+                .andExpect(jsonPath("$.mesa").value("CBA"));
+
+        mvc.perform(get("/mesa/CBA/ocorrencias"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].protocolo").value("CICC-2026-HTTP-MESA"));
+    }
 }

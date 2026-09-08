@@ -2,7 +2,9 @@ package br.gov.mt.sesp.cicc.infrastructure.config;
 
 import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
+import br.gov.mt.sesp.cicc.application.cad.EncaminharOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.pabx.ConsultarChamadaPabxUseCase;
+import br.gov.mt.sesp.cicc.application.sala.ListarOcorrenciasNaMesaUseCase;
 import br.gov.mt.sesp.cicc.domain.cad.OcorrenciaRepository;
 import br.gov.mt.sesp.cicc.domain.pabx.PabxPort;
 import br.gov.mt.sesp.cicc.infrastructure.pabx.MockPabxAdapter;
@@ -42,5 +44,15 @@ public class UseCaseConfig {
     @Bean
     ConsultarChamadaPabxUseCase consultarChamadaPabxUseCase(final PabxPort pabxPort) {
         return new ConsultarChamadaPabxUseCase(pabxPort);
+    }
+
+    @Bean
+    EncaminharOcorrenciaUseCase encaminharOcorrenciaUseCase(final OcorrenciaRepository ocorrenciaRepository) {
+        return new EncaminharOcorrenciaUseCase(ocorrenciaRepository);
+    }
+
+    @Bean
+    ListarOcorrenciasNaMesaUseCase listarOcorrenciasNaMesaUseCase(final OcorrenciaRepository ocorrenciaRepository) {
+        return new ListarOcorrenciasNaMesaUseCase(ocorrenciaRepository);
     }
 }

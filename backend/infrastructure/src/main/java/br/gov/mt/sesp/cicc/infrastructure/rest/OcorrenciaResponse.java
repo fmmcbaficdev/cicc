@@ -1,7 +1,6 @@
 package br.gov.mt.sesp.cicc.infrastructure.rest;
 
-import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
-import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
+import br.gov.mt.sesp.cicc.application.cad.OcorrenciaVista;
 
 import java.time.Instant;
 
@@ -10,26 +9,28 @@ public record OcorrenciaResponse(
         String protocolo,
         Instant inicioAtendimento,
         String telefone,
-        String pabxUid
+        String pabxUid,
+        String endereco,
+        double latitude,
+        double longitude,
+        String situacao,
+        String mesa,
+        Instant encaminhadaEm
 ) {
 
-    public static OcorrenciaResponse from(final AbrirOcorrenciaUseCase.Output output) {
+    public static OcorrenciaResponse from(final OcorrenciaVista output) {
         return new OcorrenciaResponse(
                 output.id(),
                 output.protocolo(),
                 output.inicioAtendimento(),
                 output.telefone(),
-                output.pabxUid()
-        );
-    }
-
-    public static OcorrenciaResponse from(final BuscarOcorrenciaUseCase.Output output) {
-        return new OcorrenciaResponse(
-                output.id(),
-                output.protocolo(),
-                output.inicioAtendimento(),
-                output.telefone(),
-                output.pabxUid()
+                output.pabxUid(),
+                output.endereco(),
+                output.latitude(),
+                output.longitude(),
+                output.situacao(),
+                output.mesa(),
+                output.encaminhadaEm()
         );
     }
 }

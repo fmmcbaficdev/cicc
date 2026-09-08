@@ -1,0 +1,96 @@
+:host {
+  display: block;
+}
+
+.relogio-t1 {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.relogio-t1__icone {
+  width: 2.6rem;
+  height: 2.6rem;
+  flex-shrink: 0;
+  color: #9fd0ff;
+}
+
+.relogio-t1__aro {
+  fill: rgba(159, 208, 255, 0.08);
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.relogio-t1__marca,
+.relogio-t1__hora,
+.relogio-t1__minuto {
+  stroke: currentColor;
+  stroke-linecap: round;
+}
+
+.relogio-t1__marca {
+  stroke-width: 1.6;
+}
+
+.relogio-t1__hora {
+  stroke-width: 2.2;
+}
+
+.relogio-t1__minuto {
+  stroke-width: 1.8;
+  transform-origin: 16px 16px;
+  animation: ponteiro 60s linear infinite;
+}
+
+.relogio-t1__eixo {
+  fill: currentColor;
+}
+
+.relogio-t1__selo {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #9db4c9;
+}
+
+.relogio-t1__tempo {
+  margin: 0.1rem 0 0;
+  font-size: 2.15rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: inherit;
+}
+
+.relogio-t1__inicio {
+  margin: 0.4rem 0 0;
+  font-size: 0.85rem;
+  color: #9db4c9;
+}
+
+.relogio-t1--compacto {
+  gap: 0.55rem;
+  color: #102033;
+}
+
+.relogio-t1--compacto .relogio-t1__icone {
+  width: 1.55rem;
+  height: 1.55rem;
+  color: #1d4e89;
+}
+
+.relogio-t1--compacto .relogio-t1__selo {
+  color: #5c6570;
+}
+
+.relogio-t1--compacto .relogio-t1__tempo {
+  font-size: 1.15rem;
+}
+
+@keyframes ponteiro {
+  to {
+    transform: rotate(360deg);
+  }
+}

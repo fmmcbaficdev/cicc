@@ -8,7 +8,7 @@
   @if (ocorrencia(); as aberta) {
     <article class="relogio" aria-live="polite">
       <p class="relogio__selo">Atendimento iniciado</p>
-      <p class="relogio__t1">{{ formatarT1(aberta.inicioAtendimento) }}</p>
+      <app-relogio-t1 [inicio]="aberta.inicioAtendimento" />
       <dl>
         <div>
           <dt>Protocolo</dt>
@@ -22,8 +22,27 @@
           <dt>Uid PABX</dt>
           <dd>{{ aberta.pabxUid || 'abertura à mão' }}</dd>
         </div>
+        <div>
+          <dt>Onde</dt>
+          <dd>{{ aberta.endereco }}</dd>
+        </div>
       </dl>
+      @if (erro()) {
+        <p class="aviso aviso--erro" role="alert">{{ erro() }}</p>
+      }
+      @if (aberta.situacao === 'NA_MESA') {
+        <p class="aviso aviso--mesa">Cartão na mesa {{ aberta.mesa }} — disponível para o despachador.</p>
+      } @else {
+        <button type="button" class="botao" (click)="encaminhar()" [disabled]="encaminhando()">
+          {{ encaminhando() ? 'Encaminhando…' : 'Encaminhar à mesa ' + mesaPadrao() }}
+        </button>
+      }
       <button type="button" class="botao botao--secundario" (click)="novaOcorrencia()">Nova ocorrência</button>
+      <app-ponto-mapa
+        [latitude]="aberta.latitude"
+        [longitude]="aberta.longitude"
+        [endereco]="aberta.endereco"
+      />
     </article>
   } @else {
     @if (carregandoChamada()) {
@@ -73,6 +92,14 @@
         Longitude
         <input formControlName="longitude" type="number" step="0.000001" />
       </label>
+      <div class="formulario__largo">
+        <p class="mapa-ajuda">Ponto no mapa a partir do endereço informado — a ligação não traz latitude/longitude.</p>
+        <app-ponto-mapa
+          [latitude]="formulario.controls.latitude.value"
+          [longitude]="formulario.controls.longitude.value"
+          [endereco]="formulario.controls.endereco.value"
+        />
+      </div>
       <button class="botao" type="submit" [disabled]="enviando()">
         {{ enviando() ? 'Abrindo…' : 'Abrir atendimento (T1)' }}
       </button>
