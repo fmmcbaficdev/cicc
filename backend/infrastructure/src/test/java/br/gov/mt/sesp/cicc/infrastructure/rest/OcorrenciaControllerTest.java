@@ -30,6 +30,7 @@ class OcorrenciaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
+                                  "natureza": "Roubo",
                                   "descricao": "Roubo a mão armada agora",
                                   "gravidade": "CRITICA",
                                   "endereco": "Av. Historiador Rubens de Mendonça, Cuiabá",
@@ -42,6 +43,7 @@ class OcorrenciaControllerTest {
                 .andExpect(header().exists("Location"))
                 .andExpect(jsonPath("$.id").isString())
                 .andExpect(jsonPath("$.protocolo").value("CICC-2026-HTTP-001"))
+                .andExpect(jsonPath("$.natureza").value("Roubo"))
                 .andExpect(jsonPath("$.inicioAtendimento").isNotEmpty());
     }
 
@@ -50,6 +52,7 @@ class OcorrenciaControllerTest {
     void recusaProtocoloDuplicado() throws Exception {
         final var corpo = """
                 {
+                  "natureza": "Furto",
                   "descricao": "Furto passado",
                   "gravidade": "BAIXA",
                   "endereco": "Centro, Cuiabá",
@@ -83,6 +86,7 @@ class OcorrenciaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
+                                  "natureza": "Roubo",
                                   "descricao": "Roubo a mão armada agora",
                                   "gravidade": "CRITICA",
                                   "endereco": "Centro, Cuiabá",
@@ -108,6 +112,7 @@ class OcorrenciaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
+                                  "natureza": "Roubo",
                                   "descricao": "Roubo a mão armada agora",
                                   "gravidade": "CRITICA",
                                   "endereco": "Centro, Cuiabá",
@@ -140,6 +145,7 @@ class OcorrenciaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
+                                  "natureza": "Roubo",
                                   "descricao": "Roubo a mão armada agora",
                                   "gravidade": "CRITICA",
                                   "endereco": "Av. Historiador Rubens de Mendonça, Cuiabá",

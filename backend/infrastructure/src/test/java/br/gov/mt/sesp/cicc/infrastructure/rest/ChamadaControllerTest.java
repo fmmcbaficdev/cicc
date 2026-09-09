@@ -39,6 +39,7 @@ class ChamadaControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
+                                  "natureza": "Roubo",
                                   "descricao": "Roubo a mão armada agora",
                                   "gravidade": "CRITICA",
                                   "endereco": "Centro, Cuiabá",

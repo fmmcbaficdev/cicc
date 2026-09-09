@@ -7,6 +7,7 @@ import java.time.Instant;
 public record OcorrenciaVista(
         String id,
         String protocolo,
+        String natureza,
         String gravidade,
         Instant inicioAtendimento,
         String telefone,
@@ -28,6 +29,7 @@ public record OcorrenciaVista(
         return new OcorrenciaVista(
                 ocorrencia.ocorrenciaId().value(),
                 ocorrencia.protocolo().value(),
+                ocorrencia.natureza().value(),
                 ocorrencia.gravidade().value(),
                 ocorrencia.inicioAtendimento(),
                 ocorrencia.telefone() == null ? null : ocorrencia.telefone().value(),

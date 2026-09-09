@@ -36,7 +36,7 @@ class FilaMesaTest {
             final Instant t1
     ) {
         final var ocorrencia = Ocorrencia.newOcorrencia(
-                descricao, gravidade, "Centro, Cuiabá", -15.601411, -56.097892, protocolo, t1
+                descricao, descricao, gravidade, "Centro, Cuiabá", -15.601411, -56.097892, protocolo, t1
         );
         ocorrencia.encaminharAMesa("CBA", t1.plusSeconds(10));
         return ocorrencia;

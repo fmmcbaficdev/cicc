@@ -9,6 +9,7 @@ public class Ocorrencia {
 
     private final OcorrenciaId ocorrenciaId;
     private final Protocolo protocolo;
+    private final Natureza natureza;
     private final String descricao;
     private Gravidade gravidade;
     private final String endereco;
@@ -27,6 +28,7 @@ public class Ocorrencia {
     private Ocorrencia(
             final OcorrenciaId ocorrenciaId,
             final Protocolo protocolo,
+            final Natureza natureza,
             final String descricao,
             final Gravidade gravidade,
             final String endereco,
@@ -48,6 +50,9 @@ public class Ocorrencia {
         if (protocolo == null) {
             throw new ValidationException("Protocolo inválido");
         }
+        if (natureza == null) {
+            throw new ValidationException("Natureza da ocorrência é obrigatória");
+        }
         if (descricao == null || descricao.isBlank()) {
             throw new ValidationException("Descrição da ocorrência é obrigatória");
         }
@@ -65,6 +70,7 @@ public class Ocorrencia {
         }
         this.ocorrenciaId = ocorrenciaId;
         this.protocolo = protocolo;
+        this.natureza = natureza;
         this.descricao = descricao.trim();
         this.gravidade = gravidade;
         this.endereco = endereco.trim();
@@ -82,6 +88,7 @@ public class Ocorrencia {
     }
 
     public static Ocorrencia newOcorrencia(
+            final String natureza,
             final String descricao,
             final String gravidade,
             final String endereco,
@@ -90,10 +97,11 @@ public class Ocorrencia {
             final String protocolo,
             final Instant inicioAtendimento
     ) {
-        return newOcorrencia(descricao, gravidade, endereco, latitude, longitude, protocolo, inicioAtendimento, null, null);
+        return newOcorrencia(natureza, descricao, gravidade, endereco, latitude, longitude, protocolo, inicioAtendimento, null, null);
     }
 
     public static Ocorrencia newOcorrencia(
+            final String natureza,
             final String descricao,
             final String gravidade,
             final String endereco,
@@ -107,6 +115,7 @@ public class Ocorrencia {
         return new Ocorrencia(
                 OcorrenciaId.unique(),
                 new Protocolo(protocolo),
+                new Natureza(natureza),
                 descricao,
                 new Gravidade(gravidade),
                 endereco,
@@ -127,18 +136,20 @@ public class Ocorrencia {
     public static Ocorrencia restore(
             final OcorrenciaId ocorrenciaId,
             final Protocolo protocolo,
+            final Natureza natureza,
             final String descricao,
             final Gravidade gravidade,
             final String endereco,
             final Ponto ponto,
             final Instant inicioAtendimento
     ) {
-        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, null, null);
+        return restore(ocorrenciaId, protocolo, natureza, descricao, gravidade, endereco, ponto, inicioAtendimento, null, null);
     }
 
     public static Ocorrencia restore(
             final OcorrenciaId ocorrenciaId,
             final Protocolo protocolo,
+            final Natureza natureza,
             final String descricao,
             final Gravidade gravidade,
             final String endereco,
@@ -147,12 +158,13 @@ public class Ocorrencia {
             final Telefone telefone,
             final String pabxUid
     ) {
-        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, null, null, null, null);
+        return restore(ocorrenciaId, protocolo, natureza, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, null, null, null, null);
     }
 
     public static Ocorrencia restore(
             final OcorrenciaId ocorrenciaId,
             final Protocolo protocolo,
+            final Natureza natureza,
             final String descricao,
             final Gravidade gravidade,
             final String endereco,
@@ -163,12 +175,13 @@ public class Ocorrencia {
             final MesaRegiao mesa,
             final Instant encaminhadaEm
     ) {
-        return restore(ocorrenciaId, protocolo, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, mesa, encaminhadaEm, null, null, null, false);
+        return restore(ocorrenciaId, protocolo, natureza, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, mesa, encaminhadaEm, null, null, null, false);
     }
 
     public static Ocorrencia restore(
             final OcorrenciaId ocorrenciaId,
             final Protocolo protocolo,
+            final Natureza natureza,
             final String descricao,
             final Gravidade gravidade,
             final String endereco,
@@ -184,6 +197,7 @@ public class Ocorrencia {
         return restore(
                 ocorrenciaId,
                 protocolo,
+                natureza,
                 descricao,
                 gravidade,
                 endereco,
@@ -203,6 +217,7 @@ public class Ocorrencia {
     public static Ocorrencia restore(
             final OcorrenciaId ocorrenciaId,
             final Protocolo protocolo,
+            final Natureza natureza,
             final String descricao,
             final Gravidade gravidade,
             final String endereco,
@@ -220,6 +235,7 @@ public class Ocorrencia {
         return new Ocorrencia(
                 ocorrenciaId,
                 protocolo,
+                natureza,
                 descricao,
                 gravidade,
                 endereco,
@@ -349,6 +365,10 @@ public class Ocorrencia {
 
     public Protocolo protocolo() {
         return protocolo;
+    }
+
+    public Natureza natureza() {
+        return natureza;
     }
 
     public String descricao() {

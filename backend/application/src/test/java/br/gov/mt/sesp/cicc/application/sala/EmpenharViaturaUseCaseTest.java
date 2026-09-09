@@ -66,7 +66,7 @@ class EmpenharViaturaUseCaseTest {
 
     private Ocorrencia naMesa() {
         final var aberta = ocorrencias.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-EMP-001", T1
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-EMP-001", T1
         ));
         aberta.encaminharAMesa("CBA", T1.plusSeconds(60));
         return ocorrencias.atualizar(aberta);

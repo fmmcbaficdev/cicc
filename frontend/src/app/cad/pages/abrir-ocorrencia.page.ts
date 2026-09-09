@@ -29,6 +29,7 @@ export class AbrirOcorrenciaPage implements OnInit {
     protocolo: ['', Validators.required],
     telefone: [''],
     gravidade: ['CRITICA', Validators.required],
+    natureza: ['', Validators.required],
     descricao: ['', Validators.required],
     endereco: ['', Validators.required],
     latitude: [-15.601411, Validators.required],
@@ -64,6 +65,7 @@ export class AbrirOcorrenciaPage implements OnInit {
 
     this.facade
       .abrir({
+        natureza: valor.natureza,
         descricao: valor.descricao,
         gravidade: valor.gravidade,
         endereco: valor.endereco,
@@ -115,6 +117,7 @@ export class AbrirOcorrenciaPage implements OnInit {
       protocolo: this.proximoProtocolo(),
       telefone: '',
       gravidade: 'CRITICA',
+      natureza: 'Roubo',
       descricao: 'Roubo a mão armada agora',
       endereco: 'Av. Historiador Rubens de Mendonça, Cuiabá',
       latitude: -15.601411,

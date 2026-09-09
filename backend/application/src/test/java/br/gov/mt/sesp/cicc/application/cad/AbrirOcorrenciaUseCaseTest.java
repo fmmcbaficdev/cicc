@@ -46,6 +46,7 @@ class AbrirOcorrenciaUseCaseTest {
         assertEquals(CLIQUE, output.inicioAtendimento());
 
         final var persistida = ocorrenciaRepository.ocorrenciaDeId(OcorrenciaId.with(output.id())).orElseThrow();
+        assertEquals("Roubo", persistida.natureza().value());
         assertEquals("CRITICA", persistida.gravidade().value());
         assertEquals("Av. Historiador Rubens de Mendonça, Cuiabá", persistida.endereco());
         assertEquals(-15.601411, persistida.ponto().latitude());
@@ -65,6 +66,7 @@ class AbrirOcorrenciaUseCaseTest {
         ));
 
         final var output = useCase.execute(new AbrirOcorrenciaUseCase.Input(
+                "Roubo",
                 "Roubo a mão armada agora",
                 "CRITICA",
                 "Av. Historiador Rubens de Mendonça, Cuiabá",
@@ -86,6 +88,7 @@ class AbrirOcorrenciaUseCaseTest {
         pabxPort.silenciar();
 
         final var output = useCase.execute(new AbrirOcorrenciaUseCase.Input(
+                "Roubo",
                 "Roubo a mão armada agora",
                 "CRITICA",
                 "Av. Historiador Rubens de Mendonça, Cuiabá",
@@ -105,6 +108,7 @@ class AbrirOcorrenciaUseCaseTest {
     @DisplayName("recusa protocolo já existente")
     void recusaProtocoloDuplicado() {
         ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
+                "Furto",
                 "Furto passado",
                 "BAIXA",
                 "Centro, Cuiabá",
@@ -123,6 +127,7 @@ class AbrirOcorrenciaUseCaseTest {
     @DisplayName("recusa gravidade fora da escala oficial")
     void recusaGravidadeInvalida() {
         final var input = new AbrirOcorrenciaUseCase.Input(
+                "Roubo",
                 "Roubo a mão armada agora",
                 "ALTO",
                 "Av. Historiador Rubens de Mendonça, Cuiabá",
@@ -138,6 +143,7 @@ class AbrirOcorrenciaUseCaseTest {
 
     private static AbrirOcorrenciaUseCase.Input inputValido(final String protocolo) {
         return new AbrirOcorrenciaUseCase.Input(
+                "Roubo",
                 "Roubo a mão armada agora",
                 "CRITICA",
                 "Av. Historiador Rubens de Mendonça, Cuiabá",

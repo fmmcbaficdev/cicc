@@ -27,6 +27,7 @@ describe('MesaPage', () => {
       {
         id: 'occ-1',
         protocolo: 'CICC-2026-MESA-T2',
+        natureza: 'Roubo',
         gravidade: 'CRITICA',
         inicioAtendimento: '2026-09-07T22:30:00Z',
         telefone: '65981234567',
@@ -49,6 +50,7 @@ describe('MesaPage', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
+    expect(fixture.nativeElement.textContent).toContain('Roubo');
     expect(fixture.nativeElement.textContent).toContain('PM-CBA-01');
     fixture.nativeElement.querySelector('button.empenhar').click();
     fixture.detectChanges();
@@ -56,6 +58,7 @@ describe('MesaPage', () => {
     http.expectOne('/ocorrencias/occ-1/empenhar').flush({
       id: 'occ-1',
       protocolo: 'CICC-2026-MESA-T2',
+      natureza: 'Roubo',
       gravidade: 'CRITICA',
       inicioAtendimento: '2026-09-07T22:30:00Z',
       telefone: '65981234567',
@@ -80,6 +83,7 @@ describe('MesaPage', () => {
     http.expectOne('/ocorrencias/occ-1/no-local').flush({
       id: 'occ-1',
       protocolo: 'CICC-2026-MESA-T2',
+      natureza: 'Roubo',
       gravidade: 'CRITICA',
       inicioAtendimento: '2026-09-07T22:30:00Z',
       telefone: '65981234567',
@@ -105,6 +109,7 @@ describe('MesaPage', () => {
     http.expectOne('/ocorrencias/occ-1/encerrar').flush({
       id: 'occ-1',
       protocolo: 'CICC-2026-MESA-T2',
+      natureza: 'Roubo',
       gravidade: 'CRITICA',
       inicioAtendimento: '2026-09-07T22:30:00Z',
       telefone: '65981234567',
@@ -135,6 +140,7 @@ describe('MesaPage', () => {
       {
         id: 'occ-2',
         protocolo: 'CICC-2026-MESA-FILA',
+        natureza: 'Furto',
         gravidade: 'BAIXA',
         inicioAtendimento: '2026-09-07T22:30:00Z',
         telefone: null,

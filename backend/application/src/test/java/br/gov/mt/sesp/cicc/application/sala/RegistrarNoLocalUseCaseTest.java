@@ -48,7 +48,7 @@ class RegistrarNoLocalUseCaseTest {
     @DisplayName("recusa No local sem empenho")
     void recusaSemEmpenho() {
         final var aberta = ocorrencias.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-NL-002", T1
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-NL-002", T1
         ));
         aberta.encaminharAMesa("CBA", T1.plusSeconds(60));
         ocorrencias.atualizar(aberta);
@@ -64,7 +64,7 @@ class RegistrarNoLocalUseCaseTest {
 
     private Ocorrencia empenhada() {
         final var aberta = ocorrencias.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-NL-001", T1
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-NL-001", T1
         ));
         aberta.encaminharAMesa("CBA", T1.plusSeconds(60));
         aberta.empenhar("PM-CBA-01", T2);

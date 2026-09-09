@@ -41,6 +41,7 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
 
         final var correlacao = correlacionar(input);
         final var ocorrencia = ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
+                input.natureza(),
                 input.descricao(),
                 input.gravidade(),
                 input.endereco(),
@@ -72,6 +73,7 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
     }
 
     public record Input(
+            String natureza,
             String descricao,
             String gravidade,
             String endereco,
@@ -82,6 +84,7 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
             String pabxUid
     ) {
         public Input(
+                final String natureza,
                 final String descricao,
                 final String gravidade,
                 final String endereco,
@@ -89,7 +92,7 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
                 final double longitude,
                 final String protocolo
         ) {
-            this(descricao, gravidade, endereco, latitude, longitude, protocolo, null, null);
+            this(natureza, descricao, gravidade, endereco, latitude, longitude, protocolo, null, null);
         }
     }
 

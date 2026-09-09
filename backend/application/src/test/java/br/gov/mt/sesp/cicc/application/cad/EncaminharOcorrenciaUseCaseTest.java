@@ -32,7 +32,7 @@ class EncaminharOcorrenciaUseCaseTest {
     @DisplayName("deixa o cartão disponível na mesa sem alterar o T1")
     void encaminhaParaMesa() {
         final var aberta = ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-MESA-001", CLIQUE
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-MESA-001", CLIQUE
         ));
 
         final var output = useCase.execute(new EncaminharOcorrenciaUseCase.Input(aberta.ocorrenciaId().value(), "CBA"));
@@ -48,7 +48,7 @@ class EncaminharOcorrenciaUseCaseTest {
     @DisplayName("recusa encaminhar de novo")
     void recusaSegundoEncaminhamento() {
         final var aberta = ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-MESA-002", CLIQUE
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-MESA-002", CLIQUE
         ));
         useCase.execute(new EncaminharOcorrenciaUseCase.Input(aberta.ocorrenciaId().value(), "CBA"));
 

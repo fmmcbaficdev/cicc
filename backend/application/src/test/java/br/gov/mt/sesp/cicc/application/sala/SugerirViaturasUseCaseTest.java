@@ -63,7 +63,7 @@ class SugerirViaturasUseCaseTest {
     @DisplayName("recusa sugerir antes do cartão estar na mesa")
     void recusaForaDaMesa() {
         final var aberta = ocorrencias.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-SUG-002", T1
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-SUG-002", T1
         ));
 
         assertEquals(
@@ -87,7 +87,7 @@ class SugerirViaturasUseCaseTest {
 
     private Ocorrencia naMesa() {
         final var aberta = ocorrencias.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Av. Historiador Rubens de Mendonça, Cuiabá",
+                "Roubo", "Roubo", "CRITICA", "Av. Historiador Rubens de Mendonça, Cuiabá",
                 -15.601411, -56.097892, "CICC-2026-SUG-001", T1
         ));
         aberta.encaminharAMesa("CBA", T1.plusSeconds(60));

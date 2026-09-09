@@ -37,6 +37,7 @@ describe('AbrirOcorrenciaPage', () => {
     http.expectOne('/ocorrencias').flush({
       id: 'occ-1',
       protocolo: 'CICC-2026-UI-T1',
+      natureza: 'Roubo',
       inicioAtendimento: '2026-09-07T22:30:00Z',
       telefone: '65981234567',
       pabxUid: 'pabx-mock-190-cba-001',
@@ -53,6 +54,7 @@ describe('AbrirOcorrenciaPage', () => {
     const texto = fixture.nativeElement.textContent as string;
     expect(texto).toContain('Atendimento iniciado');
     expect(texto).toContain('CICC-2026-UI-T1');
+    expect(texto).toContain('Roubo');
     expect(texto).toContain('Av. Historiador Rubens de Mendonça, Cuiabá');
     expect(fixture.nativeElement.querySelector('.relogio-t1__tempo')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('.relogio-t1__tempo').textContent).toMatch(/\d+:\d{2}/);

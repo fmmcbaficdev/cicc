@@ -26,6 +26,7 @@ class BuscarOcorrenciaUseCaseTest {
     void encontraPorId() {
         final var persistida = ocorrenciaRepository.criar(Ocorrencia.newOcorrencia(
                 "Roubo",
+                "Roubo",
                 "CRITICA",
                 "Centro, Cuiabá",
                 -15.6,

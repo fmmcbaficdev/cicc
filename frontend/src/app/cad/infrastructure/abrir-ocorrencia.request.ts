@@ -1,4 +1,5 @@
 export interface AbrirOcorrenciaRequest {
+  natureza: string;
   descricao: string;
   gravidade: string;
   endereco: string;

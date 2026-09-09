@@ -54,7 +54,7 @@ class EncerrarOcorrenciaUseCaseTest {
     @DisplayName("recusa encerrar sem No local")
     void recusaSemNoLocal() {
         final var aberta = ocorrencias.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-ENC-002", T1
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-ENC-002", T1
         ));
         aberta.encaminharAMesa("CBA", T1.plusSeconds(60));
         ocorrencias.atualizar(aberta);
@@ -70,7 +70,7 @@ class EncerrarOcorrenciaUseCaseTest {
 
     private Ocorrencia noLocal() {
         final var aberta = ocorrencias.criar(Ocorrencia.newOcorrencia(
-                "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-ENC-001", T1
+                "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.601411, -56.097892, "CICC-2026-ENC-001", T1
         ));
         aberta.encaminharAMesa("CBA", T1.plusSeconds(60));
         aberta.empenhar("PM-CBA-01", T2);

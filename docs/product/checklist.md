@@ -32,7 +32,7 @@ Jornada no código, persistência em **memória**.
 
 | Fase | Feito | Como ver |
 |---|---|---|
-| 1 Entrada | Abrir 190/193 + T1 no clique; PABX mock ou à mão | `POST /ocorrencias` · `GET /pabx/chamada` · `/` |
+| 1 Entrada | Abrir 190/193 + T1 no clique; natureza + PABX mock ou à mão | `POST /ocorrencias` · `GET /pabx/chamada` · `/` |
 | 2 Triagem | Gravidade + encaminhar à mesa CBA / VG / RDO | `POST /ocorrencias/{id}/encaminhar` |
 | 3 Despacho | Sugerir Livre (haversine, até 3, raio 3 km) + empenho + T2 | `/sala` · `POST .../empenhar` |
 | 3 Sem Livre | Fila por gravidade + puxar outro bairro | `?ampliar=true` |

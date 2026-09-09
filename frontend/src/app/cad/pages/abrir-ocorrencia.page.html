@@ -23,6 +23,10 @@
           <dd>{{ aberta.pabxUid || 'abertura à mão' }}</dd>
         </div>
         <div>
+          <dt>Natureza</dt>
+          <dd>{{ aberta.natureza }}</dd>
+        </div>
+        <div>
           <dt>Onde</dt>
           <dd>{{ aberta.endereco }}</dd>
         </div>
@@ -75,6 +79,10 @@
             <option [value]="item.valor">{{ item.rotulo }}</option>
           }
         </select>
+      </label>
+      <label>
+        Natureza da ocorrência
+        <input formControlName="natureza" autocomplete="off" placeholder="Roubo, furto, acidente…" />
       </label>
       <label class="formulario__largo">
         O quê aconteceu

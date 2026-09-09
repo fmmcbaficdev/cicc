@@ -54,7 +54,8 @@ describe('CadFacade', () => {
     let aberta: { protocolo: string; inicioAtendimento: string } | undefined;
     facade
       .abrir({
-        descricao: 'Roubo',
+        natureza: 'Roubo',
+        descricao: 'Roubo a mão armada agora',
         gravidade: 'CRITICA',
         endereco: 'Centro, Cuiabá',
         latitude: -15.6,
@@ -69,6 +70,7 @@ describe('CadFacade', () => {
     http.expectOne('/ocorrencias').flush({
       id: 'occ-1',
       protocolo: 'CICC-2026-UI-001',
+      natureza: 'Roubo',
       inicioAtendimento: '2026-09-07T22:30:00Z',
       telefone: '65981234567',
       pabxUid: 'pabx-mock-190-cba-001',

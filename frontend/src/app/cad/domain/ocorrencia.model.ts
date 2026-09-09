@@ -1,6 +1,7 @@
 export interface Ocorrencia {
   id: string;
   protocolo: string;
+  natureza: string;
   gravidade: string;
   inicioAtendimento: string;
   telefone: string | null;

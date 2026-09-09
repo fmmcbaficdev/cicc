@@ -8,7 +8,7 @@ Vale para `cicc-cad/`. Pastas de arquivo em **kebab-case**. Classes Java em Pasc
 |---|---|---|
 | Agregado | substantivo do domínio | `Ocorrencia`, `Chamada` |
 | Id | `{Agregado}Id` — `unique()`, `with(String)` | `OcorrenciaId` |
-| VO | conceito, sem `Vo` no nome | `Gravidade`, `Protocolo`, `Ponto` |
+| VO | conceito, sem `Vo` no nome | `Gravidade`, `Natureza`, `Protocolo`, `Ponto` |
 | Porta de persistência | `{Agregado}Repository` | `OcorrenciaRepository` |
 | Porta de legado | `{Intenção}Port` | `PabxPort`, `AvlPort` |
 | Fake | `InMemory{Agregado}Repository` | `InMemoryOcorrenciaRepository` |

@@ -16,12 +16,13 @@ class OcorrenciaTest {
     private static final Instant T1 = Instant.parse("2026-09-07T22:00:00Z");
 
     @Test
-    @DisplayName("ao abrir, registra o quê, onde, gravidade e carimba o T1 no clique")
+    @DisplayName("ao abrir, registra natureza, o quê, onde, gravidade e carimba o T1 no clique")
     void abreComT1() {
         final var ocorrencia = abrir();
 
         assertNotNull(ocorrencia.ocorrenciaId());
         assertEquals("CICC-2026-000001", ocorrencia.protocolo().value());
+        assertEquals("Roubo", ocorrencia.natureza().value());
         assertEquals("Roubo a mão armada agora", ocorrencia.descricao());
         assertEquals("CRITICA", ocorrencia.gravidade().value());
         assertEquals("Av. Historiador Rubens de Mendonça, Cuiabá", ocorrencia.endereco());
@@ -38,6 +39,7 @@ class OcorrenciaTest {
         final var rehidratada = Ocorrencia.restore(
                 original.ocorrenciaId(),
                 original.protocolo(),
+                original.natureza(),
                 original.descricao(),
                 original.gravidade(),
                 original.endereco(),
@@ -56,6 +58,7 @@ class OcorrenciaTest {
         final var uma = Ocorrencia.restore(
                 id,
                 new Protocolo("CICC-2026-000001"),
+                new Natureza("Furto"),
                 "Furto passado",
                 new Gravidade("BAIXA"),
                 "Centro, Cuiabá",
@@ -65,6 +68,7 @@ class OcorrenciaTest {
         final var outra = Ocorrencia.restore(
                 id,
                 new Protocolo("CICC-2026-000099"),
+                new Natureza("Ameaça"),
                 "Outra descrição",
                 new Gravidade("ALTA"),
                 "CPA, Cuiabá",
@@ -210,6 +214,7 @@ class OcorrenciaTest {
     @DisplayName("telefone e uid do PABX são opcionais e não alteram o T1")
     void guardaTelefoneSemMudarT1() {
         final var ocorrencia = Ocorrencia.newOcorrencia(
+                "Roubo",
                 "Roubo a mão armada agora",
                 "CRITICA",
                 "Av. Historiador Rubens de Mendonça, Cuiabá",
@@ -227,30 +232,37 @@ class OcorrenciaTest {
     }
 
     @Test
-    @DisplayName("recusa abertura sem T1, descrição ou endereço")
+    @DisplayName("recusa abertura sem T1, natureza, descrição ou endereço")
     void recusaInvariantesDaAbertura() {
         assertEquals(
                 "Início do atendimento (T1) é obrigatório",
                 assertThrows(ValidationException.class, () -> Ocorrencia.newOcorrencia(
-                        "Roubo", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-000001", null
+                        "Roubo", "Roubo", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-000001", null
+                )).getMessage()
+        );
+        assertEquals(
+                "Natureza da ocorrência é obrigatória",
+                assertThrows(ValidationException.class, () -> Ocorrencia.newOcorrencia(
+                        "  ", "Roubo", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-000001", T1
                 )).getMessage()
         );
         assertEquals(
                 "Descrição da ocorrência é obrigatória",
                 assertThrows(ValidationException.class, () -> Ocorrencia.newOcorrencia(
-                        "  ", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-000001", T1
+                        "Roubo", "  ", "CRITICA", "Centro, Cuiabá", -15.6, -56.1, "CICC-2026-000001", T1
                 )).getMessage()
         );
         assertEquals(
                 "Endereço da ocorrência é obrigatório",
                 assertThrows(ValidationException.class, () -> Ocorrencia.newOcorrencia(
-                        "Roubo", "CRITICA", "", -15.6, -56.1, "CICC-2026-000001", T1
+                        "Roubo", "Roubo", "CRITICA", "", -15.6, -56.1, "CICC-2026-000001", T1
                 )).getMessage()
         );
     }
 
     private static Ocorrencia abrir() {
         return Ocorrencia.newOcorrencia(
+                "Roubo",
                 "Roubo a mão armada agora",
                 "CRITICA",
                 "Av. Historiador Rubens de Mendonça, Cuiabá",

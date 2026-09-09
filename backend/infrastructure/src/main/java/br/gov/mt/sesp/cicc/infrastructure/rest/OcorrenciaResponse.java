@@ -7,6 +7,7 @@ import java.time.Instant;
 public record OcorrenciaResponse(
         String id,
         String protocolo,
+        String natureza,
         String gravidade,
         Instant inicioAtendimento,
         String telefone,
@@ -28,6 +29,7 @@ public record OcorrenciaResponse(
         return new OcorrenciaResponse(
                 output.id(),
                 output.protocolo(),
+                output.natureza(),
                 output.gravidade(),
                 output.inicioAtendimento(),
                 output.telefone(),

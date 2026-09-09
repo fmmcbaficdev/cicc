@@ -14,7 +14,7 @@
       @for (cartao of cartoes(); track cartao.id) {
         <li>
           <strong>{{ cartao.protocolo }}</strong>
-          <span class="gravidade">{{ cartao.gravidade }}</span>
+          <span class="gravidade">{{ cartao.natureza }} · {{ cartao.gravidade }}</span>
           <app-relogio-t1 [inicio]="cartao.inicioAtendimento" [compacto]="true" />
           <span>{{ cartao.endereco }}</span>
           @if (cartao.situacao === 'ENCERRADA' && cartao.inicioDeslocamento && cartao.noLocalEm) {

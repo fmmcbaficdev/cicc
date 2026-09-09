@@ -3,6 +3,7 @@ import { Ocorrencia } from '../domain/ocorrencia.model';
 export interface OcorrenciaResponse {
   id: string;
   protocolo: string;
+  natureza: string;
   gravidade: string;
   inicioAtendimento: string;
   telefone: string | null;
@@ -24,6 +25,7 @@ export function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
   return {
     id: response.id,
     protocolo: response.protocolo,
+    natureza: response.natureza,
     gravidade: response.gravidade,
     inicioAtendimento: response.inicioAtendimento,
     telefone: response.telefone,

@@ -3,6 +3,7 @@ package br.gov.mt.sesp.cicc.infrastructure.rest;
 import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
 
 public record AbrirOcorrenciaRequest(
+        String natureza,
         String descricao,
         String gravidade,
         String endereco,
@@ -15,6 +16,7 @@ public record AbrirOcorrenciaRequest(
 
     AbrirOcorrenciaUseCase.Input toInput() {
         return new AbrirOcorrenciaUseCase.Input(
+                natureza,
                 descricao,
                 gravidade,
                 endereco,
