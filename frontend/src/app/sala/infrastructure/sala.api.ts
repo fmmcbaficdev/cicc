@@ -50,6 +50,15 @@ export class SalaApi {
       ),
     );
   }
+
+  encerrar(ocorrenciaId: string): Observable<Ocorrencia> {
+    return this.http.post<OcorrenciaResponse>(`/ocorrencias/${ocorrenciaId}/encerrar`, {}).pipe(
+      map(paraOcorrencia),
+      catchError((erro: HttpErrorResponse) =>
+        throwError(() => new Error(mensagemDeErro(erro, 'Não foi possível encerrar a ocorrência'))),
+      ),
+    );
+  }
 }
 
 function mensagemDeErro(erro: HttpErrorResponse, fallback: string): string {

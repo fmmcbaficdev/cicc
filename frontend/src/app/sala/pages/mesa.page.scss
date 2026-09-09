@@ -108,6 +108,23 @@ li {
   cursor: wait;
 }
 
+.encerrar {
+  width: 100%;
+  text-align: left;
+  border: 0;
+  border-radius: 0.4rem;
+  padding: 0.55rem 0.7rem;
+  background: #1e3a5f;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.encerrar:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
 .consulta,
 .vazio--interno {
   margin: 0.35rem 0 0;

@@ -24,6 +24,8 @@ frontend/       Angular 21 (não é módulo Maven)
 - Spring Boot **4.1.x**
 - Pacote: `br.gov.mt.sesp.cicc`
 
+Estes comandos rodam **dentro de `cicc-cad/`** (neste clone, a raiz). Na pasta do curso (`arquitetura-de-sistemas/`) o reactor não tem `:cicc-cad-infrastructure`.
+
 ```bash
 mvn -pl :cicc-cad-domain,:cicc-cad-application,:cicc-cad-infrastructure test
 mvn -pl :cicc-cad-infrastructure -am install -DskipTests
@@ -44,7 +46,7 @@ npm install --legacy-peer-deps
 npm start
 ```
 
-Abra `http://localhost:4200/`. Atendente abre o T1; **Mesa** confirma a Livre e começa o T2. Proxy: `/ocorrencias`, `/pabx`, `/mesa`.
+Abra `http://localhost:4200/`. Atendente abre o T1 e encaminha; **Mesa** (`/sala`) empilha a Livre, fecha o T2 no **No local** e **Encerrar** devolve a viatura a Livre. Proxy: `/ocorrencias`, `/pabx`, `/mesa`.
 
 Domínio `cad` + `sala` + portas `pabx`/`avl` (mock). JPA/Oracle Spatial e AVL real depois.
 

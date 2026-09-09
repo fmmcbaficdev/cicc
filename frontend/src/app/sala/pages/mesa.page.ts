@@ -67,6 +67,24 @@ export class MesaPage implements OnInit {
     });
   }
 
+  encerrar(ocorrenciaId: string): void {
+    if (this.empenhando()) {
+      return;
+    }
+    this.empenhando.set(ocorrenciaId);
+    this.erro.set(null);
+    this.facade.encerrar(ocorrenciaId).subscribe({
+      next: (atualizada) => {
+        this.empenhando.set(null);
+        this.cartoes.update((lista) => lista.map((cartao) => (cartao.id === atualizada.id ? atualizada : cartao)));
+      },
+      error: (falha: Error) => {
+        this.empenhando.set(null);
+        this.erro.set(falha.message);
+      },
+    });
+  }
+
   registrarNoLocal(ocorrenciaId: string): void {
     if (this.empenhando()) {
       return;

@@ -172,6 +172,41 @@ class OcorrenciaTest {
     }
 
     @Test
+    @DisplayName("encerrar depois do No local não altera T1 nem T2")
+    void encerraAposNoLocal() {
+        final var ocorrencia = abrir();
+        ocorrencia.encaminharAMesa("CBA", T1.plusSeconds(90));
+        ocorrencia.empenhar("PM-CBA-01", T1.plusSeconds(120));
+        ocorrencia.registrarNoLocal(T1.plusSeconds(300), true);
+        final var fim = T1.plusSeconds(400);
+
+        ocorrencia.encerrar(fim);
+
+        assertEquals("ENCERRADA", ocorrencia.situacao());
+        assertEquals(fim, ocorrencia.encerradaEm());
+        assertEquals(T1, ocorrencia.inicioAtendimento());
+        assertEquals(T1.plusSeconds(120), ocorrencia.inicioDeslocamento());
+        assertEquals(
+                "Ocorrência já está encerrada",
+                assertThrows(ValidationException.class, () -> ocorrencia.encerrar(fim.plusSeconds(1)))
+                        .getMessage()
+        );
+    }
+
+    @Test
+    @DisplayName("recusa encerrar antes do No local")
+    void recusaEncerrarSemNoLocal() {
+        final var ocorrencia = abrir();
+        ocorrencia.encaminharAMesa("CBA", T1.plusSeconds(90));
+        ocorrencia.empenhar("PM-CBA-01", T1.plusSeconds(120));
+        assertEquals(
+                "Ocorrência ainda não está no local",
+                assertThrows(ValidationException.class, () -> ocorrencia.encerrar(T1.plusSeconds(200)))
+                        .getMessage()
+        );
+    }
+
+    @Test
     @DisplayName("telefone e uid do PABX são opcionais e não alteram o T1")
     void guardaTelefoneSemMudarT1() {
         final var ocorrencia = Ocorrencia.newOcorrencia(

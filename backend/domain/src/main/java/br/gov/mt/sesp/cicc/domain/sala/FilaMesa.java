@@ -23,6 +23,9 @@ public final class FilaMesa {
     }
 
     private static int posicaoNaFila(final Ocorrencia ocorrencia) {
+        if (ocorrencia.encerradaEm() != null) {
+            return 3;
+        }
         if (ocorrencia.noLocalEm() != null) {
             return 2;
         }

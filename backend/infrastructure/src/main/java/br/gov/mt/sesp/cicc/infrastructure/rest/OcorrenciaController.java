@@ -4,6 +4,7 @@ import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.EncaminharOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.EmpenharViaturaUseCase;
+import br.gov.mt.sesp.cicc.application.sala.EncerrarOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.RegistrarNoLocalUseCase;
 import br.gov.mt.sesp.cicc.application.sala.SugerirViaturasUseCase;
 import br.gov.mt.sesp.cicc.domain.exception.NotFoundException;
@@ -30,6 +31,7 @@ public class OcorrenciaController {
     private final SugerirViaturasUseCase sugerirViaturasUseCase;
     private final EmpenharViaturaUseCase empenharViaturaUseCase;
     private final RegistrarNoLocalUseCase registrarNoLocalUseCase;
+    private final EncerrarOcorrenciaUseCase encerrarOcorrenciaUseCase;
 
     public OcorrenciaController(
             final AbrirOcorrenciaUseCase abrirOcorrenciaUseCase,
@@ -37,7 +39,8 @@ public class OcorrenciaController {
             final EncaminharOcorrenciaUseCase encaminharOcorrenciaUseCase,
             final SugerirViaturasUseCase sugerirViaturasUseCase,
             final EmpenharViaturaUseCase empenharViaturaUseCase,
-            final RegistrarNoLocalUseCase registrarNoLocalUseCase
+            final RegistrarNoLocalUseCase registrarNoLocalUseCase,
+            final EncerrarOcorrenciaUseCase encerrarOcorrenciaUseCase
     ) {
         this.abrirOcorrenciaUseCase = abrirOcorrenciaUseCase;
         this.buscarOcorrenciaUseCase = buscarOcorrenciaUseCase;
@@ -45,6 +48,7 @@ public class OcorrenciaController {
         this.sugerirViaturasUseCase = sugerirViaturasUseCase;
         this.empenharViaturaUseCase = empenharViaturaUseCase;
         this.registrarNoLocalUseCase = registrarNoLocalUseCase;
+        this.encerrarOcorrenciaUseCase = encerrarOcorrenciaUseCase;
     }
 
     @PostMapping
@@ -92,5 +96,10 @@ public class OcorrenciaController {
     @PostMapping("/{id}/no-local")
     public OcorrenciaResponse noLocal(@PathVariable("id") final String id) {
         return OcorrenciaResponse.from(registrarNoLocalUseCase.execute(new RegistrarNoLocalUseCase.Input(id)));
+    }
+
+    @PostMapping("/{id}/encerrar")
+    public OcorrenciaResponse encerrar(@PathVariable("id") final String id) {
+        return OcorrenciaResponse.from(encerrarOcorrenciaUseCase.execute(new EncerrarOcorrenciaUseCase.Input(id)));
     }
 }

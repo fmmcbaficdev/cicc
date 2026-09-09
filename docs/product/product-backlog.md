@@ -13,7 +13,8 @@ Status: `Hipótese` | `Pronto para refinar` | `Pronto para Sprint` | `Feito` | `
 | 5 | C8, C7 · Folha 2 | Mesa da região + sugerir Livre mais próximas (AVL **mock**) + despachador confirma empenho + T2 começa | Viatura sai empenhada; a sala vê o deslocamento | Itens 1 e 4 | Sprint 2 · `sala` | Feito — mock AVL + `POST /ocorrencias/{id}/empenhar` |
 | 6 | R10, R11 · Folha 2 | Sem Livre perto: fila por gravidade **e** puxar outro bairro (ainda por proximidade) | A mesa não trava | Item 5 | Sprint 2 · `sala` | Feito — raio 3 km + `?ampliar=true` |
 | 7 | C6 · Folha 2 | Registrar “No local” (manual do despachador se o tablet falhar) e fechar T2 | Segundo relógio oficial fecha | Item 5 | Sprint 2 · `sala` | Feito — `POST /ocorrencias/{id}/no-local` |
-| 8 | C10 · Folha 1 item 6 | Isolar quem opera em CBA / VG / RDO (mínimo) | Cartão não vaza de unidade | Item 1 | Quando a 2ª unidade entrar | Hipótese |
+| 7b | Jornada Fase 4 | Encerrar o caso e devolver a viatura a Livre | A frota não some depois do T2 | Item 7 | Após Sprint 2 · `sala` | Feito — `POST /ocorrencias/{id}/encerrar` |
+| 8 | C10 · Folha 1 item 6 | Isolar quem opera em CBA / VG / RDO (mínimo) | Cartão não vaza de unidade | Item 1 | Quando a 2ª unidade entrar | Hipótese — [nota](../architecture/modulo-isolamento.md) |
 | 9 | C2 | Adapter PABX **real** (uid, telefone, tronco, unidade) | Liga a mesa sem redigitar o número | Homologação + item 3 | Depois do contrato | Hipótese |
 | 10 | C7, C9 | AVL real + ficha CIOSP Móvel (rádio já é fallback) | Campo com GPS e tablet | Inventário 3 cidades | Depois da Sprint 2 | Hipótese |
 
@@ -26,8 +27,12 @@ Status: `Hipótese` | `Pronto para refinar` | `Pronto para Sprint` | `Feito` | `
 | Cabine Lilás | R8 | Descartado desta fila |
 | Facial / CPF federado | C14 | Descartado — fora do piloto |
 
-## Sprint atual (compromisso)
+## Sprints (compromisso)
 
 **Goal Sprint 1 (fechado):** o atendente registra o 190/193 e a operação vê o T1. Itens 1–4.
 
-**Goal Sprint 2:** o despachador empilha a Livre mais próxima e a sala vê o T2. Itens 5–7 feitos no mock. AVL **real** não entra.
+**Goal Sprint 2 (fechado):** o despachador empilha a Livre mais próxima e a sala vê o T2. Itens 5–7 no mock. AVL **real** não entra.
+
+**Após Sprint 2:** item 7b Encerrar — Feito no mock. A frota volta a Livre.
+
+Não há Sprint atual. Itens 8–10 são hipótese — [checklist-proximo](../checklist-proximo.md).

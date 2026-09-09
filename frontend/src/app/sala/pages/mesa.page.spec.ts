@@ -99,6 +99,32 @@ describe('MesaPage', () => {
     await fixture.whenStable();
 
     expect(fixture.nativeElement.textContent).toContain('No local (manual)');
+    fixture.nativeElement.querySelector('button.encerrar').click();
+    fixture.detectChanges();
+
+    http.expectOne('/ocorrencias/occ-1/encerrar').flush({
+      id: 'occ-1',
+      protocolo: 'CICC-2026-MESA-T2',
+      gravidade: 'CRITICA',
+      inicioAtendimento: '2026-09-07T22:30:00Z',
+      telefone: '65981234567',
+      pabxUid: 'pabx-mock-190-cba-001',
+      endereco: 'Av. Historiador Rubens de Mendonça, Cuiabá',
+      latitude: -15.601411,
+      longitude: -56.097892,
+      situacao: 'ENCERRADA',
+      mesa: 'CBA',
+      encaminhadaEm: '2026-09-07T22:32:00Z',
+      prefixoEmpenhado: 'PM-CBA-01',
+      inicioDeslocamento: '2026-09-07T22:35:00Z',
+      noLocalEm: '2026-09-07T22:48:00Z',
+      noLocalManual: true,
+      encerradaEm: '2026-09-07T23:00:00Z',
+    });
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.nativeElement.textContent).toContain('voltou a Livre');
   });
 
   it('sem Livre perto oferece puxar outro bairro', async () => {

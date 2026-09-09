@@ -4,31 +4,28 @@ Como os módulos do mapa entram no código. Não é uma lista “um componente p
 
 Fonte do mapa: [architecture/component-map.md](architecture/component-map.md). Estilo: monólito modular, um JAR ([ADR 0001–0004](architecture/adr/README.md)).
 
-## Onde estamos (2026-09-07)
+## Onde estamos (2026-09-08)
+
+Mock fechado: Sprint 1 (T1) + Sprint 2 (T2) + Encerrar (Fase 4). Persistência em memória. Sem fatia de código seguinte.
 
 ```mermaid
 flowchart LR
-  subgraph feito [Feito]
-    A[Ossatura<br/>backend + frontend]
-    B[VOs<br/>Gravidade Protocolo Ponto]
-    C[Agregado<br/>Ocorrencia + T1]
+  subgraph feito [Feito no mock]
+    CAD[cad T1 + encaminhar]
+    PABX[pabx mock]
+    SALA[sala T2 + fila + No local + Encerrar]
+    AVL[AVL mock]
   end
-  subgraph agora [Feito nesta fatia]
-    D[Porta<br/>OcorrenciaRepository]
-    E[Use case<br/>AbrirOcorrencia]
+  subgraph hipotese [Hipótese — sem Goal]
+    ACESSO[acesso / item 8]
+    REAL[PABX e AVL reais]
   end
-  subgraph depois [Borda — se a fatia precisar]
-    F[REST / JPA]
-    G[Tela Angular cad]
-  end
-  subgraph pabx [Item 3 — feito no mock]
-    H[PabxPort + MockPabxAdapter]
-  end
-  A --> B --> C --> D --> E --> F --> H
-  F --> G
+  CAD --> PABX
+  CAD --> SALA --> AVL
+  SALA -.-> hipotese
 ```
 
-Itens 1–3 + tela: `POST /ocorrencias` (T1) + `GET /pabx/chamada` + Angular `cad`. Persistência em memória até o JPA. PABX **real** não entra.
+PABX **real**, JPA e isolamento: [checklist-proximo](checklist-proximo.md).
 
 ## Como nasce um componente
 
@@ -92,7 +89,7 @@ flowchart TB
 |---|---|---|
 | **cad** | o quê, onde, gravidade, T1 | Use case + `POST /ocorrencias` + tela Angular `cad` |
 | **pabx** | mock; real só com homologação | `PabxPort` + `MockPabxAdapter`; `GET /pabx/chamada` |
-| **sala** | mesa, Livre mais próxima, T2 | Feito no mock — sugerir + empenhar + fila + No local |
+| **sala** | mesa, Livre mais próxima, T2 | Feito no mock — sugerir + empenhar + fila + No local + encerrar |
 | **posicao-avl** / **acionamento** | GPS e tablet; rádio é fallback | AVL mock nesta fatia; AVL real e móvel depois |
 | **acesso** | isolamento de unidade | hipótese |
 | **alerta-lpr** | não abre ocorrência | fora desta fila |
@@ -101,4 +98,4 @@ flowchart TB
 
 O hexágono força **invariante antes de framework**. Abrir ocorrência sem Spring prova o T1 no clique; PABX mudo (evento da oficina) não derruba o Goal. Matching e T2 não entram no `cad` — o atendente não escolhe viatura.
 
-Sprint 1 (fechada): itens 1–4. Sprint 2: item 5 (T2 + AVL mock). PABX/AVL reais não entram.
+Sprint 1 (fechada): itens 1–4. Sprint 2 (fechada): itens 5–7. Encerrar (7b) feito no mock. Itens 8–10 são hipótese.

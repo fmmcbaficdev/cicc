@@ -178,5 +178,10 @@ class OcorrenciaControllerTest {
                 .andExpect(jsonPath("$.situacao").value("NO_LOCAL"))
                 .andExpect(jsonPath("$.noLocalEm").isNotEmpty())
                 .andExpect(jsonPath("$.noLocalManual").value(true));
+
+        mvc.perform(post(location + "/encerrar"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.situacao").value("ENCERRADA"))
+                .andExpect(jsonPath("$.encerradaEm").isNotEmpty());
     }
 }

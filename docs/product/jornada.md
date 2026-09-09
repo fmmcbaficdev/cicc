@@ -77,10 +77,10 @@ Atendente **não** escolhe viatura.
 | Guarnição | Resolve no local; digita relatório no tablet | — |
 | Sistema | Encerra o caso; viatura volta a **Livre**; protocolo arquivado | Base para estatística / mancha criminal (depois do piloto operacional) |
 
-## Estados da viatura (rascunho — ainda não é regra fechada)
+## Estados da viatura (mock)
 
 `Livre` → `Empenhada` → `No local` → `Livre`  
-`Fora de serviço` fica de fora do matching.
+`Fora de serviço` fica de fora do matching. Relatório de campo e estatística ficam fora deste recorte.
 
 ## Exceções (fechadas)
 

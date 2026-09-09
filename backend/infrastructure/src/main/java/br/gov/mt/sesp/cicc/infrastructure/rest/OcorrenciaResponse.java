@@ -20,7 +20,8 @@ public record OcorrenciaResponse(
         String prefixoEmpenhado,
         Instant inicioDeslocamento,
         Instant noLocalEm,
-        boolean noLocalManual
+        boolean noLocalManual,
+        Instant encerradaEm
 ) {
 
     public static OcorrenciaResponse from(final OcorrenciaVista output) {
@@ -40,7 +41,8 @@ public record OcorrenciaResponse(
                 output.prefixoEmpenhado(),
                 output.inicioDeslocamento(),
                 output.noLocalEm(),
-                output.noLocalManual()
+                output.noLocalManual(),
+                output.encerradaEm()
         );
     }
 }

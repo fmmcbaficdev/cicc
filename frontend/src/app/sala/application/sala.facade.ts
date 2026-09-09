@@ -24,4 +24,8 @@ export class SalaFacade {
   registrarNoLocal(ocorrenciaId: string): Observable<Ocorrencia> {
     return this.api.registrarNoLocal(ocorrenciaId);
   }
+
+  encerrar(ocorrenciaId: string): Observable<Ocorrencia> {
+    return this.api.encerrar(ocorrenciaId);
+  }
 }

@@ -22,6 +22,7 @@ public class Ocorrencia {
     private Instant inicioDeslocamento;
     private Instant noLocalEm;
     private boolean noLocalManual;
+    private Instant encerradaEm;
 
     private Ocorrencia(
             final OcorrenciaId ocorrenciaId,
@@ -38,7 +39,8 @@ public class Ocorrencia {
             final String prefixoEmpenhado,
             final Instant inicioDeslocamento,
             final Instant noLocalEm,
-            final boolean noLocalManual
+            final boolean noLocalManual,
+            final Instant encerradaEm
     ) {
         if (ocorrenciaId == null) {
             throw new ValidationException("Identificador da ocorrência inválido");
@@ -76,6 +78,7 @@ public class Ocorrencia {
         this.inicioDeslocamento = inicioDeslocamento;
         this.noLocalEm = noLocalEm;
         this.noLocalManual = noLocalManual;
+        this.encerradaEm = encerradaEm;
     }
 
     public static Ocorrencia newOcorrencia(
@@ -116,7 +119,8 @@ public class Ocorrencia {
                 null,
                 null,
                 null,
-                false
+                false,
+                null
         );
     }
 
@@ -228,7 +232,8 @@ public class Ocorrencia {
                 prefixoEmpenhado,
                 inicioDeslocamento,
                 noLocalEm,
-                noLocalManual
+                noLocalManual,
+                null
         );
     }
 
@@ -281,7 +286,26 @@ public class Ocorrencia {
         this.noLocalManual = manual;
     }
 
+    public void encerrar(final Instant quando) {
+        if (noLocalEm == null) {
+            throw new ValidationException("Ocorrência ainda não está no local");
+        }
+        if (encerradaEm != null) {
+            throw new ValidationException("Ocorrência já está encerrada");
+        }
+        if (quando == null) {
+            throw new ValidationException("Instante do encerramento é obrigatório");
+        }
+        if (quando.isBefore(noLocalEm)) {
+            throw new ValidationException("Encerramento não pode ser anterior ao No local");
+        }
+        this.encerradaEm = quando;
+    }
+
     public String situacao() {
+        if (encerradaEm != null) {
+            return "ENCERRADA";
+        }
         if (noLocalEm != null) {
             return "NO_LOCAL";
         }
@@ -313,6 +337,10 @@ public class Ocorrencia {
 
     public boolean noLocalManual() {
         return noLocalManual;
+    }
+
+    public Instant encerradaEm() {
+        return encerradaEm;
     }
 
     public OcorrenciaId ocorrenciaId() {

@@ -17,6 +17,7 @@ export interface OcorrenciaResponse {
   inicioDeslocamento: string | null;
   noLocalEm: string | null;
   noLocalManual: boolean;
+  encerradaEm: string | null;
 }
 
 export function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
@@ -37,5 +38,6 @@ export function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
     inicioDeslocamento: response.inicioDeslocamento ?? null,
     noLocalEm: response.noLocalEm ?? null,
     noLocalManual: response.noLocalManual ?? false,
+    encerradaEm: response.encerradaEm ?? null,
   };
 }

@@ -9,7 +9,7 @@ O despachador da mesa CBA registra **No local na mão** (rádio / tablet mudo) e
 - [component-map](component-map.md) — dono do chamado: `cad`; ação na mesa: `sala`
 - [estrutura-hexagonal](estrutura-hexagonal.md) · [nomenclatura](nomenclatura.md)
 - Backlog item 7 · R6 · [folha 2](../product/folha-02-sala-despacho.md)
-- Sem tablet CIOSP Móvel, sem devolver a viatura a Livre (Fase 4), sem JPA
+- Sem tablet CIOSP Móvel, sem JPA. Devolver Livre: [modulo-encerrar.md](modulo-encerrar.md)
 
 T1 não muda. T2 já começou no empenho. Clique do despachador fecha.
 

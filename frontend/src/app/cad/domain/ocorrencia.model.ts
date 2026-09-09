@@ -15,4 +15,5 @@ export interface Ocorrencia {
   inicioDeslocamento: string | null;
   noLocalEm: string | null;
   noLocalManual: boolean;
+  encerradaEm: string | null;
 }

@@ -10,4 +10,6 @@ public interface AvlPort {
     Optional<Recurso> viaturaDePrefixo(String prefixo);
 
     void empenhar(String prefixo);
+
+    void liberar(String prefixo);
 }

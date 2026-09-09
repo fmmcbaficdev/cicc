@@ -20,7 +20,8 @@ public record OcorrenciaVista(
         String prefixoEmpenhado,
         Instant inicioDeslocamento,
         Instant noLocalEm,
-        boolean noLocalManual
+        boolean noLocalManual,
+        Instant encerradaEm
 ) {
 
     public static OcorrenciaVista de(final Ocorrencia ocorrencia) {
@@ -40,7 +41,8 @@ public record OcorrenciaVista(
                 ocorrencia.prefixoEmpenhado(),
                 ocorrencia.inicioDeslocamento(),
                 ocorrencia.noLocalEm(),
-                ocorrencia.noLocalManual()
+                ocorrencia.noLocalManual(),
+                ocorrencia.encerradaEm()
         );
     }
 }

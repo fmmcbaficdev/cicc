@@ -39,4 +39,14 @@ public class InMemoryAvlPort implements AvlPort {
         }
         porPrefixo.put(atual.prefixo(), new Recurso(atual.prefixo(), atual.ponto(), "EMPENHADA"));
     }
+
+    @Override
+    public void liberar(final String prefixo) {
+        final var atual = viaturaDePrefixo(prefixo)
+                .orElseThrow(() -> new ValidationException("Viatura não encontrada no AVL"));
+        if (atual.livre()) {
+            throw new ValidationException("Viatura já está Livre");
+        }
+        porPrefixo.put(atual.prefixo(), new Recurso(atual.prefixo(), atual.ponto(), "LIVRE"));
+    }
 }

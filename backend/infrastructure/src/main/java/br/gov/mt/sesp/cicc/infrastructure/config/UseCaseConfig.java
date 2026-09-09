@@ -5,6 +5,7 @@ import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.EncaminharOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.pabx.ConsultarChamadaPabxUseCase;
 import br.gov.mt.sesp.cicc.application.sala.EmpenharViaturaUseCase;
+import br.gov.mt.sesp.cicc.application.sala.EncerrarOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.ListarOcorrenciasNaMesaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.RegistrarNoLocalUseCase;
 import br.gov.mt.sesp.cicc.application.sala.SugerirViaturasUseCase;
@@ -85,5 +86,13 @@ public class UseCaseConfig {
     @Bean
     RegistrarNoLocalUseCase registrarNoLocalUseCase(final OcorrenciaRepository ocorrenciaRepository) {
         return new RegistrarNoLocalUseCase(ocorrenciaRepository);
+    }
+
+    @Bean
+    EncerrarOcorrenciaUseCase encerrarOcorrenciaUseCase(
+            final OcorrenciaRepository ocorrenciaRepository,
+            final AvlPort avlPort
+    ) {
+        return new EncerrarOcorrenciaUseCase(ocorrenciaRepository, avlPort);
     }
 }

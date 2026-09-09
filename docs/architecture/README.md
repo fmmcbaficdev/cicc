@@ -12,6 +12,8 @@ Fonte da verdade **deste** CAD. Relativo a `cicc-cad/docs/architecture/`.
 | [modulo-sugerir-empenhar.md](modulo-sugerir-empenhar.md) | Fatia Sprint 2: Livre + T2 |
 | [modulo-fila-sem-livre.md](modulo-fila-sem-livre.md) | Fatia Sprint 2: fila + outro bairro |
 | [modulo-no-local.md](modulo-no-local.md) | Fatia Sprint 2: No local fecha T2 |
+| [modulo-encerrar.md](modulo-encerrar.md) | Fase 4: encerrar + Livre |
+| [modulo-isolamento.md](modulo-isolamento.md) | Item 8 — **não implementar** até a 2ª unidade |
 | [adr/](adr/README.md) | Decisões com rationale |
 | [risk-register.md](risk-register.md) | Impacto × probabilidade |
 

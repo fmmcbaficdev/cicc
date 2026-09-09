@@ -17,7 +17,17 @@
           <span class="gravidade">{{ cartao.gravidade }}</span>
           <app-relogio-t1 [inicio]="cartao.inicioAtendimento" [compacto]="true" />
           <span>{{ cartao.endereco }}</span>
-          @if (cartao.situacao === 'NO_LOCAL' && cartao.inicioDeslocamento && cartao.noLocalEm) {
+          @if (cartao.situacao === 'ENCERRADA' && cartao.inicioDeslocamento && cartao.noLocalEm) {
+            <p class="empenhada">
+              Encerrada · {{ cartao.prefixoEmpenhado }} voltou a Livre
+            </p>
+            <app-relogio-t1
+              [inicio]="cartao.inicioDeslocamento"
+              [fim]="cartao.noLocalEm"
+              rotulo="T2"
+              [compacto]="true"
+            />
+          } @else if (cartao.situacao === 'NO_LOCAL' && cartao.inicioDeslocamento && cartao.noLocalEm) {
             <p class="empenhada">
               Empenhada {{ cartao.prefixoEmpenhado }} · No local{{ cartao.noLocalManual ? ' (manual)' : '' }}
             </p>
@@ -27,6 +37,14 @@
               rotulo="T2"
               [compacto]="true"
             />
+            <button
+              type="button"
+              class="encerrar"
+              (click)="encerrar(cartao.id)"
+              [disabled]="empenhando() === cartao.id"
+            >
+              Encerrar
+            </button>
           } @else if (cartao.situacao === 'EMPENHADA' && cartao.inicioDeslocamento) {
             <p class="empenhada">Empenhada {{ cartao.prefixoEmpenhado }}</p>
             <app-relogio-t1 [inicio]="cartao.inicioDeslocamento" rotulo="T2" [compacto]="true" />
