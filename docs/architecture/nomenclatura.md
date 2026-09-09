@@ -10,7 +10,7 @@ Vale para `cicc-cad/`. Pastas de arquivo em **kebab-case**. Classes Java em Pasc
 | Id | `{Agregado}Id` — `unique()`, `with(String)` | `OcorrenciaId` |
 | VO | conceito, sem `Vo` no nome | `Gravidade`, `Natureza`, `Protocolo`, `Ponto` |
 | Porta de persistência | `{Agregado}Repository` | `OcorrenciaRepository` |
-| Porta de legado | `{Intenção}Port` | `PabxPort`, `AvlPort` |
+| Porta de legado | `{Intenção}Port` | `PabxPort`, `AvlPort`, `GeocodificacaoPort` |
 | Fake | `InMemory{Agregado}Repository` | `InMemoryOcorrenciaRepository` |
 | Use case | `{Verbo}{Coisa}UseCase` | `AbrirOcorrenciaUseCase` |
 | I/O | records aninhados `Input` / `Output` | primitivos/String; **nunca** o agregado |

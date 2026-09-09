@@ -21,4 +21,12 @@ export class CadFacade {
   encaminhar(id: string, mesa: string): Observable<Ocorrencia> {
     return this.api.encaminhar(id, mesa);
   }
+
+  enderecoDoPonto(latitude: number, longitude: number): Observable<string | null> {
+    return this.api.enderecoDoPonto(latitude, longitude);
+  }
+
+  pontoDoTexto(texto: string): Observable<{ latitude: number; longitude: number } | null> {
+    return this.api.pontoDoTexto(texto);
+  }
 }

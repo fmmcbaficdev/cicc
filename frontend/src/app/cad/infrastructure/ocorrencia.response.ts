@@ -9,6 +9,7 @@ export interface OcorrenciaResponse {
   telefone: string | null;
   pabxUid: string | null;
   endereco: string;
+  pontoReferencia?: string | null;
   latitude: number;
   longitude: number;
   situacao: string;
@@ -31,6 +32,7 @@ export function paraOcorrencia(response: OcorrenciaResponse): Ocorrencia {
     telefone: response.telefone,
     pabxUid: response.pabxUid,
     endereco: response.endereco,
+    pontoReferencia: response.pontoReferencia ?? null,
     latitude: response.latitude,
     longitude: response.longitude,
     situacao: response.situacao,

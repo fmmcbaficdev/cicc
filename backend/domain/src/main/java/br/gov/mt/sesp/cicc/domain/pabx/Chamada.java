@@ -1,11 +1,16 @@
 package br.gov.mt.sesp.cicc.domain.pabx;
 
+import br.gov.mt.sesp.cicc.domain.cad.Ponto;
 import br.gov.mt.sesp.cicc.domain.cad.Telefone;
 import br.gov.mt.sesp.cicc.domain.exception.ValidationException;
 
 import java.time.Instant;
 
-public record Chamada(String uid, Telefone telefone, String tronco, String unidade, Instant instante) {
+public record Chamada(String uid, Telefone telefone, String tronco, String unidade, Instant instante, Ponto pontoCelular) {
+
+    public Chamada(final String uid, final Telefone telefone, final String tronco, final String unidade, final Instant instante) {
+        this(uid, telefone, tronco, unidade, instante, null);
+    }
 
     public Chamada {
         if (uid == null || uid.isBlank()) {

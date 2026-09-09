@@ -8,4 +8,5 @@ export interface AbrirOcorrenciaRequest {
   protocolo: string;
   telefone?: string | null;
   pabxUid?: string | null;
+  pontoReferencia?: string | null;
 }

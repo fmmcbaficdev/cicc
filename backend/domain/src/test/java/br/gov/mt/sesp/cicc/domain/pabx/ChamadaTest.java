@@ -1,5 +1,6 @@
 package br.gov.mt.sesp.cicc.domain.pabx;
 
+import br.gov.mt.sesp.cicc.domain.cad.Ponto;
 import br.gov.mt.sesp.cicc.domain.cad.Telefone;
 import br.gov.mt.sesp.cicc.domain.exception.ValidationException;
 import org.junit.jupiter.api.DisplayName;
@@ -30,6 +31,23 @@ class ChamadaTest {
         assertEquals("190", chamada.tronco());
         assertEquals("CBA", chamada.unidade());
         assertEquals(INSTANTE, chamada.instante());
+        assertEquals(null, chamada.pontoCelular());
+    }
+
+    @Test
+    @DisplayName("guarda o ponto do celular quando o PABX informar")
+    void aceitaPontoDoCelular() {
+        final var chamada = new Chamada(
+                "pabx-mock-190-cba-001",
+                new Telefone("65981234567"),
+                "190",
+                "CBA",
+                INSTANTE,
+                new Ponto(-15.601411, -56.097892)
+        );
+
+        assertEquals(-15.601411, chamada.pontoCelular().latitude());
+        assertEquals(-56.097892, chamada.pontoCelular().longitude());
     }
 
     @Test

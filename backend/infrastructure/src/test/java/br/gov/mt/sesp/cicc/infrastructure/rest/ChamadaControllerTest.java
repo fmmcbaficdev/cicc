@@ -29,7 +29,9 @@ class ChamadaControllerTest {
                 .andExpect(jsonPath("$.uid").value(MockPabxAdapter.UID_AMOSTRA))
                 .andExpect(jsonPath("$.telefone").value(MockPabxAdapter.TELEFONE_AMOSTRA))
                 .andExpect(jsonPath("$.tronco").value(MockPabxAdapter.TRONCO_AMOSTRA))
-                .andExpect(jsonPath("$.unidade").value(MockPabxAdapter.UNIDADE_AMOSTRA));
+                .andExpect(jsonPath("$.unidade").value(MockPabxAdapter.UNIDADE_AMOSTRA))
+                .andExpect(jsonPath("$.latitude").value(MockPabxAdapter.PONTO_CELULAR_AMOSTRA.latitude()))
+                .andExpect(jsonPath("$.longitude").value(MockPabxAdapter.PONTO_CELULAR_AMOSTRA.longitude()));
     }
 
     @Test

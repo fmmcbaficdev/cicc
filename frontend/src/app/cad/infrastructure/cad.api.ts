@@ -20,6 +20,8 @@ export class CadApi {
         tronco: response.tronco,
         unidade: response.unidade,
         instante: response.instante,
+        latitude: response.latitude ?? null,
+        longitude: response.longitude ?? null,
       })),
       catchError((erro: HttpErrorResponse) => {
         if (erro.status === 404) {
@@ -37,6 +39,33 @@ export class CadApi {
         throwError(() => new Error(mensagemDeErro(erro))),
       ),
     );
+  }
+
+  enderecoDoPonto(latitude: number, longitude: number): Observable<string | null> {
+    return this.http
+      .get<{ endereco: string }>('/geocodificacao/endereco', {
+        params: { latitude, longitude },
+      })
+      .pipe(
+        map((response) => response.endereco),
+        catchError(() => of(null)),
+      );
+  }
+
+  pontoDoTexto(texto: string): Observable<{ latitude: number; longitude: number } | null> {
+    return this.http
+      .get<{ latitude: number; longitude: number }>('/geocodificacao/ponto', {
+        params: { texto },
+      })
+      .pipe(
+        map((response) => ({ latitude: response.latitude, longitude: response.longitude })),
+        catchError((erro: HttpErrorResponse) => {
+          if (erro.status === 404) {
+            return of(null);
+          }
+          return throwError(() => erro);
+        }),
+      );
   }
 
   encaminhar(id: string, mesa: string): Observable<Ocorrencia> {

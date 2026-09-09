@@ -1,6 +1,34 @@
 <figure class="mapa">
-  <iframe [src]="src()" title="Ponto da ocorrência no mapa" loading="lazy"></iframe>
-  @if (endereco()) {
-    <figcaption>{{ endereco() }} · {{ latitude() }}, {{ longitude() }}</figcaption>
+  @if (ajustavel()) {
+    <div
+      class="mapa__grade"
+      (click)="ajustar($event)"
+      role="button"
+      tabindex="0"
+      title="Clique para ajustar o ponto da ocorrência"
+    >
+      @for (tile of tiles(); track tile.key) {
+        <img [src]="tile.url" [style.grid-column]="tile.col" [style.grid-row]="tile.row" alt="" />
+      }
+      @if (pinOcorrencia(); as pin) {
+        <span class="mapa__pin mapa__pin--ocorrencia" [style.left.%]="pin.x" [style.top.%]="pin.y"></span>
+      }
+      @if (pinReferencia(); as pin) {
+        <span class="mapa__pin mapa__pin--referencia" [style.left.%]="pin.x" [style.top.%]="pin.y"></span>
+      }
+    </div>
+  } @else {
+    <iframe [src]="src()" title="Ponto da ocorrência no mapa" loading="lazy"></iframe>
   }
+  <figcaption>
+    @if (endereco()) {
+      {{ endereco() }} · {{ latitude() }}, {{ longitude() }}
+    } @else {
+      {{ latitude() }}, {{ longitude() }}
+    }
+    @if (pinReferencia()) {
+      · ponto de referência no mapa
+    }
+    · © OpenStreetMap
+  </figcaption>
 </figure>

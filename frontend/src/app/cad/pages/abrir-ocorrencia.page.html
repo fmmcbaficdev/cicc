@@ -30,6 +30,12 @@
           <dt>Onde</dt>
           <dd>{{ aberta.endereco }}</dd>
         </div>
+        @if (aberta.pontoReferencia) {
+          <div>
+            <dt>Ponto de referência</dt>
+            <dd>{{ aberta.pontoReferencia }}</dd>
+          </div>
+        }
       </dl>
       @if (erro()) {
         <p class="aviso aviso--erro" role="alert">{{ erro() }}</p>
@@ -92,6 +98,10 @@
         Onde
         <input formControlName="endereco" />
       </label>
+      <label class="formulario__largo">
+        Ponto de referência
+        <input formControlName="pontoReferencia" autocomplete="off" placeholder="Shopping, praça, posto…" />
+      </label>
       <label>
         Latitude
         <input formControlName="latitude" type="number" step="0.000001" />
@@ -101,11 +111,15 @@
         <input formControlName="longitude" type="number" step="0.000001" />
       </label>
       <div class="formulario__largo">
-        <p class="mapa-ajuda">Ponto no mapa a partir do endereço informado — a ligação não traz latitude/longitude.</p>
+        <p class="mapa-ajuda">{{ ajudaDoMapa() }} Pino vermelho é o ponto da ocorrência; o azul, o de referência.</p>
         <app-ponto-mapa
+          [ajustavel]="true"
           [latitude]="formulario.controls.latitude.value"
           [longitude]="formulario.controls.longitude.value"
           [endereco]="formulario.controls.endereco.value"
+          [referenciaLatitude]="referencia()?.latitude ?? null"
+          [referenciaLongitude]="referencia()?.longitude ?? null"
+          (pontoAjustado)="ajustarPonto($event)"
         />
       </div>
       <button class="botao" type="submit" [disabled]="enviando()">

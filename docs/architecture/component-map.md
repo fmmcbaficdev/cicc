@@ -8,7 +8,7 @@ Partição por fluxo da jornada (`docs/product/jornada.md`). Estilo: ADR 0001. D
 - Estilo: monólito modular em camadas (o artefato **é** o CAD de atendimento)
 - Construção: Maven `domain` → `application` → `infrastructure` (JAR Boot) + Angular em `cicc-cad/frontend/` — [ADR 0004](adr/0004-maven-spring-angular-hexagonal.md)
 - Pacotes e nomes: [estrutura-hexagonal.md](estrutura-hexagonal.md) · [nomenclatura.md](nomenclatura.md)
-- ADR: [0001](adr/0001-monolito-modular-camadas.md) (estilo) · [0002](adr/0002-cad-proprio-pabx.md) (CAD + PABX) · [0003](adr/0003-oracle-persistencia-cad.md) (Oracle Spatial) · [0004](adr/0004-maven-spring-angular-hexagonal.md) (Maven/Spring/Angular)
+- ADR: [0001](adr/0001-monolito-modular-camadas.md) (estilo) · [0002](adr/0002-cad-proprio-pabx.md) (CAD + PABX) · [0003](adr/0003-oracle-persistencia-cad.md) (Oracle Spatial) · [0004](adr/0004-maven-spring-angular-hexagonal.md) (Maven/Spring/Angular) · [0005](adr/0005-ponto-celular-pabx-geocode-mock.md) (ponto do celular)
 
 ## Componentes
 
@@ -31,7 +31,8 @@ Não há `OcorrenciaManager` genérico nem adaptador “para o CAD velho” como
 
 | De | Para | Forma | Contrato |
 |---|---|---|---|
-| pabx | PABX (Intelbras Simples IP / procedures) | inbound + timeout | uid, telefone, tronco, unidade, instante |
+| pabx | PABX (Intelbras Simples IP / procedures) | inbound + timeout | uid, telefone, tronco, unidade, instante, lat/long do celular (opcional) — [ADR 0005](adr/0005-ponto-celular-pabx-geocode-mock.md) |
+| cad | `GeocodificacaoPort` (mock) | sync | ponto → endereço; texto de referência → ponto |
 | cad | Oracle + Oracle Spatial | local / JDBC | ocorrência, ponto (`SDO_GEOMETRY`), T1/T2, auditoria — [ADR 0003](adr/0003-oracle-persistencia-cad.md) |
 | sala / cad | Oracle Spatial (SoT do ponto); SIOSP-GEO só se for camada/tela | local / sync | endereço → geometria |
 | posicao-avl | AVL | sync + timeout | posição, status |

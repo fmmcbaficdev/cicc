@@ -4,4 +4,6 @@ export interface Chamada {
   tronco: string;
   unidade: string;
   instante: string;
+  latitude: number | null;
+  longitude: number | null;
 }

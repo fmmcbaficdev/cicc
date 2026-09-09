@@ -50,7 +50,8 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
                 input.protocolo(),
                 Instant.now(clock),
                 correlacao.telefone(),
-                correlacao.pabxUid()
+                correlacao.pabxUid(),
+                input.pontoReferencia()
         ));
 
         return OcorrenciaVista.de(ocorrencia);
@@ -81,7 +82,8 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
             double longitude,
             String protocolo,
             String telefone,
-            String pabxUid
+            String pabxUid,
+            String pontoReferencia
     ) {
         public Input(
                 final String natureza,
@@ -92,7 +94,21 @@ public class AbrirOcorrenciaUseCase extends UseCase<AbrirOcorrenciaUseCase.Input
                 final double longitude,
                 final String protocolo
         ) {
-            this(natureza, descricao, gravidade, endereco, latitude, longitude, protocolo, null, null);
+            this(natureza, descricao, gravidade, endereco, latitude, longitude, protocolo, null, null, null);
+        }
+
+        public Input(
+                final String natureza,
+                final String descricao,
+                final String gravidade,
+                final String endereco,
+                final double latitude,
+                final double longitude,
+                final String protocolo,
+                final String telefone,
+                final String pabxUid
+        ) {
+            this(natureza, descricao, gravidade, endereco, latitude, longitude, protocolo, telefone, pabxUid, null);
         }
     }
 

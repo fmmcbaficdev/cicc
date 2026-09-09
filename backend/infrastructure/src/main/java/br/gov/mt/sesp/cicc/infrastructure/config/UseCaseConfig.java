@@ -3,6 +3,8 @@ package br.gov.mt.sesp.cicc.infrastructure.config;
 import br.gov.mt.sesp.cicc.application.cad.AbrirOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.BuscarOcorrenciaUseCase;
 import br.gov.mt.sesp.cicc.application.cad.EncaminharOcorrenciaUseCase;
+import br.gov.mt.sesp.cicc.application.cad.ResolverEnderecoDoPontoUseCase;
+import br.gov.mt.sesp.cicc.application.cad.ResolverPontoDoTextoUseCase;
 import br.gov.mt.sesp.cicc.application.pabx.ConsultarChamadaPabxUseCase;
 import br.gov.mt.sesp.cicc.application.sala.EmpenharViaturaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.EncerrarOcorrenciaUseCase;
@@ -10,9 +12,11 @@ import br.gov.mt.sesp.cicc.application.sala.ListarOcorrenciasNaMesaUseCase;
 import br.gov.mt.sesp.cicc.application.sala.RegistrarNoLocalUseCase;
 import br.gov.mt.sesp.cicc.application.sala.SugerirViaturasUseCase;
 import br.gov.mt.sesp.cicc.domain.avl.AvlPort;
+import br.gov.mt.sesp.cicc.domain.cad.GeocodificacaoPort;
 import br.gov.mt.sesp.cicc.domain.cad.OcorrenciaRepository;
 import br.gov.mt.sesp.cicc.domain.pabx.PabxPort;
 import br.gov.mt.sesp.cicc.infrastructure.avl.MockAvlAdapter;
+import br.gov.mt.sesp.cicc.infrastructure.geo.MockGeocodificacaoAdapter;
 import br.gov.mt.sesp.cicc.infrastructure.pabx.MockPabxAdapter;
 import br.gov.mt.sesp.cicc.infrastructure.persistence.InMemoryOcorrenciaRepository;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,6 +44,11 @@ public class UseCaseConfig {
     }
 
     @Bean
+    GeocodificacaoPort geocodificacaoPort() {
+        return new MockGeocodificacaoAdapter();
+    }
+
+    @Bean
     AbrirOcorrenciaUseCase abrirOcorrenciaUseCase(
             final OcorrenciaRepository ocorrenciaRepository,
             final PabxPort pabxPort
@@ -60,6 +69,16 @@ public class UseCaseConfig {
     @Bean
     EncaminharOcorrenciaUseCase encaminharOcorrenciaUseCase(final OcorrenciaRepository ocorrenciaRepository) {
         return new EncaminharOcorrenciaUseCase(ocorrenciaRepository);
+    }
+
+    @Bean
+    ResolverEnderecoDoPontoUseCase resolverEnderecoDoPontoUseCase(final GeocodificacaoPort geocodificacaoPort) {
+        return new ResolverEnderecoDoPontoUseCase(geocodificacaoPort);
+    }
+
+    @Bean
+    ResolverPontoDoTextoUseCase resolverPontoDoTextoUseCase(final GeocodificacaoPort geocodificacaoPort) {
+        return new ResolverPontoDoTextoUseCase(geocodificacaoPort);
     }
 
     @Bean

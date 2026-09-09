@@ -23,10 +23,20 @@ public class ConsultarChamadaPabxUseCase extends NullaryUseCase<Optional<Consult
                         chamada.telefone().value(),
                         chamada.tronco(),
                         chamada.unidade(),
-                        chamada.instante()
+                        chamada.instante(),
+                        chamada.pontoCelular() == null ? null : chamada.pontoCelular().latitude(),
+                        chamada.pontoCelular() == null ? null : chamada.pontoCelular().longitude()
                 ));
     }
 
-    public record Output(String uid, String telefone, String tronco, String unidade, Instant instante) {
+    public record Output(
+            String uid,
+            String telefone,
+            String tronco,
+            String unidade,
+            Instant instante,
+            Double latitude,
+            Double longitude
+    ) {
     }
 }

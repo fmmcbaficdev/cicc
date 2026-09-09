@@ -14,7 +14,7 @@ flowchart LR
 ```mermaid
 flowchart TD
   Cid[Cidadão liga 190/193] --> PABX[PABX]
-  PABX -->|abre tela + telefone| CAD[CAD nosso: Nova ocorrência]
+  PABX -->|abre tela + telefone + ponto do celular| CAD[CAD nosso: Nova ocorrência]
   PABX -.->|PABX mudo| Manual[Atendente abre à mão]
   Manual --> CAD
   CAD --> T1[T1 começa]
@@ -46,10 +46,10 @@ flowchart TD
 | Quem | O que faz | Gatilho do sistema |
 |---|---|---|
 | Cidadão | Liga 190 (PM) ou 193 (Bombeiros) | PABX entrega a ligação |
-| Sistema | Abre **Nova ocorrência**; preenche telefone de origem | Porta `pabx`. T1 pode (e neste recorte **deve**) começar aqui |
-| Atendente | Digita endereço e tipo | Ponto em Oracle Spatial; mapa (SIOSP-GEO) plota |
+| Sistema | Abre **Nova ocorrência**; preenche telefone e, se houver, lat/long do celular | Porta `pabx`. Reverse geocode escreve **Onde**. T1 no clique |
+| Atendente | Confirma ou ajusta o ponto; informa ponto de referência | Clique no mapa recalcula o endereço; referência plota um segundo pino |
 
-Se o PABX falhar: atendente abre à mão; T1 no clique. Telefone fica vazio até alguém informar.
+Se o PABX falhar ou a ligação não trouxer coordenada: atendente abre à mão; T1 no clique. Telefone e ponto ficam vazios até alguém informar. Origem da ligação **pode não** ser o local da ocorrência.
 
 ## Fase 2 — Triagem e classificação
 

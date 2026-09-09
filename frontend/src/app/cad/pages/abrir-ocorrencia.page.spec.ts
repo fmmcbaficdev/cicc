@@ -28,8 +28,15 @@ describe('AbrirOcorrenciaPage', () => {
       tronco: '190',
       unidade: 'CBA',
       instante: '2026-09-07T22:40:00Z',
+      latitude: -15.601411,
+      longitude: -56.097892,
     });
     fixture.detectChanges();
+    http.expectOne((req) => req.url.startsWith('/geocodificacao/endereco')).flush({
+      endereco: 'Av. Historiador Rubens de Mendonça, Cuiabá',
+    });
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('Ponto do celular da ligação');
 
         fixture.nativeElement.querySelector('button[type="submit"]').click();
     fixture.detectChanges();

@@ -50,6 +50,20 @@ describe('CadFacade', () => {
     expect(atual).toBeNull();
   });
 
+  it('escreve o endereço do ponto do celular', () => {
+    let endereco: string | null | undefined;
+    facade.enderecoDoPonto(-15.601411, -56.097892).subscribe((valor) => {
+      endereco = valor;
+    });
+
+    const req = http.expectOne((pedido) => pedido.url.startsWith('/geocodificacao/endereco'));
+    expect(req.request.params.get('latitude')).toBe('-15.601411');
+    expect(req.request.params.get('longitude')).toBe('-56.097892');
+    req.flush({ endereco: 'Av. Historiador Rubens de Mendonça, Cuiabá' });
+
+    expect(endereco).toBe('Av. Historiador Rubens de Mendonça, Cuiabá');
+  });
+
   it('abrir devolve protocolo e T1', () => {
     let aberta: { protocolo: string; inicioAtendimento: string } | undefined;
     facade

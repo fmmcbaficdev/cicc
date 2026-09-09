@@ -1,9 +1,11 @@
-import { Component, inject, OnInit, signal } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { debounceTime, distinctUntilChanged } from 'rxjs';
 
-import { PontoMapaComponent } from '../components/ponto-mapa.component';
-import { RelogioT1Component } from '../components/relogio-t1.component';
 import { CadFacade } from '../application/cad.facade';
+import { PontoAjuste, PontoMapaComponent } from '../components/ponto-mapa.component';
+import { RelogioT1Component } from '../components/relogio-t1.component';
 import { Chamada } from '../domain/chamada.model';
 import { Ocorrencia } from '../domain/ocorrencia.model';
 
@@ -17,6 +19,7 @@ import { Ocorrencia } from '../domain/ocorrencia.model';
 export class AbrirOcorrenciaPage implements OnInit {
   private readonly facade = inject(CadFacade);
   private readonly formBuilder = inject(FormBuilder);
+  private readonly destroyRef = inject(DestroyRef);
 
   readonly gravidades = [
     { valor: 'BAIXA', rotulo: 'Baixa' },
@@ -32,6 +35,7 @@ export class AbrirOcorrenciaPage implements OnInit {
     natureza: ['', Validators.required],
     descricao: ['', Validators.required],
     endereco: ['', Validators.required],
+    pontoReferencia: [''],
     latitude: [-15.601411, Validators.required],
     longitude: [-56.097892, Validators.required],
   });
@@ -43,13 +47,29 @@ export class AbrirOcorrenciaPage implements OnInit {
   readonly encaminhando = signal(false);
   readonly erro = signal<string | null>(null);
   readonly ocorrencia = signal<Ocorrencia | null>(null);
+  readonly origemPonto = signal<'celular' | 'ajuste' | 'manual'>('manual');
+  readonly referencia = signal<{ latitude: number; longitude: number } | null>(null);
 
   mesaPadrao(): string {
     const unidade = this.chamada()?.unidade;
     return unidade === 'VG' || unidade === 'RDO' || unidade === 'CBA' ? unidade : 'CBA';
   }
 
+  ajudaDoMapa(): string {
+    switch (this.origemPonto()) {
+      case 'celular':
+        return 'Ponto do celular da ligação — pode não ser o local da ocorrência. Clique no mapa para ajustar.';
+      case 'ajuste':
+        return 'Ponto ajustado pelo atendente. O endereço é recalculado a partir do clique.';
+      default:
+        return 'Ponto no mapa a partir do endereço informado — a ligação não traz latitude/longitude.';
+    }
+  }
+
   ngOnInit(): void {
+    this.formulario.controls.pontoReferencia.valueChanges
+      .pipe(debounceTime(350), distinctUntilChanged(), takeUntilDestroyed(this.destroyRef))
+      .subscribe((texto) => this.resolverReferencia(texto));
     this.prepararNova();
   }
 
@@ -74,6 +94,7 @@ export class AbrirOcorrenciaPage implements OnInit {
         protocolo: valor.protocolo,
         telefone: valor.telefone || null,
         pabxUid: this.chamada()?.uid ?? null,
+        pontoReferencia: valor.pontoReferencia || null,
       })
       .subscribe({
         next: (ocorrencia) => {
@@ -111,8 +132,19 @@ export class AbrirOcorrenciaPage implements OnInit {
     this.prepararNova();
   }
 
+  ajustarPonto(ponto: PontoAjuste): void {
+    this.formulario.patchValue({
+      latitude: ponto.latitude,
+      longitude: ponto.longitude,
+    });
+    this.origemPonto.set('ajuste');
+    this.resolverEndereco(ponto.latitude, ponto.longitude);
+  }
+
   private prepararNova(): void {
     this.erro.set(null);
+    this.origemPonto.set('manual');
+    this.referencia.set(null);
     this.formulario.reset({
       protocolo: this.proximoProtocolo(),
       telefone: '',
@@ -120,6 +152,7 @@ export class AbrirOcorrenciaPage implements OnInit {
       natureza: 'Roubo',
       descricao: 'Roubo a mão armada agora',
       endereco: 'Av. Historiador Rubens de Mendonça, Cuiabá',
+      pontoReferencia: '',
       latitude: -15.601411,
       longitude: -56.097892,
     });
@@ -136,14 +169,42 @@ export class AbrirOcorrenciaPage implements OnInit {
         this.carregandoChamada.set(false);
         this.chamada.set(chamada);
         this.pabxMudo.set(chamada === null);
-        if (chamada) {
-          this.formulario.patchValue({ telefone: chamada.telefone });
+        if (!chamada) {
+          return;
+        }
+        this.formulario.patchValue({ telefone: chamada.telefone });
+        if (chamada.latitude != null && chamada.longitude != null) {
+          this.formulario.patchValue({
+            latitude: chamada.latitude,
+            longitude: chamada.longitude,
+          });
+          this.origemPonto.set('celular');
+          this.resolverEndereco(chamada.latitude, chamada.longitude);
         }
       },
       error: () => {
         this.carregandoChamada.set(false);
         this.pabxMudo.set(true);
       },
+    });
+  }
+
+  private resolverEndereco(latitude: number, longitude: number): void {
+    this.facade.enderecoDoPonto(latitude, longitude).subscribe((endereco) => {
+      if (endereco) {
+        this.formulario.patchValue({ endereco });
+      }
+    });
+  }
+
+  private resolverReferencia(texto: string): void {
+    if (!texto.trim()) {
+      this.referencia.set(null);
+      return;
+    }
+    this.facade.pontoDoTexto(texto).subscribe({
+      next: (ponto) => this.referencia.set(ponto),
+      error: () => this.referencia.set(null),
     });
   }
 

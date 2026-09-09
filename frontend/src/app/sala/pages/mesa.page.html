@@ -17,6 +17,9 @@
           <span class="gravidade">{{ cartao.natureza }} · {{ cartao.gravidade }}</span>
           <app-relogio-t1 [inicio]="cartao.inicioAtendimento" [compacto]="true" />
           <span>{{ cartao.endereco }}</span>
+          @if (cartao.pontoReferencia) {
+            <span>Ref.: {{ cartao.pontoReferencia }}</span>
+          }
           @if (cartao.situacao === 'ENCERRADA' && cartao.inicioDeslocamento && cartao.noLocalEm) {
             <p class="empenhada">
               Encerrada · {{ cartao.prefixoEmpenhado }} voltou a Livre

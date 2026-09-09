@@ -50,8 +50,30 @@ class AbrirOcorrenciaUseCaseTest {
         assertEquals("CRITICA", persistida.gravidade().value());
         assertEquals("Av. Historiador Rubens de Mendonça, Cuiabá", persistida.endereco());
         assertEquals(-15.601411, persistida.ponto().latitude());
+        assertNull(persistida.pontoReferencia());
         assertNull(output.telefone());
         assertNull(output.pabxUid());
+    }
+
+    @Test
+    @DisplayName("guarda o ponto de referência informado pelo atendente")
+    void guardaPontoDeReferencia() {
+        final var output = useCase.execute(new AbrirOcorrenciaUseCase.Input(
+                "Roubo",
+                "Roubo a mão armada agora",
+                "CRITICA",
+                "Av. Historiador Rubens de Mendonça, Cuiabá",
+                -15.601411,
+                -56.097892,
+                "CICC-2026-000012",
+                null,
+                null,
+                "Shopping Estação, Cuiabá"
+        ));
+
+        assertEquals("Shopping Estação, Cuiabá", output.pontoReferencia());
+        final var persistida = ocorrenciaRepository.ocorrenciaDeId(OcorrenciaId.with(output.id())).orElseThrow();
+        assertEquals("Shopping Estação, Cuiabá", persistida.pontoReferencia());
     }
 
     @Test

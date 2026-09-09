@@ -13,6 +13,7 @@ public class Ocorrencia {
     private final String descricao;
     private Gravidade gravidade;
     private final String endereco;
+    private final String pontoReferencia;
     private final Ponto ponto;
     private final Instant inicioAtendimento;
     private final Telefone telefone;
@@ -42,7 +43,8 @@ public class Ocorrencia {
             final Instant inicioDeslocamento,
             final Instant noLocalEm,
             final boolean noLocalManual,
-            final Instant encerradaEm
+            final Instant encerradaEm,
+            final String pontoReferencia
     ) {
         if (ocorrenciaId == null) {
             throw new ValidationException("Identificador da ocorrência inválido");
@@ -74,6 +76,7 @@ public class Ocorrencia {
         this.descricao = descricao.trim();
         this.gravidade = gravidade;
         this.endereco = endereco.trim();
+        this.pontoReferencia = pontoReferencia == null || pontoReferencia.isBlank() ? null : pontoReferencia.trim();
         this.ponto = ponto;
         this.inicioAtendimento = inicioAtendimento;
         this.telefone = telefone;
@@ -112,6 +115,22 @@ public class Ocorrencia {
             final Telefone telefone,
             final String pabxUid
     ) {
+        return newOcorrencia(natureza, descricao, gravidade, endereco, latitude, longitude, protocolo, inicioAtendimento, telefone, pabxUid, null);
+    }
+
+    public static Ocorrencia newOcorrencia(
+            final String natureza,
+            final String descricao,
+            final String gravidade,
+            final String endereco,
+            final double latitude,
+            final double longitude,
+            final String protocolo,
+            final Instant inicioAtendimento,
+            final Telefone telefone,
+            final String pabxUid,
+            final String pontoReferencia
+    ) {
         return new Ocorrencia(
                 OcorrenciaId.unique(),
                 new Protocolo(protocolo),
@@ -129,7 +148,8 @@ public class Ocorrencia {
                 null,
                 null,
                 false,
-                null
+                null,
+                pontoReferencia
         );
     }
 
@@ -159,23 +179,6 @@ public class Ocorrencia {
             final String pabxUid
     ) {
         return restore(ocorrenciaId, protocolo, natureza, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, null, null, null, null);
-    }
-
-    public static Ocorrencia restore(
-            final OcorrenciaId ocorrenciaId,
-            final Protocolo protocolo,
-            final Natureza natureza,
-            final String descricao,
-            final Gravidade gravidade,
-            final String endereco,
-            final Ponto ponto,
-            final Instant inicioAtendimento,
-            final Telefone telefone,
-            final String pabxUid,
-            final MesaRegiao mesa,
-            final Instant encaminhadaEm
-    ) {
-        return restore(ocorrenciaId, protocolo, natureza, descricao, gravidade, endereco, ponto, inicioAtendimento, telefone, pabxUid, mesa, encaminhadaEm, null, null, null, false);
     }
 
     public static Ocorrencia restore(
@@ -249,6 +252,7 @@ public class Ocorrencia {
                 inicioDeslocamento,
                 noLocalEm,
                 noLocalManual,
+                null,
                 null
         );
     }
@@ -381,6 +385,10 @@ public class Ocorrencia {
 
     public String endereco() {
         return endereco;
+    }
+
+    public String pontoReferencia() {
+        return pontoReferencia;
     }
 
     public Ponto ponto() {

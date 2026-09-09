@@ -7,6 +7,7 @@ export interface Ocorrencia {
   telefone: string | null;
   pabxUid: string | null;
   endereco: string;
+  pontoReferencia: string | null;
   latitude: number;
   longitude: number;
   situacao: string;

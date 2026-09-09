@@ -1,5 +1,6 @@
 package br.gov.mt.sesp.cicc.infrastructure.pabx;
 
+import br.gov.mt.sesp.cicc.domain.cad.Ponto;
 import br.gov.mt.sesp.cicc.domain.cad.Telefone;
 import br.gov.mt.sesp.cicc.domain.pabx.Chamada;
 import br.gov.mt.sesp.cicc.domain.pabx.PabxPort;
@@ -14,6 +15,7 @@ public class MockPabxAdapter implements PabxPort {
     public static final String TELEFONE_AMOSTRA = "65981234567";
     public static final String TRONCO_AMOSTRA = "190";
     public static final String UNIDADE_AMOSTRA = "CBA";
+    public static final Ponto PONTO_CELULAR_AMOSTRA = new Ponto(-15.601411, -56.097892);
 
     private final boolean mudo;
     private final Chamada amostra;
@@ -25,7 +27,8 @@ public class MockPabxAdapter implements PabxPort {
                 new Telefone(TELEFONE_AMOSTRA),
                 TRONCO_AMOSTRA,
                 UNIDADE_AMOSTRA,
-                Instant.now(clock)
+                Instant.now(clock),
+                PONTO_CELULAR_AMOSTRA
         );
     }
 

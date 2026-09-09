@@ -20,6 +20,7 @@ Tudo o que descreve **esta** implementação mora aqui. O código está em `back
 | [product/levantamento-funcional.md](product/levantamento-funcional.md) | Capacidades, regras, MVP |
 | [product/product-backlog.md](product/product-backlog.md) | Fila eleita e status |
 | [product/checklist.md](product/checklist.md) | O que está cravado |
+| [product/fontes-siosp-2026-09.md](product/fontes-siosp-2026-09.md) | O que do zip SIOSP entra |
 | [product/cenario.md](product/cenario.md) · [folha-01](product/folha-01-cad-atendente.md) | Sprint 1 — atendente e T1 |
 | [product/evento-01-pabx-nao-homologado.md](product/evento-01-pabx-nao-homologado.md) | PABX mudo |
 | [product/cenario-02-sala-despacho.md](product/cenario-02-sala-despacho.md) · [folha-02](product/folha-02-sala-despacho.md) | Sprint 2 — mesa e T2 |

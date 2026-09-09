@@ -1,5 +1,6 @@
 package br.gov.mt.sesp.cicc.application.pabx;
 
+import br.gov.mt.sesp.cicc.domain.cad.Ponto;
 import br.gov.mt.sesp.cicc.domain.cad.Telefone;
 import br.gov.mt.sesp.cicc.domain.pabx.Chamada;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ConsultarChamadaPabxUseCaseTest {
@@ -43,6 +45,27 @@ class ConsultarChamadaPabxUseCaseTest {
         assertEquals("190", output.get().tronco());
         assertEquals("CBA", output.get().unidade());
         assertEquals(INSTANTE, output.get().instante());
+        assertNull(output.get().latitude());
+        assertNull(output.get().longitude());
+    }
+
+    @Test
+    @DisplayName("devolve latitude e longitude do celular quando o PABX informar")
+    void devolvePontoDoCelular() {
+        pabxPort.definirChamadaAtual(new Chamada(
+                "pabx-mock-190-cba-001",
+                new Telefone("65981234567"),
+                "190",
+                "CBA",
+                INSTANTE,
+                new Ponto(-15.601411, -56.097892)
+        ));
+
+        final var output = useCase.execute();
+
+        assertTrue(output.isPresent());
+        assertEquals(-15.601411, output.get().latitude());
+        assertEquals(-56.097892, output.get().longitude());
     }
 
     @Test

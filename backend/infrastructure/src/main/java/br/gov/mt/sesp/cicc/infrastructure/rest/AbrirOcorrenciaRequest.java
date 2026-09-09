@@ -11,7 +11,8 @@ public record AbrirOcorrenciaRequest(
         double longitude,
         String protocolo,
         String telefone,
-        String pabxUid
+        String pabxUid,
+        String pontoReferencia
 ) {
 
     AbrirOcorrenciaUseCase.Input toInput() {
@@ -24,7 +25,8 @@ public record AbrirOcorrenciaRequest(
                 longitude,
                 protocolo,
                 telefone,
-                pabxUid
+                pabxUid,
+                pontoReferencia
         );
     }
 }

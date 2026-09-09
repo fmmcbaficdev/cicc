@@ -43,3 +43,4 @@ AVL, LPR, rádio e CIOSP Móvel continuam satélites (ADR 0001). O estilo não m
 - Negativas / dívida: precisamos de persistência nossa (ADR de banco em aberto); plano de corte/convívio com o CAD atual nas 3 cidades; volume de regra de ocorrência passa a ser nosso.
 - *Ilities* afetadas: 1 e 3 (integração = PABX + LPR + AVL, não “CAD legado”); 5 (sala registra sem PABX).
 - Specs: `visao-geral.md`, `jornada.md`, `levantamento-funcional.md`, `quality-attributes.md`, `component-map.md`, `risk-register.md`.
+- Contrato da ligação ganhou lat/long do celular em [ADR 0005](0005-ponto-celular-pabx-geocode-mock.md) (não substitui este ADR).

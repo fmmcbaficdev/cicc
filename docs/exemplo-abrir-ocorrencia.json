@@ -6,5 +6,6 @@
   "latitude": -15.601411,
   "longitude": -56.097892,
   "protocolo": "CICC-2026-000001",
-  "pabxUid": "pabx-mock-190-cba-001"
+  "pabxUid": "pabx-mock-190-cba-001",
+  "pontoReferencia": "Shopping Estação"
 }

@@ -8,6 +8,7 @@ Visão macro do CAD CIOSP/CICC-MT neste repositório. Relativo a `cicc-cad/docs/
 | [jornada.md](jornada.md) | Fluxo ponta a ponta (4 fases + diagrama) |
 | [levantamento-funcional.md](levantamento-funcional.md) | Domínios, capacidades, regras, MVP, riscos |
 | [checklist.md](checklist.md) | O que está cravado e o que já roda no mock |
+| [fontes-siosp-2026-09.md](fontes-siosp-2026-09.md) | O que do zip SIOSP entra (e o que não) |
 | [../checklist-proximo.md](../checklist-proximo.md) | Mock fechado; o que *não* implementar agora |
 | [cenario.md](cenario.md) | Sprint 1 — BC `cad` + `pabx` (atendente, T1) |
 | [folha-01-cad-atendente.md](folha-01-cad-atendente.md) | Folha 1 (evento: PABX) |
